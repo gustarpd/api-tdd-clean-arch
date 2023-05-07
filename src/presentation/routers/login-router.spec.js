@@ -1,5 +1,6 @@
 import { LoginRouter } from "./login-router";
 import { MissingParamError } from "../helpers/missing-param-error";
+import { UnauthorizeError } from "../helpers/unauthorize-error";
 
 const makeSut = () => {
   // classe de mock para capturar valores e fazer comparações
@@ -75,5 +76,6 @@ describe("", () => {
     const httpReponse = sut.route(httpRequest);
 
     expect(httpReponse.statusCode).toBe(401);
+    expect(httpReponse.body).toEqual(new UnauthorizeError('password'));
   });
 });

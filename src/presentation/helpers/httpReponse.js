@@ -1,5 +1,5 @@
-import { MissingParamError } from './missing-param-error'
-
+import { MissingParamError } from "./missing-param-error";
+import { UnauthorizeError } from '../helpers/unauthorize-error'
 export class HttpResponse {
   static badRequest(paramName) {
     return {
@@ -11,6 +11,13 @@ export class HttpResponse {
   static InternalError() {
     return {
       statusCode: 500,
+    };
+  }
+
+  static unauthorizeError() {
+    return {
+      statusCode: 401,
+      body: new UnauthorizeError()
     };
   }
 }

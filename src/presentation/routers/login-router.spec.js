@@ -1,9 +1,13 @@
 import { LoginRouter } from './login-router'
 import { MissingParamError } from '../helpers/missing-param-error'
 
+const makeSut = () => {
+  return new LoginRouter()
+}
+
 describe("", () => {
   test("Should return 400 is no email provider", () => {
-    const sut = new LoginRouter();
+    const sut = makeSut()
     const httpRequest = {
       body: {
         password: "any_password",
@@ -15,7 +19,7 @@ describe("", () => {
   });
 
   test("Should return 400 is no password provider", () => {
-    const sut = new LoginRouter();
+    const sut = makeSut()
     const httpRequest = {
       body: {
         email: "any_email@mail.com",
@@ -26,12 +30,12 @@ describe("", () => {
     expect(httpResponse.body).toEqual(new MissingParamError('password'));
   });
   test("Should return 500 if no httpRequest is provider", () => {
-    const sut = new LoginRouter();
+    const sut = makeSut()
     const httpResponse = sut.route();
     expect(httpResponse.statusCode).toBe(500);
   });
   test("Should return 500 if has no httpRequest is provider", () => {
-    const sut = new LoginRouter();
+    const sut = makeSut()
     const httpResponse = sut.route({});
     expect(httpResponse.statusCode).toBe(500);
   });

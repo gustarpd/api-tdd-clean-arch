@@ -1,8 +1,8 @@
-import { HttpResponse } from '../helpers/httpReponse'
+import { HttpResponse } from "../helpers/httpReponse";
 
 export class LoginRouter {
-  constructor (authUseCase) {
-    this.authUseCase = authUseCase
+  constructor(authUseCase) {
+    this.authUseCase = authUseCase;
   }
 
   route(httpRequest) {
@@ -17,6 +17,9 @@ export class LoginRouter {
       return HttpResponse.badRequest("password");
     }
 
-    this.authUseCase.auth(email, password)
+    this.authUseCase.auth(email, password);
+    return {
+      statusCode: 401,
+    };
   }
 }

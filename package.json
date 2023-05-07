@@ -2,9 +2,10 @@
   "name": "clean-arch",
   "version": "1.0.0",
   "description": "",
+  "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "standard": "standard --fix",
     "prepare": "husky install"
   },

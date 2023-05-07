@@ -1,4 +1,0 @@
-const math = () => {
-    export {}
-}
-

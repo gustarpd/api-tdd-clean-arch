@@ -5,8 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "standard": "standard",
+    "standard": "standard --fix",
     "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.js": "standard"
   },
   "keywords": [],
   "author": "",

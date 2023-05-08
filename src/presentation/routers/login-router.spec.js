@@ -66,7 +66,7 @@ describe("", () => {
   });
 
   test("Should return 401 when invalid credentials invalid", () => {
-    const { sut, authUseCase } = makeSut();
+    const { sut } = makeSut();
     const httpRequest = {
       body: {
         email: "ivalid_email.com",
@@ -76,6 +76,29 @@ describe("", () => {
     const httpReponse = sut.route(httpRequest);
 
     expect(httpReponse.statusCode).toBe(401);
-    expect(httpReponse.body).toEqual(new UnauthorizeError('password'));
+    expect(httpReponse.body).toEqual(new UnauthorizeError("password"));
+  });
+
+  test("Should return 500 if no Authentication is provider", () => {
+    const sut = new LoginRouter();
+    const httpRequest = {
+      body: {
+        email: "ivalid_email.com",
+        password: "invalid_password",
+      },
+    };
+    const httpReponse = sut.route(httpRequest);
+    expect(httpReponse.statusCode).toBe(500);
+  });
+  test("Should return 500 if no Authentication has no auth", () => {
+    const sut = new LoginRouter({})
+    const httpRequest = {
+      body: {
+        email: "ivalid_email.com",
+        password: "invalid_password",
+      },
+    };
+    const httpReponse = sut.route(httpRequest);
+    expect(httpReponse.statusCode).toBe(500);
   });
 });

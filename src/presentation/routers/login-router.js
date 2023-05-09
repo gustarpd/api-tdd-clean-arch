@@ -1,11 +1,13 @@
 import { HttpResponse } from "../helpers/httpReponse";
+import { MissingParamError } from "../helpers/missing-param-error";
 
 export class LoginRouter {
-  constructor(authUseCase) {
+  constructor(authUseCase, emailValidator) {
     this.authUseCase = authUseCase;
+    this.emailValidator = emailValidator
   }
 
-  route(httpRequest) {
+  async route(httpRequest) {
     try {
       if (
         !httpRequest ||
@@ -17,10 +19,13 @@ export class LoginRouter {
       }
       const { email, password } = httpRequest.body;
       if (!email) {
-        return HttpResponse.badRequest("email");
+        return HttpResponse.badRequest(new MissingParamError('email'));
+      }
+      if (!this.emailValidator.isValid(email)) {
+        return HttpResponse.badRequest(new MissingParamError('email'));
       }
       if (!password) {
-        return HttpResponse.badRequest("password");
+        return HttpResponse.badRequest(new MissingParamError('password'));
       }
 
       const accessToken = this.authUseCase.auth(email, password);

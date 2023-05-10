@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --watch --silent --noStackTrace",
+    "test:unit": "npm test -- --watchAll",
     "standard": "standard --fix",
     "prepare": "husky install",
     "test:ci": "jest --coverage"

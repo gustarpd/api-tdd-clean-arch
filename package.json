@@ -5,9 +5,10 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --watch --silent --noStackTrace",
     "standard": "standard --fix",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test:ci": "jest --coverage"
   },
   "lint-staged": {
     "*.js": "standard"

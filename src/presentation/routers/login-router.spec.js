@@ -1,7 +1,7 @@
 import { LoginRouter } from "./login-router";
-import { MissingParamError } from "../helpers/missing-param-error";
-import { UnauthorizeError } from "../helpers/unauthorize-error";
-import { ServerError } from "../helpers/server-erro";
+import { MissingParamError } from "../helpers/errors/missing-param-error";
+import { UnauthorizeError } from "../helpers/errors/unauthorize-error";
+import { ServerError } from "../helpers/errors/server-erro";
 
 const makeSut = () => {
   // classe de mock para capturar valores e fazer comparações

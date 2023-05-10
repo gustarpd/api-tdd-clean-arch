@@ -1,6 +1,6 @@
-import { MissingParamError } from "./missing-param-error";
-import { UnauthorizeError } from "../helpers/unauthorize-error";
-import { ServerError } from "../helpers/server-erro";
+import { MissingParamError } from "./errors/missing-param-error";
+import { UnauthorizeError } from "./errors/unauthorize-error";
+import { ServerError } from "./errors/server-erro";
 export class HttpResponse {
   static badRequest(error) {
     return {

@@ -1,9 +1,4 @@
-class EmailValidator {
-  isValid(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email)
-  }
-}
+import { EmailValidator } from "./email-validator";
 
 const makeSut = () => {
   return new EmailValidator()

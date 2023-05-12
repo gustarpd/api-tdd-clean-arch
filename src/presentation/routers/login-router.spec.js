@@ -1,5 +1,5 @@
 import { LoginRouter } from "./login-router";
-import { MissingParamError } from "../helpers/errors/missing-param-error";
+import { MissingParamError } from '../../utils/errors/missing-params-error'
 import { UnauthorizeError } from "../helpers/errors/unauthorize-error";
 import { ServerError } from "../helpers/errors/server-erro";
 

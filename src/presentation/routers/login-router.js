@@ -1,5 +1,6 @@
 import { HttpResponse } from "../helpers/httpReponse";
-import { MissingParamError } from "../helpers/errors/missing-param-error";
+import { MissingParamError } from "../../utils/errors/missing-params-error";
+import { InvalidParamError } from '../../utils/errors/invalid-params-error'
 
 export class LoginRouter {
   constructor(authUseCase, emailValidator) {
@@ -22,7 +23,7 @@ export class LoginRouter {
         return HttpResponse.badRequest(new MissingParamError('email'));
       }
       if (!this.emailValidator.isValid(email)) {
-        return HttpResponse.badRequest(new MissingParamError('email'));
+        return HttpResponse.badRequest(new InvalidParamError('email'));
       }
       if (!password) {
         return HttpResponse.badRequest(new MissingParamError('password'));

@@ -1,4 +1,3 @@
-import { MissingParamError } from "./errors/missing-param-error";
 import { UnauthorizeError } from "./errors/unauthorize-error";
 import { ServerError } from "./errors/server-erro";
 export class HttpResponse {

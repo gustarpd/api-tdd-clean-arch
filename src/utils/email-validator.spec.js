@@ -1,6 +1,7 @@
 class EmailValidator {
   isValid(email) {
-    return email;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email)
   }
 }
 
@@ -11,12 +12,12 @@ const makeSut = () => {
 describe("Email validator", () => {
   test("should return true if validator return true", () => {
     const sut = makeSut()
-    const isEmailValid = sut.isValid(true);
+    const isEmailValid = sut.isValid('valid_mail@mail.com');
     expect(isEmailValid).toBe(true);
   });
   test("should return true if validator return true", () => {
     const sut = makeSut();
-    const isEmailValid = sut.isValid(false);
+    const isEmailValid = sut.isValid('invalid_mail.com');
     expect(isEmailValid).toBe(false);
   });
 });

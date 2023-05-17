@@ -15,15 +15,11 @@ export class AuthUseCase {
     }
 
     const user = await this.loadUserByEmailRepository.load(email);
-    if (!user) {
-      return null;
-    }
-    const isValid = await this.encripter.compare(password, user.password);
-    if (!isValid) {
-      return null;
+    if (user && this.encripter.compare(password, user.password)) {
+      const access_token = await this.tokenGenerator.generate(user.id);
+      return access_token;
     }
 
-    const access_token = await this.tokenGenerator.generate(user.id);
-    return access_token
+    return null;
   }
 }

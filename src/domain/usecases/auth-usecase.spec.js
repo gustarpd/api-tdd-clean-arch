@@ -112,8 +112,9 @@ describe("Auth use case", () => {
   });
 
   test("should returns null if LoadUserByEmailRepository returns null", async () => {
-    const { sut, encrypterSpy } = makeSut();
+    const { sut, encrypterSpy, loadUserByEmailRepositorySpy } = makeSut();
     encrypterSpy.isValid = false;
+    loadUserByEmailRepositorySpy.user = null
     const accessToken = await sut.auth(
       "invalid_mail@mail.com",
       "invalid_password"

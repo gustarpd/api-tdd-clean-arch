@@ -20,16 +20,16 @@ const makeEncrypter = () => {
 
 const makeTokenGenerator = () => {
   class TokenGenerateSpy {
-    async generate (userId) {
-      this.userId = userId
-      return this.accessToken
+    async generate(userId) {
+      this.userId = userId;
+      return this.accessToken;
     }
   }
 
-  const tokenGenerateSpy = new TokenGenerateSpy()
-  tokenGenerateSpy.accessToken = 'any_token'
-  return tokenGenerateSpy
-}
+  const tokenGenerateSpy = new TokenGenerateSpy();
+  tokenGenerateSpy.accessToken = "any_token";
+  return tokenGenerateSpy;
+};
 const makeLoadUserByEmailRepositorySpy = () => {
   class LoadUserByEmailRepositorySpy {
     async load(email) {
@@ -39,7 +39,7 @@ const makeLoadUserByEmailRepositorySpy = () => {
   }
   const loadUserByEmailRepositorySpy = new LoadUserByEmailRepositorySpy();
   loadUserByEmailRepositorySpy.user = {
-    id: 'any_id',
+    id: "any_id",
     hashedpassword: "hashed-password",
   };
 
@@ -49,7 +49,7 @@ const makeLoadUserByEmailRepositorySpy = () => {
 const makeSut = () => {
   const encrypterSpy = makeEncrypter();
   const loadUserByEmailRepositorySpy = makeLoadUserByEmailRepositorySpy();
-  const tokenGenerateSpy = makeTokenGenerator()
+  const tokenGenerateSpy = makeTokenGenerator();
   class EncypterSpy {
     async compare(password, hashedPassword) {
       this.password = password;
@@ -59,13 +59,17 @@ const makeSut = () => {
     }
   }
 
-  const sut = new AuthUseCase(loadUserByEmailRepositorySpy, encrypterSpy, tokenGenerateSpy);
+  const sut = new AuthUseCase(
+    loadUserByEmailRepositorySpy,
+    encrypterSpy,
+    tokenGenerateSpy
+  );
 
   return {
     sut,
     loadUserByEmailRepositorySpy,
     encrypterSpy,
-    tokenGenerateSpy
+    tokenGenerateSpy,
   };
 };
 
@@ -130,5 +134,15 @@ describe("Auth use case", () => {
     const { sut, loadUserByEmailRepositorySpy, tokenGenerateSpy } = makeSut();
     await sut.auth("invalid_mail@mail.com", "valid_password");
     expect(tokenGenerateSpy.userId).toBe(loadUserByEmailRepositorySpy.user.id);
+  });
+
+  test("should return an accessToken if correct credencials are provided", async () => {
+    const { sut, tokenGenerateSpy } = makeSut();
+    const accessToken = await sut.auth(
+      "invalid_mail@mail.com",
+      "valid_password"
+    );
+    expect(accessToken).toBe(tokenGenerateSpy.accessToken);
+    expect(accessToken).toBeTruthy()
   });
 });

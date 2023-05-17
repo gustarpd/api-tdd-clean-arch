@@ -2,14 +2,23 @@ import { MissingParamError } from "../../utils/errors/missing-params-error";
 import { InvalidParamError } from "../../utils/errors/invalid-params-error";
 import { AuthUseCase } from './auth-usecase'
 
-const makeSut = () => {
+const makeEncrypter = () => {
   class EncypterSpy {
     async compare(password, hashedPassword) {
      this.password = password
      this.hashedPassword = hashedPassword
+
+     return this.isValid
     }
   }
+
   const encypterSpy = new EncypterSpy()
+  encypterSpy.isValid = true
+
+  return encypterSpy
+}
+
+const makeLoadUserByEmailRepositorySpy = () => {
   class LoadUserByEmailRepositorySpy {
     async load(email) {
       this.email = email
@@ -20,12 +29,28 @@ const makeSut = () => {
   loadUserByEmailRepositorySpy.user = {
     hashedpassword: 'hashed-password'
   }
-  const sut = new AuthUseCase(loadUserByEmailRepositorySpy, encypterSpy);
+
+  return loadUserByEmailRepositorySpy
+}
+
+const makeSut = () => {
+  const encrypterSpy = makeEncrypter() 
+  const loadUserByEmailRepositorySpy = makeLoadUserByEmailRepositorySpy()
+  class EncypterSpy {
+    async compare(password, hashedPassword) {
+     this.password = password
+     this.hashedPassword = hashedPassword
+
+     return this.isValid
+    }
+  }
+
+  const sut = new AuthUseCase(loadUserByEmailRepositorySpy, encrypterSpy);
 
   return {
     sut,
     loadUserByEmailRepositorySpy,
-    encypterSpy
+    encrypterSpy
   }
 }
 
@@ -68,15 +93,16 @@ describe("Auth use case", () => {
   });
 
   test("should returns null if LoadUserByEmailRepository returns null", async () => {
-    const { sut } = makeSut()
+    const { sut, encrypterSpy } = makeSut()
+    encrypterSpy.isValid = false
     const accessToken = await sut.auth("invalid_mail@mail.com", "invalid_password");
     expect(accessToken).toBeNull()
   });
 
   test("should call encrypter with correct values", async () => {
-    const { sut, loadUserByEmailRepositorySpy, encypterSpy } = makeSut()
+    const { sut, loadUserByEmailRepositorySpy, encrypterSpy } = makeSut()
     await sut.auth("invalid_mail@mail.com", "any_password");
-    expect(encypterSpy.password).toBe('any_password')
-    expect(encypterSpy.hashedpassword).toBe(loadUserByEmailRepositorySpy.user.password)
+    expect(encrypterSpy.password).toBe('any_password')
+    expect(encrypterSpy.hashedpassword).toBe(loadUserByEmailRepositorySpy.user.password)
   });
 });

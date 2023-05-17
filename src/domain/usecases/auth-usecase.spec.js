@@ -3,6 +3,13 @@ import { InvalidParamError } from "../../utils/errors/invalid-params-error";
 import { AuthUseCase } from './auth-usecase'
 
 const makeSut = () => {
+  class EncypterSpy {
+    async compare(password, hashedPassword) {
+     this.password = password
+     this.hashedPassword = hashedPassword
+    }
+  }
+  const encypterSpy = new EncypterSpy()
   class LoadUserByEmailRepositorySpy {
     async load(email) {
       this.email = email
@@ -10,12 +17,15 @@ const makeSut = () => {
     }
   }
   const loadUserByEmailRepositorySpy = new LoadUserByEmailRepositorySpy();
-  loadUserByEmailRepositorySpy.user = {}
-  const sut = new AuthUseCase(loadUserByEmailRepositorySpy);
+  loadUserByEmailRepositorySpy.user = {
+    hashedpassword: 'hashed-password'
+  }
+  const sut = new AuthUseCase(loadUserByEmailRepositorySpy, encypterSpy);
 
   return {
     sut,
-    loadUserByEmailRepositorySpy
+    loadUserByEmailRepositorySpy,
+    encypterSpy
   }
 }
 
@@ -61,5 +71,12 @@ describe("Auth use case", () => {
     const { sut } = makeSut()
     const accessToken = await sut.auth("invalid_mail@mail.com", "invalid_password");
     expect(accessToken).toBeNull()
+  });
+
+  test("should call encrypter with correct values", async () => {
+    const { sut, loadUserByEmailRepositorySpy, encypterSpy } = makeSut()
+    await sut.auth("invalid_mail@mail.com", "any_password");
+    expect(encypterSpy.password).toBe('any_password')
+    expect(encypterSpy.hashedpassword).toBe(loadUserByEmailRepositorySpy.user.password)
   });
 });

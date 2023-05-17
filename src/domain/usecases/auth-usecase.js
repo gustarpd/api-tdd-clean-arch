@@ -1,8 +1,9 @@
 import { MissingParamError } from "../../utils/errors/missing-params-error";
 
 export class AuthUseCase {
-  constructor(loadUserByEmailRepository) {
+  constructor(loadUserByEmailRepository, encripter) {
     this.loadUserByEmailRepository = loadUserByEmailRepository;
+    this.encripter = encripter 
   }
   async auth(email, password) {
     if (!email) {
@@ -11,12 +12,12 @@ export class AuthUseCase {
     if (!password) {
       throw new MissingParamError("password");
     }
-   
+
     const user = await this.loadUserByEmailRepository.load(email);
     if (!user) {
       return null;
     }
-
-    return null
+    await this.encripter.compare(password, user.password)
+    return null;
   }
 }

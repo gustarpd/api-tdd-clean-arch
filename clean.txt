@@ -1,0 +1,5 @@
+src -
+  -domain
+  -infra
+  -main
+  -presentation

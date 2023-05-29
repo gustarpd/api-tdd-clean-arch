@@ -1,8 +1,14 @@
 import { MissingParamError } from "../../utils/errors/missing-params-error";
 
 export class AuthUseCase {
-  constructor(loadUserByEmailRepository, encripter, tokenGenerator) {
+  constructor(
+    loadUserByEmailRepository,
+    encripter,
+    tokenGenerator,
+    updateAccessTokenRepositorySpy
+  ) {
     this.loadUserByEmailRepository = loadUserByEmailRepository;
+    this.updateAccessTokenRepositorySpy = updateAccessTokenRepositorySpy;
     this.tokenGenerator = tokenGenerator;
     this.encripter = encripter;
   }
@@ -17,6 +23,7 @@ export class AuthUseCase {
     const user = await this.loadUserByEmailRepository.load(email);
     if (user && this.encripter.compare(password, user.password)) {
       const access_token = await this.tokenGenerator.generate(user.id);
+      await this.updateAccessTokenRepositorySpy.update(user.id, access_token);
       return access_token;
     }
 

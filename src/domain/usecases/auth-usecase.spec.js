@@ -42,7 +42,7 @@ const makeTokenGenerator = () => {
 const makeTokenGeneratorWithError = () => {
   class TokenGenerateSpy {
     async generate() {
-      throw new Error()
+      throw new Error();
     }
   }
 
@@ -75,9 +75,20 @@ const makeLoadUserByEmailRepositoryWithError = () => {
   return new LoadUserByEmailRepositorySpy();
 };
 
+const makeUpdateAccessTokenRepository = () => {
+  class UpdateAccessTokenRepository {
+    async update(userId, access_token) {
+      (this.userId = userId), (this.accessToken = access_token);
+    }
+  }
+
+  return new UpdateAccessTokenRepository();
+};
+
 const makeSut = () => {
   const encrypterSpy = makeEncrypter();
   const loadUserByEmailRepositorySpy = makeLoadUserByEmailRepositorySpy();
+  const updateAccessTokenRepositorySpy = makeUpdateAccessTokenRepository();
   const tokenGenerateSpy = makeTokenGenerator();
   class EncypterSpy {
     async compare(password, hashedPassword) {
@@ -91,7 +102,8 @@ const makeSut = () => {
   const sut = new AuthUseCase(
     loadUserByEmailRepositorySpy,
     encrypterSpy,
-    tokenGenerateSpy
+    tokenGenerateSpy,
+    updateAccessTokenRepositorySpy
   );
 
   return {
@@ -99,6 +111,7 @@ const makeSut = () => {
     loadUserByEmailRepositorySpy,
     encrypterSpy,
     tokenGenerateSpy,
+    updateAccessTokenRepositorySpy,
   };
 };
 
@@ -243,5 +256,21 @@ describe("Auth use case", () => {
       const promise = sut.auth("any_mail@mail.com", "any_password");
       expect(promise).rejects.toThrow();
     }
+  });
+
+  test("should call updateAccessTokenRepository with correct values", async () => {
+    const {
+      sut,
+      loadUserByEmailRepositorySpy,
+      updateAccessTokenRepositorySpy,
+      tokenGenerateSpy,
+    } = makeSut();
+    await sut.auth("invalid_mail@mail.com", "valid_password");
+    expect(updateAccessTokenRepositorySpy.userId).toBe(
+      loadUserByEmailRepositorySpy.user.id
+    );
+    expect(updateAccessTokenRepositorySpy.accessToken).toBe(
+      tokenGenerateSpy.accessToken
+    );
   });
 });

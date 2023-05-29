@@ -114,7 +114,7 @@ describe("Auth use case", () => {
   test("should returns null if LoadUserByEmailRepository returns null", async () => {
     const { sut, encrypterSpy, loadUserByEmailRepositorySpy } = makeSut();
     encrypterSpy.isValid = false;
-    loadUserByEmailRepositorySpy.user = null
+    loadUserByEmailRepositorySpy.user = null;
     const accessToken = await sut.auth(
       "invalid_mail@mail.com",
       "invalid_password"
@@ -144,6 +144,51 @@ describe("Auth use case", () => {
       "valid_password"
     );
     expect(accessToken).toBe(tokenGenerateSpy.accessToken);
-    expect(accessToken).toBeTruthy()
+    expect(accessToken).toBeTruthy();
+  });
+
+  test("Should throw if no dependency is provided", async () => {
+    const loadUserByEmailRepository = makeLoadUserByEmailRepositorySpy()
+    const encrypter = makeEncrypter()
+    const suts = [].concat(
+      new AuthUseCase(),
+      new AuthUseCase({}),
+      new AuthUseCase({
+        loadUserByEmailRepository: {},
+      }),
+      new AuthUseCase({
+        loadUserByEmailRepository,
+        encrypterSpy: null,
+      }),
+      new AuthUseCase({
+        loadUserByEmailRepository,
+        encrypterSpy: {},
+      }),
+      new AuthUseCase({
+        loadUserByEmailRepository,
+        encrypter,
+        tokenGenerateSpy: null,
+      }),
+      new AuthUseCase({
+        loadUserByEmailRepository,
+        encrypter,
+        tokenGenerateSpy: {},
+      }),
+      new AuthUseCase({
+        loadUserByEmailRepository,
+        encrypter,
+        tokenGenerateSpy: null,
+      }),
+      new AuthUseCase({
+        loadUserByEmailRepository,
+        encrypter,
+        tokenGenerateSpy: makeTokenGenerator()
+      })
+    );
+    
+    for (const sut of suts) {
+      const promise = sut.auth("any_mail@mail.com", "any_password");
+      expect(promise).rejects.toThrow();
+    }
   });
 });

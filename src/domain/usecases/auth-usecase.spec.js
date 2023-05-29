@@ -192,6 +192,7 @@ describe("Auth use case", () => {
   test("Should throw if no dependency is provided", async () => {
     const loadUserByEmailRepository = makeLoadUserByEmailRepositorySpy();
     const encrypter = makeEncrypter();
+    const tokenGenerator = makeTokenGenerator()
     const suts = [].concat(
       new AuthUseCase(),
       new AuthUseCase({}),
@@ -225,6 +226,14 @@ describe("Auth use case", () => {
         loadUserByEmailRepository,
         encrypter,
         tokenGenerateSpy: makeTokenGenerator(),
+        UpdateAccessTokenRepository: null,
+      
+      }),
+      new AuthUseCase({
+        loadUserByEmailRepository,
+        encrypter,
+        tokenGenerateSpy: makeTokenGenerator(),
+        UpdateAccessTokenRepository: {},
       })
     );
 

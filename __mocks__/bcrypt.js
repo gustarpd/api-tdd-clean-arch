@@ -1,6 +1,10 @@
 export default {
   isValid: true,
-  async compare(value, hashed_value) {
+  value: '',
+  hashed_value: '',
+  async compare(value, hashed) {
+    this.value = value
+    this.hashed_value = hashed
     return this.isValid;
   },
 };

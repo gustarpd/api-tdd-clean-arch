@@ -6,9 +6,8 @@ class TokenGenerator {
     this.secret = secret;
   }
   async generate(id) {
-    if(!this.secret){
-        throw new MissingParamError('secret')
-    }
+    if(!this.secret) throw new MissingParamError('secret')
+    if(!id)  throw new MissingParamError('id')
     return JWT.sign(id, this.secret);
   }
 }
@@ -39,5 +38,10 @@ describe("Token Generator", () => {
     const sut = new TokenGenerator();
     const promise = sut.generate("any_id");
     expect(promise).rejects.toThrow(new MissingParamError('secret'));
+  });
+  test("Should throw if no id is provided", async () => {
+    const sut = makeSut();
+    const promise = sut.generate();
+    expect(promise).rejects.toThrow(new MissingParamError('id'));
   });
 });

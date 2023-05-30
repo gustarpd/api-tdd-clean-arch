@@ -1,10 +1,14 @@
 import JWT from "jsonwebtoken";
+import { MissingParamError } from "./errors/missing-params-error";
 
 class TokenGenerator {
   constructor(secret) {
     this.secret = secret;
   }
   async generate(id) {
+    if(!this.secret){
+        throw new MissingParamError('secret')
+    }
     return JWT.sign(id, this.secret);
   }
 }
@@ -30,5 +34,10 @@ describe("Token Generator", () => {
     await sut.generate("any_id");
     expect(JWT.id).toBe("any_id");
     expect(JWT.secret).toBe(sut.secret);
+  });
+  test("Should throw if no secret is provided", async () => {
+    const sut = new TokenGenerator();
+    const promise = sut.generate("any_id");
+    expect(promise).rejects.toThrow(new MissingParamError('secret'));
   });
 });

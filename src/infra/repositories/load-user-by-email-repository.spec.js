@@ -5,7 +5,7 @@ import { MissingParamError } from "../utils/errors/missing-params-error";
 let userModel;
 const helper = new MemoryServerMongo();
 
-class LoadUserByEmailRepository {
+export class LoadUserByEmailRepository {
   async load(email) {
     const user = (await helper.getCollection("users")).findOne({
       email,

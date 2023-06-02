@@ -13,16 +13,13 @@ export class MemoryServerMongo {
   }
 
   async disconnect() {
-    if (this.client) {
-      await this.client.close();
-    }
-    if (this.server) {
-      await this.server.stop();
-    }
+    await this.client.close()
+    this.client = null
+    this.db = null
   }
 
   async getCollection (name) {
-    if (!this.client ) {
+    if (!this.client || !this.client ) {
       await this.connect(this.uri)
     }
     return this.db.collection(name)

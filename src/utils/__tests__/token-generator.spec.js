@@ -1,6 +1,6 @@
 import JWT from "jsonwebtoken";
-import { TokenGenerator } from "../utils/token-generator";
-import { MissingParamError } from "./errors/missing-params-error";
+import { TokenGenerator } from "../token-generator";
+import { MissingParamError } from "../errors/missing-params-error";
 
 const makeSut = () => {
   return new TokenGenerator("secret");

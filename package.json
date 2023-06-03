@@ -5,7 +5,7 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watch --silent --noStackTrace",
+    "test": "jest --watch",
     "test:unit": "npm test -- --watchAll -c jest-unit-config.js",
     "test:integration": "npm test -- --watch -c jest-integration-config.js",
     "standard": "standard --fix",

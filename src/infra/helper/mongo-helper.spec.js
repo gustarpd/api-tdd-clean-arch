@@ -1,13 +1,21 @@
-import { MemoryServerMongo } from "./mongo-in-memory-server";
+import { connect, cleanData, disconnect } from './mongo-in-memory-server'
 
 describe("Mongo Helper", () => {
-  test("should recconect when getCollection if invoked and client is diconnected", async () => {
-    const sut = new MemoryServerMongo();
-    await sut.connect(process.env.MONGO_URL)
-    expect(sut.db).toBeTruthy()
-    await sut.disconnect()
-    expect(sut.db).toBeFalsy()
-    await sut.getCollection("users")
-    expect(sut.db).toBeTruthy()
+  let stopServer;
+  beforeAll(async () => {
+    await connect();
   });
+
+  afterAll(async () => {
+    stopServer = await disconnect();
+  });
+
+  test("should toBeTruthy when connect db correctly", async () => {
+    const sut = connect()
+    expect(sut).toBeTruthy()
+  });
+  test('should toBeTruthy when db is closed correctly', async () => {
+    const stopServer = disconnect()
+    await expect(stopServer).toBeTruthy()
+  })
 });

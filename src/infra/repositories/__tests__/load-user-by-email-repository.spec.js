@@ -1,7 +1,7 @@
-import { connect, cleanData, disconnect } from '../helper/mongo-in-memory-server'
-import { User } from '../../infra/db/schemas/Users'
-import { LoadUserByEmailRepository } from './load-user-by-email-repository';
-import { MissingParamError } from '../../utils/errors/missing-params-error';
+import { connect, cleanData, disconnect } from '../../helper/mongo-in-memory-server'
+import { User } from '../../db/schemas/Users'
+import { LoadUserByEmailRepository } from '../load-user-by-email-repository';
+import { MissingParamError } from '../../../utils/errors/missing-params-error';
 
 const makeSut = () => {
   const sut = new LoadUserByEmailRepository();

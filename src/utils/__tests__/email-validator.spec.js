@@ -1,5 +1,5 @@
-import { EmailValidator } from "./email-validator";
-import { MissingParamError } from "./errors/missing-params-error";
+import { EmailValidator } from "../email-validator";
+import { MissingParamError } from "../errors/missing-params-error";
 
 const makeSut = () => {
   return new EmailValidator()

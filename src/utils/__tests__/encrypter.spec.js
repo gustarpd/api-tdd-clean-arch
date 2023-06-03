@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
-import { Encrypter } from "./encrypter";
-import { MissingParamError } from "./errors/missing-params-error";
+import { Encrypter } from "../encrypter";
+import { MissingParamError } from "../errors/missing-params-error";
 
 const makeSut = () => {
   return new Encrypter();

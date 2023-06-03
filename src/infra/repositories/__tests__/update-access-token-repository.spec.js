@@ -1,7 +1,7 @@
-import { MissingParamError } from "../../utils/errors/missing-params-error";
-import { User } from "../db/schemas/Users";
-import { connect, disconnect } from "../helper/mongo-in-memory-server";
-import { UpdateAccessTokenRepository } from "./update-access-token-repository";
+import { MissingParamError } from "../../../utils/errors/missing-params-error";
+import { User } from "../../db/schemas/Users";
+import { connect, disconnect } from "../../helper/mongo-in-memory-server";
+import { UpdateAccessTokenRepository } from "../update-access-token-repository";
 
 const makeSut = () => {
   const updateAccessTokenRepository = new UpdateAccessTokenRepository();

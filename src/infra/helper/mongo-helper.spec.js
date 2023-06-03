@@ -1,4 +1,5 @@
 import { connect, cleanData, disconnect } from './mongo-in-memory-server'
+import mongoose from 'mongoose';
 
 describe("Mongo Helper", () => {
   let stopServer;

@@ -2,13 +2,6 @@ import { connect, cleanData, disconnect } from '../helper/mongo-in-memory-server
 import { User } from '../../infra/db/schemas/Users'
 import { LoadUserByEmailRepository } from './load-user-by-email-repository';
 
-// export class LoadUserByEmailRepository {
-//   async load(email) {
-//     const user = await User.findOne({ email })
-//     return user;
-//   }
-// }
-
 const makeSut = () => {
   const sut = new LoadUserByEmailRepository();
   return {

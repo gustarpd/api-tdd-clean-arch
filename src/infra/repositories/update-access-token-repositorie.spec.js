@@ -1,18 +1,15 @@
-import { MemoryServerMongo } from "../helper/mongo-in-memory-server";
-
-let helper = new MemoryServerMongo();
+import { User } from "../db/schemas/Users";
+import { connect, disconnect } from "../helper/mongo-in-memory-server";
 
 class UpdateAccessTokenRepository {
   async update(userId, accessToken) {
-    await (
-      await helper.getCollection("users")
-    ).updateOne(
+    await User.updateOne(
       {
         _id: userId,
       },
       {
         $set: {
-          accessToken,
+           accessToken
         },
       }
     );
@@ -21,32 +18,31 @@ class UpdateAccessTokenRepository {
 
 describe("UpdateAccessToken Repository", () => {
   beforeAll(async () => {
-    helper.connect();
+    await connect();
   });
 
   afterAll(async () => {
-    helper.disconnect();
+    await disconnect();
   });
 
   beforeEach(async () => {
-    (await helper.getCollection("users")).deleteMany({});
+    User.deleteMany({});
   });
 
   test("should update the user with the given accessToken", async () => {
-    const userModel = await helper.getCollection("users");
     const sut = new UpdateAccessTokenRepository();
-    const fakeUser = await (await helper.getCollection("users")).insertOne({
+    const fakeUser = await User.create({
       email: "valid_email@mail.com",
       name: "any_name",
       age: 50,
       state: "any_state",
       password: "hashed_password",
     });
-    await sut.update(fakeUser._id, "valid_token");
-    const updatedFakeUser =  await (await helper.getCollection("users")).findOne({
+    const set = await sut.update(fakeUser._id, "valid_token");
+    const updatedFakeUser = await User.findOne({
       _id: fakeUser._id,
     });
-    console.log(updatedFakeUser);
+    console.log(set);
     expect(updatedFakeUser.accessToken).toBe("valid_token");
   });
 });

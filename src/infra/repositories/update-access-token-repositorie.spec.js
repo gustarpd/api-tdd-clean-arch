@@ -9,7 +9,7 @@ class UpdateAccessTokenRepository {
       },
       {
         $set: {
-           accessToken
+          accessToken,
         },
       }
     );
@@ -38,11 +38,10 @@ describe("UpdateAccessToken Repository", () => {
       state: "any_state",
       password: "hashed_password",
     });
-    const set = await sut.update(fakeUser._id, "valid_token");
+    await sut.update(fakeUser._id, "valid_token");
     const updatedFakeUser = await User.findOne({
       _id: fakeUser._id,
     });
-    console.log(set);
     expect(updatedFakeUser.accessToken).toBe("valid_token");
   });
 });

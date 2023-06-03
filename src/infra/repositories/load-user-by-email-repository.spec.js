@@ -1,6 +1,7 @@
 import { connect, cleanData, disconnect } from '../helper/mongo-in-memory-server'
 import { User } from '../../infra/db/schemas/Users'
 import { LoadUserByEmailRepository } from './load-user-by-email-repository';
+import { MissingParamError } from '../../utils/errors/missing-params-error';
 
 const makeSut = () => {
   const sut = new LoadUserByEmailRepository();
@@ -38,4 +39,9 @@ describe("LoadUserByEmail Repository", () => {
     expect(user.email).toBe("valid_mail@gmail.com");
   });
 
+  test('Should throw if no email is provided', async () => {
+    const { sut } = makeSut()
+    const promise = sut.load()
+    expect(promise).rejects.toThrow(new MissingParamError('email'))
+  })
 });

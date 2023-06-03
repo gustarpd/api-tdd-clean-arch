@@ -1,29 +1,7 @@
 import { MissingParamError } from "../../utils/errors/missing-params-error";
 import { User } from "../db/schemas/Users";
 import { connect, disconnect } from "../helper/mongo-in-memory-server";
-
-class UpdateAccessTokenRepository {
-  async update(userId, accessToken) {
-    if(!userId) {
-      throw new MissingParamError('userId')
-    }
-
-    if (!accessToken) {
-      throw new MissingParamError("AccessToken");
-    }
-
-    await User.updateOne(
-      {
-        _id: userId,
-      },
-      {
-        $set: {
-          accessToken,
-        },
-      }
-    );
-  }
-}
+import { UpdateAccessTokenRepository } from "./update-access-token-repository";
 
 const makeSut = () => {
   const updateAccessTokenRepository = new UpdateAccessTokenRepository();

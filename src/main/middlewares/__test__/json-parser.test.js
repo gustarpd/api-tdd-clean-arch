@@ -7,7 +7,6 @@ describe("CORS middleware", () => {
       res.json(req.body);
     });
 
-    
    request(app)
     .post('/test_json_parser')
     .send({ name: 'any_name' })

@@ -7,7 +7,7 @@
   "scripts": {
     "start": "nodemon src/main/index.js",
     "test": "jest --watch",
-    "test:unit": "npm test -- --watchAll -c jest-unit-config.js",
+    "test:unit": "npm test -- --watchAll --runInBand --detectOpenHandles -c jest-unit-config.js",
     "test:integration": "npm test -- --watch -c jest-integration-config.js",
     "standard": "standard --fix",
     "prepare": "husky install",

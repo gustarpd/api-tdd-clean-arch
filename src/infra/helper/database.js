@@ -1,7 +1,8 @@
-import { connect as mongooseConnect, connection } from 'mongoose';
+import pkg from 'mongoose';
+const { connect: mongooseConnect, connection } = pkg;
 
-export const connect = async ()=> {
-  await mongooseConnect(process.env.DATABASE_URL);
+export const connect = async (uri)=> {
+  await mongooseConnect(uri);
 };
 
 export const close = () => connection.close();

@@ -40,6 +40,7 @@
     "mongodb": "^5.5.0",
     "mongoose": "^7.2.2",
     "nodemon": "^2.0.22",
+    "supertest": "^6.3.3",
     "validator": "^13.9.0"
   }
 }

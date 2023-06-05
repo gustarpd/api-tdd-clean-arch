@@ -1,3 +1,3 @@
-const config = require('./jest.config.cjs');
+import config from './jest.config.js'
 config.testMatch = ['**/*.test.js']
-module.exports = config
+export default config

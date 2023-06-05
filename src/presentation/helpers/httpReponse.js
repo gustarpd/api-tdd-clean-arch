@@ -1,5 +1,5 @@
-import { UnauthorizeError } from "./errors/unauthorize-error";
-import { ServerError } from "./errors/server-erro";
+import { UnauthorizeError } from "./errors/unauthorize-error.js";
+import { ServerError } from "./errors/server-erro.js";
 export class HttpResponse {
   static badRequest(error) {
     return {

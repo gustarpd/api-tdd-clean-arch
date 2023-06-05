@@ -1,5 +1,5 @@
 import { LoginRouter } from "./login-router.js";
-import { MissingParamError } from '../../utils/errors/missing-params-error.js'
+import { MissingParamError } from "../../utils/errors/missing-params-error.js";
 import { UnauthorizeError } from "../helpers/errors/unauthorize-error.js";
 import { ServerError } from "../helpers/errors/server-erro.js";
 
@@ -8,7 +8,10 @@ const makeSut = () => {
   const authUseCaseSpy = makeAuthUseCase();
   const emailValidatorSpy = makeEmailValidator();
   authUseCaseSpy.accessToken = "valid_token";
-  const sut = new LoginRouter(authUseCaseSpy, emailValidatorSpy);
+  const sut = new LoginRouter({
+    authUseCase: authUseCaseSpy,
+    emailValidator: emailValidatorSpy,
+  });
   return {
     sut,
     authUseCaseSpy,

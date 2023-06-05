@@ -1,4 +1,4 @@
-import { MissingParamError } from "./errors/missing-params-error";
+import { MissingParamError } from "./errors/missing-params-error.js";
 
 export class EmailValidator {
   isValid(email) {

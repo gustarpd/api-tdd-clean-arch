@@ -1,9 +1,9 @@
-import { HttpResponse } from "../helpers/httpReponse";
-import { MissingParamError } from "../../utils/errors/missing-params-error";
-import { InvalidParamError } from '../../utils/errors/invalid-params-error'
+import { HttpResponse } from "../helpers/httpReponse.js";
+import { MissingParamError } from "../../utils/errors/missing-params-error.js";
+import { InvalidParamError } from '../../utils/errors/invalid-params-error.js'
 
 export class LoginRouter {
-  constructor(authUseCase, emailValidator) {
+  constructor({ authUseCase, emailValidator } = {}) {
     this.authUseCase = authUseCase;
     this.emailValidator = emailValidator
   }

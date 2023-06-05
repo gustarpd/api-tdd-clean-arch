@@ -2,6 +2,7 @@ import { LoginRouter } from "./login-router.js";
 import { MissingParamError } from "../../utils/errors/missing-params-error.js";
 import { UnauthorizeError } from "../helpers/errors/unauthorize-error.js";
 import { ServerError } from "../helpers/errors/server-erro.js";
+import { AuthUseCase } from '../../domain/usecases/auth-usecase.js'
 
 const makeSut = () => {
   // classe de mock para capturar valores e fazer comparações
@@ -240,5 +241,30 @@ describe("Login Router", () => {
     };
     await sut.route(httpRequest);
     expect(emailValidatorSpy.email).toBe(httpRequest.body.email);
+  });
+
+  test("Should throw if no dependency is provided", async () => {
+    const suts = [].concat(
+      new LoginRouter(),
+      new LoginRouter({}),
+      new LoginRouter({
+        loadUserByEmailRepository: makeAuthUseCaseWithError()
+      }),
+      new LoginRouter({
+        loadUserByEmailRepository: makeAuthUseCase(),
+        emailValidator: makeAuthUseCaseWithError()
+      })
+    );
+    for (const sut of suts) {
+      const httpRequest = {
+        body: {
+          email: "any_email.com",
+          password: "any_password",
+        },
+      };
+      const httpResponse = await sut.route(httpRequest);
+      expect(httpResponse.statusCode).toBe(500);
+      expect(httpResponse.body).toEqual(new ServerError());
+    }
   });
 });

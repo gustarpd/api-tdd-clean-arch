@@ -5,4 +5,5 @@ import env from './config/env.js'
 await connect(env.mongoUrl).then(() => {
   app.listen(5858, () => console.log(`Server running`));
 })
+
 .catch(console.error)

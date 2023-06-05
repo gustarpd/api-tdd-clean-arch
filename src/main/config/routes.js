@@ -1,8 +1,11 @@
 import { Router } from 'express';
-import fb from 'fast-glob'
+import fg from 'fast-glob';
 
 export default (app) => {
-  app.use('/api', Router)
-  fb.sync('**/src/main/routes/**.js').forEach(file => console.log(file))
-  // import('../routes/login-routes')(Router)
+  const router = Router();
+  app.use('/api', router);
+  fg.sync('**/src/main/routes/**routes.js').forEach(async (file) => {
+    const { default: route } = await import(`../../../${file}`);
+    route(router);
+  });
 };

@@ -1,5 +1,5 @@
 import JWT from 'jsonwebtoken'
-import { MissingParamError } from './errors/missing-params-error';
+import { MissingParamError } from './errors/missing-params-error.js';
 export class TokenGenerator {
   constructor(secret) {
     this.secret = secret;

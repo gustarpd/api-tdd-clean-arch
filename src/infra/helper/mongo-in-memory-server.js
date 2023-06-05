@@ -9,7 +9,6 @@ export const connect = async ()=> {
   mongoose.set('strictQuery', false);
   await mongoose.connect(uri);
 };
-
 export const disconnect = async () => {
   await mongoose.disconnect();
   await mongoDb.stop();

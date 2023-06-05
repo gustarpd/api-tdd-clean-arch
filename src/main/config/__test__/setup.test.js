@@ -1,5 +1,5 @@
 import request from "supertest";
-import app from "./app.js";
+import app from "../app.js";
 
 describe("App setup", () => {
   test("should disable x-powered-by", async () => {

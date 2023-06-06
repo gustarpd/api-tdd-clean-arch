@@ -29,7 +29,8 @@ export class LoginRouter {
         return HttpResponse.badRequest(new MissingParamError('password'));
       }
 
-      const accessToken = this.authUseCase.auth(email, password);
+      const accessToken = await this.authUseCase.auth(email, password);
+      console.log(accessToken)
       if (!accessToken) return HttpResponse.unauthorizeError();
       return HttpResponse.ok({ accessToken });
     } catch (error) {

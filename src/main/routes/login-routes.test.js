@@ -20,10 +20,11 @@ describe("Login Routes", () => {
   });
 
   test("should return 200 when valid credencials are provided", async () => {
-    await User.create({
+   const user = await User.create({
       email: "valid_email@mail.com",
       password: "hashed_password",
     });
+    console.log(user)
    await testRequest
       .post("/api/login")
       .send({

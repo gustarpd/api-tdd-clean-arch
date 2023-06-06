@@ -74,7 +74,7 @@ describe("Login Router", () => {
     };
     const httpResponse = await sut.route(httpRequest);
     expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual(new MissingParamError("email"));
+    expect(httpResponse.body.error).toEqual(new MissingParamError("email").message);
   });
 
   test("Should return 400 is no password provider", async () => {
@@ -86,7 +86,7 @@ describe("Login Router", () => {
     };
     const httpResponse = await sut.route(httpRequest);
     expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual(new MissingParamError("password"));
+    expect(httpResponse.body.error).toEqual(new MissingParamError("password").message);
   });
   test("Should return 500 if no httpRequest is provider", async () => {
     const { sut } = makeSut();
@@ -125,7 +125,7 @@ describe("Login Router", () => {
     const httpReponse = await sut.route(httpRequest);
 
     expect(httpReponse.statusCode).toBe(401);
-    expect(httpReponse.body).toEqual(new UnauthorizeError("password"));
+    expect(httpReponse.body.error).toEqual(new UnauthorizeError("password").message);
   });
 
   test("Should return 500 if no Authentication is provider", async () => {

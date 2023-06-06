@@ -4,7 +4,9 @@ export class HttpResponse {
   static badRequest(error) {
     return {
       statusCode: 400,
-      body: error
+      body: {
+        error: error.message
+      }
     };
   }
 
@@ -18,7 +20,7 @@ export class HttpResponse {
   static unauthorizeError() {
     return {
       statusCode: 401,
-      body: new UnauthorizeError(),
+      body: {error: new UnauthorizeError().message },
     };
   }
 

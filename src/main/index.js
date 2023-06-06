@@ -2,8 +2,9 @@ import { connect } from "../infra/helper/database.js";
 import app from "./config/app.js";
 import env from './config/env.js'
 
-await connect(env.mongoUrl).then(() => {
-  app.listen(5858, () => console.log(`Server running`));
+connect(env.mongoUrl).then(() => {
+  app.listen(env.port, () => console.log(`Server running at localhost://${env.port}`));
 })
 
 .catch(console.error)
+

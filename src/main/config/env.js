@@ -3,5 +3,6 @@ dotenv.config()
 
 export default {
   mongoUrl: process.env.MONGO_URI,
-  tokenSecret: process.env.TOKEN_SECRET || 'secret'
+  tokenSecret: process.env.TOKEN_SECRET || 'secret',
+  port: process.env.PORT || 5858
 };

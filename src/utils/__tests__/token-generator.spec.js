@@ -2,6 +2,15 @@ import JWT from "jsonwebtoken";
 import { TokenGenerator } from "../token-generator";
 import { MissingParamError } from "../errors/missing-params-error";
 
+jest.mock('jsonwebtoken', () => ({
+  token: "any_token",
+  sign(id, secret) {
+    this.id = id,
+    this.secret = secret
+    return this.token;
+  },
+}))
+
 const makeSut = () => {
   return new TokenGenerator("secret");
 };

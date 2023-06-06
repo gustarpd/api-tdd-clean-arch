@@ -8,7 +8,7 @@
     "start": "nodemon src/main/index.js",
     "test": "jest --watch",
     "test:unit": "npm test -- --watchAll --runInBand --detectOpenHandles -c jest-unit-config.js",
-    "test:integration": "npm test -- --watch -c jest-integration-config.js",
+    "test:integration": "npm test -- --watch --detectOpenHandles -c jest-integration-config.js",
     "standard": "standard --fix",
     "prepare": "husky install",
     "test:ci": "jest --coverage"

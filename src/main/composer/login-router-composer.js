@@ -5,20 +5,21 @@ import { LoadUserByEmailRepository } from "../../infra/repositories/load-user-by
 import { UpdateAccessTokenRepository } from "../../infra/repositories/update-access-token-repository.js";
 import { Encrypter } from "../../utils/encrypter.js";
 import { TokenGenerator } from "../../utils/token-generator.js";
-import env from '../config/env.js'
+import env from "../config/env.js";
 
-
-const loadUserByEmailRepository = new LoadUserByEmailRepository();
-const updateAccessTokenRepository = new UpdateAccessTokenRepository();
-const encripter = new Encrypter();
-const tokenGenerator = new TokenGenerator(env.tokenSecret);
-const authUseCase = new AuthUseCase(
-  loadUserByEmailRepository,
-  encripter,
-  tokenGenerator,
-  updateAccessTokenRepository
-);
-const emailValidator = new EmailValidator();
-const loginRouter = new LoginRouter({ authUseCase, emailValidator });
-
-export default loginRouter
+export class LoginRouterCompose {
+  static compose() {
+    const loadUserByEmailRepository = new LoadUserByEmailRepository();
+    const updateAccessTokenRepository = new UpdateAccessTokenRepository();
+    const encripter = new Encrypter();
+    const tokenGenerator = new TokenGenerator(env.tokenSecret);
+    const authUseCase = new AuthUseCase(
+      loadUserByEmailRepository,
+      encripter,
+      tokenGenerator,
+      updateAccessTokenRepository
+    );
+    const emailValidator = new EmailValidator();
+    return new LoginRouter({ authUseCase, emailValidator });
+  }
+}

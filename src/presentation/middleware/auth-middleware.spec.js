@@ -5,15 +5,14 @@ const makeLoadAccountByToken = () => {
   class LoadAccountByToken {
     async load(accessToken) {
       this.accessToken = accessToken;
-      this.user
+      this.user = {
+        id: "any_id",
+      };
       return this.user;
     }
   }
 
   const makeLoadAccountByTokenSpy = new LoadAccountByToken();
-  makeLoadAccountByTokenSpy.user = {
-    id: 'any_id',
-  };
   return makeLoadAccountByTokenSpy;
 };
 
@@ -22,7 +21,7 @@ const makeLoadAccountByTokenWithInvalidToken = () => {
     async load(accessToken) {
       this.accessToken = accessToken;
       if (!accessToken) {
-        throw new HttpResponse.unauthorizeError();
+        throw new Error();
       }
       return this.user;
     }
@@ -41,7 +40,7 @@ class AuthMiddleware {
   async handle(request) {
     const accessToken = request;
     if (!accessToken) {
-      throw HttpResponse.unauthorizeError()
+      throw new Error()
     }
     const account = await this.loadAccountByToken.load(accessToken);
     if (account) {
@@ -52,13 +51,13 @@ class AuthMiddleware {
 
 const makeSut = () => {
   const loadAccountByToken = makeLoadAccountByToken();
-  const loadUserWithError = makeLoadAccountByTokenWithInvalidToken()
+  const loadUserWithError = makeLoadAccountByTokenWithInvalidToken();
   const authMiddleware = new AuthMiddleware(loadAccountByToken);
 
   return {
     authMiddleware,
     loadAccountByToken,
-    loadUserWithError
+    loadUserWithError,
   };
 };
 
@@ -70,9 +69,18 @@ describe("Auth Middleware", () => {
     expect(loadAccountByToken.accessToken).toBe(validToken);
   });
   test("should return valid credencials if accessToken are no provided", async () => {
-    const { authMiddleware } = makeSut()
-    const auth = await authMiddleware.handle('any_token')
-    console.log(auth)
-    await expect(auth.statusCode).toBe(200)
-  })
+    const { authMiddleware } = makeSut();
+    const auth = await authMiddleware.handle("any_valid_token");
+    const authResponse = { statusCode: 200, body: { accountId: "any_id" } };
+    await expect(auth).toEqual(authResponse);
+  });
+  test("should throw an error if token is not provided", async () => {
+    const { authMiddleware } = makeSut();
+    const auth = authMiddleware.handle()
+    await expect(auth).rejects.toThrow();
+  });
+  test("should throw an error if token is not provided", async () => {
+    const { loadUserWithError } = makeSut();
+    await expect(loadUserWithError.load()).rejects.toThrow();
+  });
 });

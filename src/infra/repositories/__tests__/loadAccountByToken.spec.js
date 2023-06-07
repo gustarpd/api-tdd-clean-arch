@@ -1,20 +1,6 @@
 import { connect, disconnect } from "../../helper/mongo-in-memory-server";
 import { User } from "../../db/schemas/Users";
-
-class LoadUserByTokenlRepository {
-  async loadByToken(accessToken) {
-    if (!accessToken) {
-      throw new Error();
-    }
-
-    const load = User.findOne({
-      accessToken,
-    });
-
-    return load;
-  }
-}
-
+import { LoadUserByTokenlRepository } from '../loadAccountByToken'
 const makeSut = () => {
   const sut = new LoadUserByTokenlRepository();
   return {

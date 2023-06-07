@@ -1,4 +1,4 @@
-import { connect } from "../infra/helper/database.js";
+import { connect } from "../infra/db/database.js";
 import app from "./config/app.js";
 import env from './config/env.js'
 

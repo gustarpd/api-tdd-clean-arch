@@ -1,10 +1,11 @@
 import JWT from 'jsonwebtoken'
 import { MissingParamError } from './errors/missing-params-error.js';
-export class TokenGenerator {
+
+export class JtwAdapter {
   constructor(secret) {
     this.secret = secret;
   }
-  async generate(id) {
+  async encrypt(id) {
     if (!this.secret){ 
       throw new MissingParamError("secret");
     }
@@ -12,5 +13,9 @@ export class TokenGenerator {
       throw new MissingParamError("id");
     }
     return JWT.sign(id, this.secret);
+  }
+
+  async decrypt(hash) {
+    return JWT.verify(hash, this.secret)
   }
 }

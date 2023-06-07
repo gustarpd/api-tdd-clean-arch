@@ -1,4 +1,3 @@
-import { UnauthorizeError } from "../helpers/errors/unauthorize-error";
 import { HttpResponse } from "../helpers/httpReponse";
 
 const makeLoadAccountByToken = () => {

@@ -16,14 +16,14 @@ class Decrypt {
 const makeDbLoadAccountBytTokenSpy = () => {
   class DbLoadAccountByTokenRepository {
     async load(access_token) {
-      if(access_token) {
+      if (access_token) {
         return {
-            name: "any_name",
-            id: "any_id",
-          };
+          name: "any_name",
+          id: "any_id",
+        };
       }
 
-      return HttpResponse.unauthorizeError()
+      return HttpResponse.unauthorizeError();
     }
   }
   return new DbLoadAccountByTokenRepository();
@@ -51,7 +51,7 @@ export class DbLoadAccountByToken {
       return load;
     }
 
-    return null
+    return null;
   }
 }
 
@@ -77,8 +77,8 @@ describe("DBLoadAccoutByToken", () => {
   test("should thows if user is no authorized are no provided", async () => {
     const { sut } = makeSut();
     const load = await sut.loadUser();
-    expect(load.statusCode).toBe(401)
-    expect(load.body.error).toBe("unauthorized")
-    expect(load).toEqual(HttpResponse.unauthorizeError())
+    expect(load.statusCode).toBe(401);
+    expect(load.body.error).toBe("unauthorized");
+    expect(load).toEqual(HttpResponse.unauthorizeError());
   });
 });

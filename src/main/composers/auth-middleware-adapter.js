@@ -1,9 +1,8 @@
 import { AuthMiddleware } from '../../presentation/middleware/auth-middleware'
-import { LoadUserByTokenlRepository } from '../../infra/repositories/loadAccountByToken'
 
-export class LoginRouterCompose {
+export class AuthMiddlewareRouterCompose {
   static compose() {
-    const loadAccountByToken = new LoadUserByTokenlRepository()
-    return new AuthMiddleware({ authUseCase, emailValidator });
+    const loadAccountByToken = new LoadUserByTokenlRepositor()
+    return new AuthMiddleware(loadAccountByToken);
   }
 }

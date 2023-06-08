@@ -11,7 +11,7 @@ export class AuthMiddleware {
       if (!accessToken) {
         throw HttpResponse.unauthorizeError();
       }
-      const account = await this.loadAccountByToken.load(accessToken);
+      const account = await this.loadAccountByToken.loadUser(accessToken);
       if (account) {
         return HttpResponse.ok({ accountId: account.id });
       }

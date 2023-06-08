@@ -1,84 +1,96 @@
-import { HttpResponse } from "../../../presentation/helpers/httpReponse";
+import { DbLoadAccountByToken } from "../../usecases/dbload-account-by-token";
 
-class Decrypt {
-  async decrypt(accessToken) {
-    if (accessToken) {
-      return {
-        id: "any_id",
-        name: "any_name",
-      };
-    }
-
-    return HttpResponse.unauthorizeError();
-  }
-}
-
-const makeDbLoadAccountBytTokenSpy = () => {
+const makeDbLoadAccountByTokenRepository = () => {
   class DbLoadAccountByTokenRepository {
-    async load(access_token) {
-      if (access_token) {
-        return {
-          name: "any_name",
-          id: "any_id",
-        };
-      }
-
-      return HttpResponse.unauthorizeError();
+    async load(accessToken) {
+      this.accessToken = accessToken;
+      return this.user;
     }
   }
-  return new DbLoadAccountByTokenRepository();
+
+  const dbLoadAccountByTokenRepository = new DbLoadAccountByTokenRepository();
+  dbLoadAccountByTokenRepository.user = {
+    name: "any_name",
+    email: "any_email",
+  };
+  return dbLoadAccountByTokenRepository;
 };
 
-export class DbLoadAccountByToken {
-  constructor(DbLoadAccountByTokenRepository, decryper) {
-    this.DbLoadAccountByTokenRepository = DbLoadAccountByTokenRepository;
-    this.decryper = decryper;
+const makeTokenDecrypter = () => {
+  class TokenDecrypter {
+    async decrypter(hash) {
+      this.hash = hash;
+      return this.hashUndefined;
+    }
   }
 
-  async loadUser(accessToken) {
-    try {
-      if (accessToken) {
-        const decryper = await this.decryper.decrypt(accessToken);
-        return decryper;
-      }
-    } catch (error) {
-      return null;
-    }
-
-    const load = await this.DbLoadAccountByTokenRepository.load(accessToken);
-
-    if (load) {
-      return load;
-    }
-
-    return null;
-  }
-}
+  const tokenDecrypter = new TokenDecrypter();
+  return tokenDecrypter;
+};
 
 const makeSut = () => {
-  const loadUserByTokenlRepository = makeDbLoadAccountBytTokenSpy();
-  const decryper = new Decrypt();
-  const sut = new DbLoadAccountByToken(loadUserByTokenlRepository, decryper);
-
+  const dbLoadAccountByTokenRepository = makeDbLoadAccountByTokenRepository();
+  const tokenDecrypter = makeTokenDecrypter();
+  const dbLoadAccountByToken = new DbLoadAccountByToken(
+    dbLoadAccountByTokenRepository,
+    tokenDecrypter
+  );
   return {
-    sut,
-    loadUserByTokenlRepository,
+    dbLoadAccountByToken,
+    tokenDecrypter,
+    dbLoadAccountByTokenRepository,
   };
 };
 
-describe("DBLoadAccoutByToken", () => {
-  test("should decrypter token and return a user valid", async () => {
-    const { sut } = makeSut();
-    const user = { id: "any_id", name: "any_name" };
-    const load = await sut.loadUser("any_token");
-    expect(load).toEqual(user);
-  });
+describe("DbLoadAccountByToken", () => {
+  describe("loadUser", () => {
+    test("should return the decrypted user if access token is provided and valid", async () => {
+      const validAccessToken = "valid-access-token";
+      const decryptedUser = { id: 1, name: "John Doe" };
+      const decryperMock = {
+        decrypt: jest.fn().mockResolvedValue(decryptedUser),
+      };
+      const dbLoadAccountByTokenRepositoryMock = {
+        load: jest.fn(),
+      };
+      const dbLoadAccountByToken = new DbLoadAccountByToken(
+        dbLoadAccountByTokenRepositoryMock,
+        decryperMock
+      );
+      const result = await dbLoadAccountByToken.loadUser(validAccessToken);
+      expect(decryperMock.decrypt).toHaveBeenCalledWith(validAccessToken);
+      expect(result).toEqual(decryptedUser);
+    });
 
-  test("should thows if user is no authorized are no provided", async () => {
-    const { sut } = makeSut();
-    const load = await sut.loadUser();
-    expect(load.statusCode).toBe(401);
-    expect(load.body.error).toBe("unauthorized");
-    expect(load).toEqual(HttpResponse.unauthorizeError());
+    test("should return null if access token is not provided", async () => {
+      const dbLoadAccountByToken = new DbLoadAccountByToken();
+      const result = await dbLoadAccountByToken.loadUser();
+      expect(result).toBeNull();
+    });
+
+    it("should return null if an error occurs during decryption", async () => {
+      const invalidAccessToken = "invalid-access-token";
+      const decryptionError = new Error("Decryption error");
+      const decryperMock = {
+        decrypt: jest.fn().mockRejectedValue(decryptionError),
+      };
+      const dbLoadAccountByToken = new DbLoadAccountByToken(null, decryperMock);
+      const result = await dbLoadAccountByToken.loadUser(invalidAccessToken);
+      expect(decryperMock.decrypt).toHaveBeenCalledWith(invalidAccessToken);
+      expect(result).toBeNull();
+    });
+
+    test("should return null if access token is provided but no user is found in the repository", async () => {
+      const validAccessToken = "valid-access-token";
+      const dbLoadAccountByTokenRepositoryMock = {
+        load: jest.fn().mockResolvedValue(null),
+      };
+      const dbLoadAccountByToken = new DbLoadAccountByToken(
+        dbLoadAccountByTokenRepositoryMock,
+        null
+      );
+      const result = await dbLoadAccountByToken.loadUser(validAccessToken);
+      expect(result).toBeNull();
+    });
   });
 });

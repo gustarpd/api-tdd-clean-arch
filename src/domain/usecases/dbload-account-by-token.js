@@ -13,13 +13,12 @@ export class DbLoadAccountByToken {
     } catch (error) {
       return null;
     }
-
-    const load = await this.DbLoadAccountByTokenRepository.load(accessToken);
-
-    if (load) {
-      return load;
+    if (accessToken) {
+      const user = await this.DbLoadAccountByTokenRepository.load(accessToken);
+      if (user) {
+        return user;
+      }
     }
-
     return null;
   }
 }

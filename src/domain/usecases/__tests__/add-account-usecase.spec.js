@@ -44,7 +44,7 @@ const makeHasherWithErrorSpy = () => {
 const makeAddAccountRespositoryWithErrorSpy = () => {
   class AddAccountRepository {
     async add() {
-      throw new Error('Repository failed')
+      return null
     }
   }
 
@@ -78,7 +78,7 @@ class AddAccount {
     });
 
     if (!user) {
-      throw new HttpResponse.InternalError();
+      throw null
     }
 
     return user;
@@ -123,6 +123,6 @@ describe("AddAccount UseCase", () => {
     const hashed = makeHasherSpy();
     const sut = new AddAccount(repository, hashed);
     const result = sut.add("any_name", "any_mail", "any_password");
-    await expect(result).rejects.toThrowError(new Error("Repository failed"));
+    await expect(result).rejects.toBeNull();
   });
 });

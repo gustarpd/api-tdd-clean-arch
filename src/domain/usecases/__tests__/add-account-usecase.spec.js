@@ -1,6 +1,6 @@
 import e from "express";
 import { MissingParamError } from "../../../utils/errors/missing-params-error";
-import { HttpResponse } from '../../../presentation/helpers/httpReponse'
+import { HttpResponse } from "../../../presentation/helpers/httpReponse";
 
 const makeAddAccountRespositorySpy = () => {
   class AddAccountRepository {
@@ -34,11 +34,27 @@ const makeHasherSpy = () => {
 const makeHasherWithErrorSpy = () => {
   class Hasher {
     async hash() {
-      throw new Error()
+      throw new Error();
     }
   }
 
   return new Hasher();
+};
+
+const makeAddAccountRespositoryWithErrorSpy = () => {
+  class AddAccountRepository {
+    async add() {
+      throw new Error()
+    }
+  }
+
+  const addAccountRepository = new AddAccountRepository();
+  addAccountRepository.user = {
+    name: "any_name",
+    email: "any_email",
+    password: "any_password",
+  };
+  return addAccountRepository;
 };
 
 class AddAccount {
@@ -49,14 +65,18 @@ class AddAccount {
     if ((name, email, password)) {
       const hashPassword = await this.hasher.hash(password, 12);
       if (!hashPassword) {
-        HttpResponse.InternalError()
+        HttpResponse.InternalError();
       }
       const user = await this.AddAccountRepository.add({
         name,
         email,
         hashPassword,
       });
-      return user;
+      if(!user) {
+        HttpResponse.InternalError()
+      }
+
+      return user
     }
     if (!name || !email || !password) {
       throw new MissingParamError("missing values");
@@ -88,6 +108,15 @@ describe("AddAccount UseCase", () => {
     const hashed = makeHasherWithErrorSpy();
     const sut = new AddAccount(repository, hashed);
     const result = sut.add("any_name", "any_mail", "any_password");
-    expect(result).rejects.toThrow(new Error())
+    expect(result).rejects.toThrow(new Error());
   });
+  
+  test("should throws Internal Error if repository failed", async () => {
+    const repository = makeAddAccountRespositoryWithErrorSpy();
+    const hashed = makeHasherSpy();
+    const sut = new AddAccount(repository, hashed);
+    const result = sut.add("any_name", "any_mail", "any_password");
+    await expect(result).rejects.toThrow(new Error());
+  });
+
 });

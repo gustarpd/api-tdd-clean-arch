@@ -9,4 +9,9 @@ export class Encrypter {
     const isValid = bcrypt.compare(value, hashed_value);
     return isValid;
   }
+
+  async hash(value, salt) {
+    if(!value || !salt) throw new MissingParamError("values")
+    return bcrypt.hash(value, salt)
+  }
 }

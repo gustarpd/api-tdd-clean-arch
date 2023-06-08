@@ -1,8 +1,7 @@
-import { LoginRouter } from "./login-router.js";
-import { MissingParamError } from "../../utils/errors/missing-params-error.js";
-import { UnauthorizeError } from "../helpers/errors/unauthorize-error.js";
-import { ServerError } from "../helpers/errors/server-erro.js";
-import { AuthUseCase } from '../../domain/usecases/auth-usecase.js'
+import { LoginRouter } from "../login-controller";
+import { MissingParamError } from "../../../utils/errors/missing-params-error.js";
+import { UnauthorizeError } from "../../helpers/errors/unauthorize-error.js";
+import { ServerError } from "../../helpers/errors/server-erro.js";
 
 const makeSut = () => {
   // classe de mock para capturar valores e fazer comparações

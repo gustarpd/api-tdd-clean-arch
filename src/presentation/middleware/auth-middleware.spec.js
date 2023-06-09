@@ -82,4 +82,8 @@ describe("Auth Middleware", () => {
     const { loadUserWithError } = makeSut();
     await expect(loadUserWithError.load()).rejects.toThrow();
   });
+  test("should throw an error when no access token is provided to the AuthMiddleware", async () => {
+    const { authMiddleware } = makeSut();
+    await expect(authMiddleware.handle()).rejects.toThrow();
+  });
 });

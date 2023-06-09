@@ -8,7 +8,7 @@ export class AuthMiddleware {
   async handle(request) {
     try {
       const { accessToken } = request;
-      if (!request) {
+      if (!accessToken) {
         throw HttpResponse.unauthorizeError();
       }
       const account = await this.loadAccountByToken.loadUser(accessToken);

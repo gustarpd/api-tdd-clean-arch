@@ -51,16 +51,19 @@ describe("DbLoadAccountByToken", () => {
         decrypt: jest.fn().mockResolvedValue(decryptedUser),
       };
       const dbLoadAccountByTokenRepositoryMock = {
-        load: jest.fn(),
+        load: jest.fn().mockResolvedValue(decryptedUser), // Mock the load method to return the decrypted user
       };
       const dbLoadAccountByToken = new DbLoadAccountByToken(
         dbLoadAccountByTokenRepositoryMock,
         decryperMock
       );
+    
       const result = await dbLoadAccountByToken.loadUser(validAccessToken);
+    
       expect(decryperMock.decrypt).toHaveBeenCalledWith(validAccessToken);
       expect(result).toEqual(decryptedUser);
     });
+    
 
     test("should return null if access token is not provided", async () => {
       const dbLoadAccountByToken = new DbLoadAccountByToken();

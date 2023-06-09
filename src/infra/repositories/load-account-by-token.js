@@ -1,5 +1,5 @@
-import { MissingParamError } from "../../utils/errors/missing-params-error";
-import { User } from "../db/schemas/Users";
+import { MissingParamError } from "../../utils/errors/missing-params-error.js";
+import { User } from "../db/schemas/Users.js";
 
 export class LoadUserByTokenlRepository {
   async loadByToken(accessToken) {

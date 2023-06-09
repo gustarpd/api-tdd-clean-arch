@@ -3,8 +3,8 @@ import { MissingParamError } from "../../utils/errors/missing-params-error.js";
 import { InvalidParamError } from '../../utils/errors/invalid-params-error.js'
 
 export class SignUpController {
-  constructor({ authUseCase, emailValidator } = {}) {
-    this.authUseCase = authUseCase;
+  constructor({ addAccount, emailValidator } = {}) {
+    this.addAccount = addAccount;
     this.emailValidator = emailValidator
   }
 
@@ -12,15 +12,16 @@ export class SignUpController {
     try {
       if (
         !httpRequest ||
-        !httpRequest.body ||
-        !this.authUseCase ||
-        !this.authUseCase.auth
+        !httpRequest.body
       ) {
         return HttpResponse.InternalError();
       }
-      const { email, password } = httpRequest.body;
+      const { name, email, password } = httpRequest.body;
       if (!email) {
         return HttpResponse.badRequest(new MissingParamError('email'));
+      }
+      if (!name) {
+        return HttpResponse.badRequest(new MissingParamError('name'));
       }
       if (!this.emailValidator.isValid(email)) {
         return HttpResponse.badRequest(new InvalidParamError('email'));
@@ -29,12 +30,10 @@ export class SignUpController {
         return HttpResponse.badRequest(new MissingParamError('password'));
       }
 
-      const accessToken = await this.authUseCase.auth(email, password);
-      console.log(accessToken)
-      if (!accessToken) return HttpResponse.unauthorizeError();
+      const accessToken = await this.addAccount.add(name, email, password);
       return HttpResponse.ok({ accessToken });
     } catch (error) {
-      return HttpResponse.InternalError();
+      return HttpResponse.unauthorizeError();
     }
   }
 }

@@ -1,6 +1,7 @@
-import e from "express";
 import { MissingParamError } from "../../../utils/errors/missing-params-error";
-import { HttpResponse } from "../../../presentation/helpers/httpReponse";
+import { AddAccount } from '../add-account-usecase'
+import { TokenGenerator } from "../../../utils/token-generator";
+import env from "../../../main/config/env";
 
 const makeAddAccountRespositorySpy = () => {
   class AddAccountRepository {
@@ -57,38 +58,11 @@ const makeAddAccountRespositoryWithErrorSpy = () => {
   return addAccountRepository;
 };
 
-class AddAccount {
-  constructor(AddAccountRepository, hasher) {
-    (this.AddAccountRepository = AddAccountRepository), (this.hasher = hasher);
-  }
-  async add(name, email, password) {
-    if (!name || !email || !password) {
-      throw new MissingParamError("missing values");
-    }
-
-    const hashPassword = await this.hasher.hash(password, 12);
-    if (!hashPassword) {
-      throw new HttpResponse.InternalError();
-    }
-
-    const user = await this.AddAccountRepository.add({
-      name,
-      email,
-      hashPassword,
-    });
-
-    if (!user) {
-      throw null
-    }
-
-    return user;
-  }
-}
-
 const makeSut = () => {
   const addAccountRepository = makeAddAccountRespositorySpy();
   const hasherSpy = makeHasherSpy();
-  const sut = new AddAccount(addAccountRepository, hasherSpy);
+  const tokenGenerate = new TokenGenerator(env.tokenSecret)
+  const sut = new AddAccount(addAccountRepository, hasherSpy, tokenGenerate);
 
   return {
     sut,
@@ -122,7 +96,8 @@ describe("AddAccount UseCase", () => {
     const repository = makeAddAccountRespositoryWithErrorSpy();
     const hashed = makeHasherSpy();
     const sut = new AddAccount(repository, hashed);
-    const result = sut.add("any_name", "any_mail", "any_password");
-    await expect(result).rejects.toBeNull();
+    const result = await sut.add("any_name", "any_mail", "any_password");
+    // console.log(result)
+    await expect(result).toBeNull();
   });
 });

@@ -1,6 +1,6 @@
 import { connect, disconnect } from "../../helper/mongo-in-memory-server";
 import { User } from "../../db/schemas/Users";
-import { LoadUserByTokenlRepository } from '../loadAccountByToken'
+import { LoadUserByTokenlRepository } from '../load-account-by-token.js'
 const makeSut = () => {
   const sut = new LoadUserByTokenlRepository();
   return {

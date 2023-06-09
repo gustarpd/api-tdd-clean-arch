@@ -14,4 +14,8 @@ export class TokenGenerator {
     }
     return JWT.sign(id, this.secret);
   }
+
+  async decrypt(value) {
+   return JWT.verify(value)
+  }
 }

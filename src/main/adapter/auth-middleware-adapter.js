@@ -1,4 +1,4 @@
-export default class ExpressRouterAdapter {
+export class ExpressRouterAdapter {
   static adapt(middleware) {
     return async (req, res, next) => {
       const httpRequest = {

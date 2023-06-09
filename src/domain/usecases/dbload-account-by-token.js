@@ -5,15 +5,15 @@ export class DbLoadAccountByToken {
   }
 
   async loadUser(accessToken) {
+    let token;
     try {
       if (accessToken) {
-        const decryper = await this.decryper.decrypt(accessToken);
-        return decryper;
+        token = await this.decryper.decrypt(accessToken);
       }
     } catch (error) {
       return null;
     }
-    if (accessToken) {
+    if (token) {
       const user = await this.DbLoadAccountByTokenRepository.load(accessToken);
       if (user) {
         return user;

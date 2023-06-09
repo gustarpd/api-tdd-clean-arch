@@ -6,19 +6,15 @@ export class AuthMiddleware {
   }
 
   async handle(request) {
-    try {
-      const { accessToken } = request;
-      if (!accessToken) {
-        throw HttpResponse.unauthorizeError();
-      }
-      const account = await this.loadAccountByToken.loadUser(accessToken);
-      if (account) {
-        return HttpResponse.ok({ accountId: account.id });
-      }
-  
+    const { accessToken } = request;
+    if (!accessToken) {
       return HttpResponse.unauthorizeError();
-    } catch (err) {
-      HttpResponse.InternalError();
     }
+    const account = await this.loadAccountByToken.loadUser(accessToken);
+    if (account) {
+      return HttpResponse.ok({ accountId: account.id });
+    }
+
+    return HttpResponse.unauthorizeError();
   }
 }

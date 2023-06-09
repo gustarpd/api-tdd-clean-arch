@@ -21,7 +21,7 @@ export class AddAccount {
       email,
       hashPassword,
     });
-    if(user) return user
+    
     if (!user) {
       return null;
     }

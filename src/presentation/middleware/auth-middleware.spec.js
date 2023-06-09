@@ -1,89 +1,46 @@
+import { AuthMiddleware } from "./auth-middleware";
 import { HttpResponse } from "../helpers/httpReponse";
 
-const makeLoadAccountByToken = () => {
-  class LoadAccountByToken {
-    async load(accessToken) {
-      this.accessToken = accessToken;
-      this.user = {
-        id: "any_id",
-      };
-      return this.user;
+const loadAccountByTokenMock = {
+  async loadUser(accessToken) {
+    if (accessToken === "valid_token") {
+      return { id: "account_id" };
     }
-  }
-
-  const makeLoadAccountByTokenSpy = new LoadAccountByToken();
-  return makeLoadAccountByTokenSpy;
+    return null;
+  },
 };
 
-const makeLoadAccountByTokenWithInvalidToken = () => {
-  class LoadAccountByToken {
-    async load(accessToken) {
-      this.accessToken = accessToken;
-      if (!accessToken) {
-        throw new Error();
-      }
-      return this.user;
-    }
-  }
-
-  const makeLoadAccountByTokenSpy = new LoadAccountByToken();
-  makeLoadAccountByTokenSpy.accessToken = null;
-  return makeLoadAccountByTokenSpy;
-};
-
-class AuthMiddleware {
-  constructor(loadAccountByToken) {
-    this.loadAccountByToken = loadAccountByToken;
-  }
-
-  async handle(request) {
-    const accessToken = request;
+class LoadAccountByTokenWithError {
+  async loadUser(accessToken) {
     if (!accessToken) {
-      throw new Error()
+      throw new Error("Same error");
     }
-    const account = await this.loadAccountByToken.load(accessToken);
-    if (account) {
-      return HttpResponse.ok({ accountId: account.id });
-    }
+
+    return null;
   }
 }
 
-const makeSut = () => {
-  const loadAccountByToken = makeLoadAccountByToken();
-  const loadUserWithError = makeLoadAccountByTokenWithInvalidToken();
-  const authMiddleware = new AuthMiddleware(loadAccountByToken);
+describe("AuthMiddleware", () => {
+  describe("handle", () => {
+    test("should return 401 if no access token is provided", async () => {
+      const authMiddleware = new AuthMiddleware(loadAccountByTokenMock);
+      const request = {};
+      const response = await authMiddleware.handle(request);
+      expect(response).toEqual(HttpResponse.unauthorizeError());
+    });
 
-  return {
-    authMiddleware,
-    loadAccountByToken,
-    loadUserWithError,
-  };
-};
+    test("should return 200 with account ID if a valid access token is provided", async () => {
+      const authMiddleware = new AuthMiddleware(loadAccountByTokenMock);
+      const request = { accessToken: "valid_token" };
+      const response = await authMiddleware.handle(request);
+      expect(response).toEqual(HttpResponse.ok({ accountId: "account_id" }));
+    });
 
-describe("Auth Middleware", () => {
-  test("should return a valid token when LoadAccountByToken is invoked", async () => {
-    const { loadAccountByToken } = makeSut();
-    const validToken = "valid_token";
-    await loadAccountByToken.load(validToken);
-    expect(loadAccountByToken.accessToken).toBe(validToken);
-  });
-  test("should return valid credencials if accessToken are no provided", async () => {
-    const { authMiddleware } = makeSut();
-    const auth = await authMiddleware.handle("any_valid_token");
-    const authResponse = { statusCode: 200, body: { accountId: "any_id" } };
-    await expect(auth).toEqual(authResponse);
-  });
-  test("should throw an error if token is not provided", async () => {
-    const { authMiddleware } = makeSut();
-    const auth = authMiddleware.handle()
-    await expect(auth).rejects.toThrow();
-  });
-  test("should throw an error if token is not provided", async () => {
-    const { loadUserWithError } = makeSut();
-    await expect(loadUserWithError.load()).rejects.toThrow();
-  });
-  test("should throw an error when no access token is provided to the AuthMiddleware", async () => {
-    const { authMiddleware } = makeSut();
-    await expect(authMiddleware.handle()).rejects.toThrow();
+    test("should return 401 if an invalid access token is provided", async () => {
+      const authMiddleware = new AuthMiddleware(loadAccountByTokenMock);
+      const request = { accessToken: "invalid-access-token" };
+      const response = await authMiddleware.handle(request);
+      expect(response).toEqual(HttpResponse.unauthorizeError());
+    });
   });
 });

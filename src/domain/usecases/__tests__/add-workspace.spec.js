@@ -17,10 +17,14 @@ class AddWorkSpace {
     if (!priority) {
       throw new MissingParamError("priority");
     }
-    const user = this.loadUserByTokenRepository.loadByToken(accessToken);
+    if (!accessToken) {
+      throw new MissingParamError("accessToken");
+    }
+    const user = await this.loadUserByTokenRepository.loadByToken(accessToken);
     if (user) {
       const workspace = new WorkSpace({ description, owner, priority });
-      return this.addWorkSpaceRepository.save(workspace);
+      this.addWorkSpaceRepository.save(workspace);
+      return workspace;
     }
 
     return HttpResponse.unauthorizeError();
@@ -45,7 +49,8 @@ class LoadUserByTokenRepository {
     if (accessToken === "valid_token") {
       return true;
     }
-    return false;
+
+    if(accessToken !== "valid_token") return false;
   }
 }
 
@@ -72,23 +77,29 @@ describe("WorkSpace UseCase", () => {
   };
   test("should create a workspace data correctly if data are provided", async () => {
     const { AddWorkSpaceSpy, addWorkSpaceRepository } = makeSut();
-    addWorkSpaceRepository.data = {
-      description: "any_description",
-      owner: "any_owner",
-      priority: "any_priority",
-    };
+    const { description, owner, priority } = workSpaceData;
     const addWorkSpace = await AddWorkSpaceSpy.add(workSpaceData);
-    expect(addWorkSpace).toEqual({
+    expect(addWorkSpace).toEqual({ description, owner, priority });
+  });
+
+  test("should throws unauthorized if valid accessToken are no provided", async () => {
+    const { AddWorkSpaceSpy, addWorkSpaceRepository } = makeSut();
+    const workSpaceDataWithInvalidToken = {
       description: "any_description",
       owner: "any_owner",
       priority: "any_priority",
-    });
+      accessToken: "invalid_token",
+    };
+    const addWorkSpace = await AddWorkSpaceSpy.add(
+      workSpaceDataWithInvalidToken
+    );
+    expect(addWorkSpace.statusCode).toBe(401)
+    expect(addWorkSpace.body.error).toBe("unauthorized")
   });
 
   test("should return null if data is no provided to repository", async () => {
     const { addWorkSpaceRepository } = makeSut();
     addWorkSpaceRepository.data = null;
-    // addWorkSpaceRepository.
     const addWorkSpacespy = await addWorkSpaceRepository.save({});
     expect(addWorkSpacespy).toBeNull();
   });

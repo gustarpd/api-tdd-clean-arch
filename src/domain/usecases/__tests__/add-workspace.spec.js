@@ -1,35 +1,5 @@
-import { HttpResponse } from "../../../presentation/helpers/httpReponse";
 import { MissingParamError } from "../../../utils/errors/missing-params-error.js";
-import { WorkSpace } from "../../entities/workspace";
-
-class AddWorkSpace {
-  constructor(addWorkSpaceRepository, loadUserByTokenRepository) {
-    this.addWorkSpaceRepository = addWorkSpaceRepository;
-    this.loadUserByTokenRepository = loadUserByTokenRepository;
-  }
-  async add({ description, owner, priority, accessToken }) {
-    if (!description) {
-      throw new MissingParamError("description");
-    }
-    if (!owner) {
-      throw new MissingParamError("owner");
-    }
-    if (!priority) {
-      throw new MissingParamError("priority");
-    }
-    if (!accessToken) {
-      throw new MissingParamError("accessToken");
-    }
-    const user = await this.loadUserByTokenRepository.loadByToken(accessToken);
-    if (user) {
-      const workspace = new WorkSpace({ description, owner, priority });
-      this.addWorkSpaceRepository.save(workspace);
-      return workspace;
-    }
-
-    return HttpResponse.unauthorizeError();
-  }
-}
+import { AddWorkSpace } from "../add-workspace-usecase";
 
 const AddWorkSpaceRepositorySpy = () => {
   class AddWorkSpaceRepository {
@@ -50,7 +20,7 @@ class LoadUserByTokenRepository {
       return true;
     }
 
-    if(accessToken !== "valid_token") return false;
+    if (accessToken !== "valid_token") return undefined;
   }
 }
 
@@ -93,8 +63,8 @@ describe("WorkSpace UseCase", () => {
     const addWorkSpace = await AddWorkSpaceSpy.add(
       workSpaceDataWithInvalidToken
     );
-    expect(addWorkSpace.statusCode).toBe(401)
-    expect(addWorkSpace.body.error).toBe("unauthorized")
+    expect(addWorkSpace.statusCode).toBe(401);
+    expect(addWorkSpace.body.error).toBe("unauthorized");
   });
 
   test("should return null if data is no provided to repository", async () => {

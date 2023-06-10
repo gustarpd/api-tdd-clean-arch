@@ -29,7 +29,7 @@ export class SignUpController {
       if (!password) {
         return HttpResponse.badRequest(new MissingParamError('password'));
       }
-
+      
       const accessToken = await this.addAccount.add(name, email, password);
       return HttpResponse.ok({ accessToken });
     } catch (error) {

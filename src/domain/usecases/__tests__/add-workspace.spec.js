@@ -57,4 +57,22 @@ describe("WorkSpace UseCase", () => {
     const addWorkSpace = await AddWorkSpaceSpy.add(workSpaceData);
     expect(addWorkSpace).toEqual(workSpaceData);
   });
+
+  test("should return null if data is no provided to repository", async () => {
+    const { addWorkSpaceRepository } = makeSut();
+    addWorkSpaceRepository.data = null;
+    const addWorkSpacespy = await addWorkSpaceRepository.save({});
+    expect(addWorkSpacespy).toBeNull();
+  });
+
+  test("should throws MissingParamsError if data is no provided to usecase", async () => {
+    const { AddWorkSpaceSpy } = makeSut();
+
+    try {
+      await AddWorkSpaceSpy.add({});
+    } catch (error) {
+      expect(error).toBeInstanceOf(MissingParamError);
+      expect(error.message).toBe("Missing param: description");
+    }
+  });
 });

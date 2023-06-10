@@ -1,10 +1,13 @@
+import { HttpResponse } from "../../../presentation/helpers/httpReponse";
 import { MissingParamError } from "../../../utils/errors/missing-params-error.js";
+import { WorkSpace } from "../../entities/workspace";
 
 class AddWorkSpace {
-  constructor(addWorkSpaceRepository) {
+  constructor(addWorkSpaceRepository, loadUserByTokenRepository) {
     this.addWorkSpaceRepository = addWorkSpaceRepository;
+    this.loadUserByTokenRepository = loadUserByTokenRepository;
   }
-  async add({ description, owner, priority }) {
+  async add({ description, owner, priority, accessToken }) {
     if (!description) {
       throw new MissingParamError("description");
     }
@@ -14,8 +17,13 @@ class AddWorkSpace {
     if (!priority) {
       throw new MissingParamError("priority");
     }
+    const user = this.loadUserByTokenRepository.loadByToken(accessToken);
+    if (user) {
+      const workspace = new WorkSpace({ description, owner, priority });
+      return this.addWorkSpaceRepository.save(workspace);
+    }
 
-    return this.addWorkSpaceRepository.save({ description, owner, priority });
+    return HttpResponse.unauthorizeError();
   }
 }
 
@@ -32,10 +40,24 @@ const AddWorkSpaceRepositorySpy = () => {
   return addWorkSpaceRepository;
 };
 
+class LoadUserByTokenRepository {
+  async loadByToken(accessToken) {
+    if (accessToken === "valid_token") {
+      return true;
+    }
+    return false;
+  }
+}
+
 const makeSut = () => {
   const addWorkSpaceRepository = AddWorkSpaceRepositorySpy();
-  const AddWorkSpaceSpy = new AddWorkSpace(addWorkSpaceRepository);
+  const loadUserByTokenlRepository = new LoadUserByTokenRepository();
+  const AddWorkSpaceSpy = new AddWorkSpace(
+    addWorkSpaceRepository,
+    loadUserByTokenlRepository
+  );
   return {
+    loadUserByTokenlRepository,
     addWorkSpaceRepository,
     AddWorkSpaceSpy,
   };
@@ -46,6 +68,7 @@ describe("WorkSpace UseCase", () => {
     description: "any_description",
     owner: "any_owner",
     priority: "any_priority",
+    accessToken: "valid_token",
   };
   test("should create a workspace data correctly if data are provided", async () => {
     const { AddWorkSpaceSpy, addWorkSpaceRepository } = makeSut();
@@ -55,19 +78,23 @@ describe("WorkSpace UseCase", () => {
       priority: "any_priority",
     };
     const addWorkSpace = await AddWorkSpaceSpy.add(workSpaceData);
-    expect(addWorkSpace).toEqual(workSpaceData);
+    expect(addWorkSpace).toEqual({
+      description: "any_description",
+      owner: "any_owner",
+      priority: "any_priority",
+    });
   });
 
   test("should return null if data is no provided to repository", async () => {
     const { addWorkSpaceRepository } = makeSut();
     addWorkSpaceRepository.data = null;
+    // addWorkSpaceRepository.
     const addWorkSpacespy = await addWorkSpaceRepository.save({});
     expect(addWorkSpacespy).toBeNull();
   });
 
   test("should throws MissingParamsError if data is no provided to usecase", async () => {
     const { AddWorkSpaceSpy } = makeSut();
-
     try {
       await AddWorkSpaceSpy.add({});
     } catch (error) {

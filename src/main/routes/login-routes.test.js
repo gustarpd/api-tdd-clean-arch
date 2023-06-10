@@ -1,8 +1,8 @@
 import supertest from "supertest";
 import app from "../config/app";
-import bcrypt from 'bcrypt'
-import { connect, disconnect } from '../../infra/helper/mongo-in-memory-server'
-import { User } from '../../infra/db/schemas/Users'
+import bcrypt from "bcrypt";
+import { connect, disconnect } from "../../infra/helper/mongo-in-memory-server";
+import { User } from "../../infra/db/schemas/Users";
 
 describe("Login Routes", () => {
   const testRequest = supertest(app);
@@ -20,12 +20,11 @@ describe("Login Routes", () => {
   });
 
   test("should return 200 when valid credencials are provided", async () => {
-   const user = await User.create({
+    await User.create({
       email: "valid_email@mail.com",
       password: "hashed_password",
     });
-    console.log(user)
-   await testRequest
+    await testRequest
       .post("/api/login")
       .send({
         email: "valid_email@mail.com",

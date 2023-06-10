@@ -21,7 +21,9 @@ export class AuthUseCase {
     }
 
     const user = await this.loadUserByEmailRepository.load(email);
-    if (user && this.encripter.compare(password, user.password)) {
+    console.log(email)
+    console.log(password)
+    if (user && this.encripter.compare(password, user.email)) {
       const access_token = await this.tokenGenerator.generate(user.id);
       await this.updateAccessTokenRepositorySpy.update(user.id, access_token);
       return access_token;

@@ -1,5 +1,5 @@
 import { MissingParamError } from "../../../utils/errors/missing-params-error";
-import { AddAccount } from '../add-account-usecase'
+import { AddAccount } from "../add-account-usecase";
 import { TokenGenerator } from "../../../utils/token-generator";
 import env from "../../../main/config/env";
 import { HttpResponse } from "../../../presentation/helpers/httpReponse";
@@ -26,19 +26,19 @@ const makeHasherSpy = () => {
     async hash(password, salt) {
       this.password = password;
       this.salt = salt;
-      return this.value
+      return this.value;
     }
   }
 
   const hasherSpy = new Hasher();
-  hasherSpy.value = "hash"
-  return hasherSpy
+  hasherSpy.value = "hash";
+  return hasherSpy;
 };
 
 const makeHasherWithErrorSpy = () => {
   class Hasher {
     async hash() {
-      throw new Error('Hasher failed')
+      throw new Error("Hasher failed");
     }
   }
 
@@ -48,7 +48,7 @@ const makeHasherWithErrorSpy = () => {
 const makeAddAccountRespositoryWithErrorSpy = () => {
   class AddAccountRepository {
     async add() {
-      return null
+      return null;
     }
   }
 
@@ -64,13 +64,13 @@ const makeAddAccountRespositoryWithErrorSpy = () => {
 const makeSut = () => {
   const addAccountRepository = makeAddAccountRespositorySpy();
   const hasherSpy = makeHasherSpy();
-  const tokenGenerate = new TokenGenerator(env.tokenSecret)
+  const tokenGenerate = new TokenGenerator(env.tokenSecret);
   const sut = new AddAccount(addAccountRepository, hasherSpy, tokenGenerate);
 
   return {
     sut,
     hasherSpy,
-    addAccountRepository
+    addAccountRepository,
   };
 };
 
@@ -82,11 +82,11 @@ describe("AddAccount UseCase", () => {
     expect(result).toHaveProperty("email");
     expect(result).toHaveProperty("password");
   });
-  
+
   test("should add an account with correct values", async () => {
     const { sut } = makeSut();
     const result = sut.add("any_password");
-    expect(result).rejects.toThrow(new MissingParamError("missing values"))
+    expect(result).rejects.toThrow(new MissingParamError("missing values"));
   });
 
   test("should throws Internal Error if hasher is failed", async () => {
@@ -106,12 +106,11 @@ describe("AddAccount UseCase", () => {
   });
 
   test("should throws Internal Error if repository failed", async () => {
-    const { hasherSpy, addAccountRepository } = makeSut()
-    hasherSpy.value = null
+    const { hasherSpy, addAccountRepository } = makeSut();
+    hasherSpy.value = null;
     const sut = new AddAccount(addAccountRepository, hasherSpy);
-    await expect(async () =>
-      await sut.add("any_name", "any_mail", "any_password")
+    await expect(
+      async () => await sut.add("any_name", "any_mail", "any_password")
     ).rejects.toEqual(HttpResponse.InternalError("Internal Error", 500));
   });
-  
 });

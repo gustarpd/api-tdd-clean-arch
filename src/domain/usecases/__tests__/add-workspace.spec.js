@@ -83,4 +83,56 @@ describe("WorkSpace UseCase", () => {
       expect(error.message).toBe("Missing param: description");
     }
   });
+
+  test("should throws MissingParamsError if description are no provided", async () => {
+    const { AddWorkSpaceSpy } = makeSut();
+    const { accessToken, owner, priority } = workSpaceData;
+    const addWorkSpaceSpy = AddWorkSpaceSpy.add({
+      accessToken,
+      owner,
+      priority,
+    });
+    expect(addWorkSpaceSpy).rejects.toThrow(
+      new MissingParamError("description")
+    );
+  });
+
+  test("should throws MissingParamsError if owner are no provided", async () => {
+    const { AddWorkSpaceSpy } = makeSut();
+    const { accessToken, description, priority } = workSpaceData;
+    const addWorkSpaceSpy = AddWorkSpaceSpy.add({
+      accessToken,
+      description,
+      priority,
+    });
+    expect(addWorkSpaceSpy).rejects.toThrow(
+      new MissingParamError("owner")
+    );
+  });
+
+  test("should throws MissingParamsError if priority are no provided", async () => {
+    const { AddWorkSpaceSpy } = makeSut();
+    const { accessToken, description, owner } = workSpaceData;
+    const addWorkSpaceSpy = AddWorkSpaceSpy.add({
+      accessToken,
+      description,
+      owner
+    });
+    expect(addWorkSpaceSpy).rejects.toThrow(
+      new MissingParamError("priority")
+    );
+  });
+
+  test("should throws MissingParamsError if accessToken are no provided", async () => {
+    const { AddWorkSpaceSpy } = makeSut();
+    const { priority, description, owner } = workSpaceData;
+    const addWorkSpaceSpy = AddWorkSpaceSpy.add({
+      priority,
+      description,
+      owner
+    });
+    expect(addWorkSpaceSpy).rejects.toThrow(
+      new MissingParamError("accessToken")
+    );
+  });
 });

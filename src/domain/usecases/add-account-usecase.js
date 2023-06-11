@@ -1,4 +1,5 @@
 import { MissingParamError } from "../../utils/errors/missing-params-error.js";
+import { HttpResponse } from "../../presentation/helpers/httpReponse.js";
 
 export class AddAccount {
   constructor(AddAccountRepository, hasher, tokenGenerator) {
@@ -13,7 +14,7 @@ export class AddAccount {
 
     const hashPassword = await this.hasher.hash(password, 12);
     if (!hashPassword) {
-      throw new HttpResponse.InternalError();
+      throw HttpResponse.InternalError();
     }
 
     const user = await this.AddAccountRepository.add({

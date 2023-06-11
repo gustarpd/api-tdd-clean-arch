@@ -5,8 +5,8 @@ export class HttpResponse {
     return {
       statusCode: 400,
       body: {
-        error: error.message
-      }
+        error: error.message,
+      },
     };
   }
 
@@ -20,14 +20,14 @@ export class HttpResponse {
   static unauthorizeError() {
     return {
       statusCode: 401,
-      body: {error: new UnauthorizeError().message },
+      body: { error: new UnauthorizeError().message },
     };
   }
 
   static ok(data) {
     return {
       statusCode: 200,
-      body: data
-    }
+      body: data,
+    };
   }
 }

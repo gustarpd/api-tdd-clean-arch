@@ -1,21 +1,26 @@
 import { SignUpController } from "../signup-controller";
 import { HttpResponse } from "../../helpers/httpReponse";
+import { InvalidParamError } from "../../../utils/errors/invalid-params-error";
 
 class AddAccount {
   async add(name, email, password) {
-    return "accessToken";
+    return { accessToken: "accessToken" };
   }
 }
 
-class EmailValidator {
-  async isValid(email) {
-    return false;
+const makeEmailValidator = () => {
+  class EmailValidator {
+    isValid(email) {
+      return this.isEmailValid;
+    }
   }
-}
+
+  return new EmailValidator();
+};
 
 const makeSut = () => {
   const addAccount = new AddAccount();
-  const emailValidator = new EmailValidator();
+  const emailValidator = makeEmailValidator();
   const signUpController = new SignUpController({ addAccount, emailValidator });
 
   return {
@@ -33,8 +38,8 @@ describe("Signup Router", () => {
   };
 
   test("should return accessToken when calls add method", async () => {
-    const { signUpController, addAccount } = makeSut();
-    addAccount.accessToken = "valid_token";
+    const { signUpController, emailValidator, addAccount } = makeSut();
+    emailValidator.isEmailValid = true;
     const result = await signUpController.route({ body });
     expect(result).toHaveProperty("body");
     expect(result.body).toHaveProperty("accessToken");
@@ -77,8 +82,9 @@ describe("Signup Router", () => {
   });
 
   test("should throw MissingParamError if param password are no provided", async () => {
-    const { signUpController, addAccount } = makeSut();
+    const { signUpController, addAccount, emailValidator } = makeSut();
     addAccount.accessToken = "valid_token";
+    emailValidator.isEmailValid = true;
     const result = await signUpController.route({
       body: {
         name: "any_mail",
@@ -88,5 +94,40 @@ describe("Signup Router", () => {
     expect(result.body).toHaveProperty("error");
     expect(result.body.error).toBe("Missing param: password");
     expect(result.statusCode).toBe(400);
+  });
+
+  test("Should return 400 if email is invalid", async () => {
+    const { signUpController, emailValidator } = makeSut();
+    emailValidator.isEmailValid = false;
+    const httpRequest = {
+      body: {
+        name: "John Doe",
+        email: "invalid_email.com",
+        password: "valid_password",
+      },
+    };
+    const httpResponse = await signUpController.route(httpRequest);
+    console.log(httpResponse);
+    expect(httpResponse.statusCode).toBe(400);
+    expect(httpResponse.body).toEqual({ error: 'Invalid param: email' });
+  });
+
+  test("Should return 401 if an error is thrown", async () => {
+    const { signUpController, addAccount, emailValidator } = makeSut();
+    emailValidator.isEmailValid = true;
+    addAccount.add = () => {
+      throw new Error();
+    };
+    const httpRequest = {
+      body: {
+        name: "John Doe",
+        email: "valid_email.com",
+        password: "valid_password",
+      },
+    };
+    const httpResponse = await signUpController.route(httpRequest);
+    console.log(httpResponse);
+    expect(httpResponse.statusCode).toBe(401);
+    expect(httpResponse).toEqual(HttpResponse.unauthorizeError());
   });
 });

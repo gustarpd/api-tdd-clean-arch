@@ -19,11 +19,6 @@ const makeSut = () => {
   };
 };
 
-class EmailValidator {
-  async isValid(email) {
-    return false;
-  }
-}
 
 const makeAuthUseCase = () => {
   class AuthUseCaseSpy {
@@ -289,6 +284,7 @@ describe("Login Router", () => {
       },
     };
     const httpResponse = await sut.route(httpRequest);
+    console.log(httpResponse)
     expect(httpResponse.statusCode).toBe(400);
     expect(emailValidatorSpy.email).toBe(httpRequest.body.email);
   });

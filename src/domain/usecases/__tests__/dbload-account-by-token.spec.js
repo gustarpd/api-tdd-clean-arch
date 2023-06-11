@@ -51,7 +51,7 @@ describe("DbLoadAccountByToken", () => {
         decrypt: jest.fn().mockResolvedValue(decryptedUser),
       };
       const dbLoadAccountByTokenRepositoryMock = {
-        load: jest.fn().mockResolvedValue(decryptedUser), // Mock the load method to return the decrypted user
+        load: jest.fn().mockResolvedValue(decryptedUser),
       };
       const dbLoadAccountByToken = new DbLoadAccountByToken(
         dbLoadAccountByTokenRepositoryMock,

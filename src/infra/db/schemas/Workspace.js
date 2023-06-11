@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 export const schema = new mongoose.Schema({
-  description: String,
+  description: { type: String, required: true },
   owner: String,
   priority: String,
 });

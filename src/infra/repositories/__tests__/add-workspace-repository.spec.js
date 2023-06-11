@@ -1,7 +1,6 @@
 import { WorkSpace } from "../../db/schemas/Workspace";
 import {
   connect,
-  cleanData,
   disconnect,
 } from "../../helper/mongo-in-memory-server";
 
@@ -29,5 +28,10 @@ describe("", () => {
     expect(workspace.description).toBe("any");
     expect(workspace.priority).toBe("any");
     expect(workspace.owner).toBe("any");
+  });
+
+  test("should throw an error if required fields are missing", async () => {
+    const workspace = new WorkSpace({});
+    await expect(workspace.save()).rejects.toThrow();
   });
 });

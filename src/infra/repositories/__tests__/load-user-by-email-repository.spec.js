@@ -30,7 +30,7 @@ describe("LoadUserByEmail Repository", () => {
     expect(user).toBe(null);
   });
 
-  test("Should return null if user is not found", async () => {
+  test("should load user with correctly email", async () => {
     await User.create({ 
       email: "valid_mail@gmail.com",
      })

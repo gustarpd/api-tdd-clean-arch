@@ -63,13 +63,33 @@ describe("Workspace controller", () => {
         accessToken: "any",
       },
     });
-    expect(httpRequest.statusCode).toBe(200)
-    expect(httpRequest.body.workspace).toEqual(addRepository.WorkSpace)
+    expect(httpRequest.statusCode).toBe(200);
+    expect(httpRequest.body.workspace).toEqual(addRepository.WorkSpace);
   });
   test("should throw InternaError if HttoRequest are no provided", async () => {
-    const { sut, addRepository } = makeSut();
+    const { sut } = makeSut();
     const httpRequest = await sut.handle({});
-    expect(httpRequest.statusCode).toBe(500)
-    expect(httpRequest).toEqual(HttpResponse.InternalError())
+    expect(httpRequest.statusCode).toBe(500);
+    expect(httpRequest).toEqual(HttpResponse.InternalError());
+  });
+
+  test("should throw UnauthorizedError if an error occurs", async () => {
+    const { sut } = makeSut();
+
+    jest.spyOn(sut, "handle").mockImplementationOnce(() => {
+      throw HttpResponse.unauthorizeError();
+    });
+    try {
+      await sut.handle({
+        body: {
+          description: "any",
+          owner: "any",
+          priority: "any",
+          accessToken: "any",
+        },
+      });
+    } catch (error) {
+      expect(error).toEqual(HttpResponse.unauthorizeError());
+    }
   });
 });

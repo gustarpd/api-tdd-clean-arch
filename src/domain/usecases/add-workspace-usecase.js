@@ -1,6 +1,6 @@
-import { MissingParamError } from "../../utils/errors/missing-params-error";
-import { WorkSpace } from "../entities/workspace";
-import { HttpResponse } from "../../presentation/helpers/httpReponse";
+import { MissingParamError } from "../../utils/errors/missing-params-error.js";
+import { WorkSpace } from "../entities/workspace.js";
+import { HttpResponse } from "../../presentation/helpers/httpReponse.js";
 
 export class AddWorkSpace {
   constructor(addWorkSpaceRepository) {
@@ -21,7 +21,7 @@ export class AddWorkSpace {
     }
 
     const workspace = new WorkSpace({ description, owner, priority });
-    const workspaceRepository = this.addWorkSpaceRepository.Add(workspace);
+    const workspaceRepository = await this.addWorkSpaceRepository.Add(workspace);
     if(workspaceRepository) return workspaceRepository
     return HttpResponse.unauthorizeError();
   }

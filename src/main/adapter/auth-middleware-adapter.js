@@ -3,8 +3,6 @@ export class ExpressRouterAdapter {
     return async (req, res, next) => {
       const httpRequest = {
         accessToken: req.headers?.["x-access-token"],
-
-        ...(req.headers || {}),
       };
       const httpResponse = await middleware.handle(httpRequest);
       if(httpRequest) {

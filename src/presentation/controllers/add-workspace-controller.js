@@ -1,10 +1,10 @@
-import { HttpResponse } from "../helpers/httpReponse";
+import { HttpResponse } from "../helpers/httpReponse.js";
 
 export class AddWorkSpaceController {
   constructor(addWorkSpace) {
     this.addWorkSpace = addWorkSpace;
   }
-  async handle(httpRequest) {
+  async route(httpRequest) {
     try {
       if (!httpRequest || !httpRequest.body) {
         return HttpResponse.InternalError();

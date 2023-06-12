@@ -11,6 +11,7 @@ export class AddWorkSpaceRepository {
       ...workspace
     });
     await load.save()
+
     return load;
   }
 }

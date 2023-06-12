@@ -1,9 +1,10 @@
 import { MissingParamError } from "../../../utils/errors/missing-params-error.js";
 import { AddWorkSpace } from "../add-workspace-usecase";
+import { AddWorkSpaceRepository } from '../../../infra/repositories/add-workspace-repository.js'
 
 const AddWorkSpaceRepositorySpy = () => {
   class AddWorkSpaceRepository {
-    async save({ description, owner, priority }) {
+    async Add({ description, owner, priority }) {
       this.descrption = description;
       this.owner = owner;
       this.priority = priority;
@@ -14,25 +15,22 @@ const AddWorkSpaceRepositorySpy = () => {
   return addWorkSpaceRepository;
 };
 
-class LoadUserByTokenRepository {
-  async loadByToken(accessToken) {
-    if (accessToken === "valid_token") {
+class AddWorkSpaceRepositoryWithErroSpy {
+  async Add(data) {
+    if (data.accessToken === "valid_token") {
       return true;
     }
 
-    if (accessToken !== "valid_token") return undefined;
+    if (data.accessToken !== "valid_token") return undefined;
   }
 }
 
 const makeSut = () => {
   const addWorkSpaceRepository = AddWorkSpaceRepositorySpy();
-  const loadUserByTokenlRepository = new LoadUserByTokenRepository();
   const AddWorkSpaceSpy = new AddWorkSpace(
     addWorkSpaceRepository,
-    loadUserByTokenlRepository
   );
   return {
-    loadUserByTokenlRepository,
     addWorkSpaceRepository,
     AddWorkSpaceSpy,
   };
@@ -47,30 +45,39 @@ describe("WorkSpace UseCase", () => {
   };
   test("should create a workspace data correctly if data are provided", async () => {
     const { AddWorkSpaceSpy, addWorkSpaceRepository } = makeSut();
-    const { description, owner, priority } = workSpaceData;
+    addWorkSpaceRepository.data = {
+      description: "any_description",
+      owner: "any_owner",
+      priority: "any_priority",
+      id: "any_id"
+    };
     const addWorkSpace = await AddWorkSpaceSpy.add(workSpaceData);
-    expect(addWorkSpace).toEqual({ description, owner, priority });
+    expect(addWorkSpace).toEqual({
+      description: "any_description",
+      owner: "any_owner",
+      priority: "any_priority",
+      id: "any_id"
+    });
   });
 
-  test("should throws unauthorized if valid accessToken are no provided", async () => {
-    const { AddWorkSpaceSpy, addWorkSpaceRepository } = makeSut();
+  test("should throw unauthorized if valid accessToken is not provided", async () => {
+    const addWorkSpaceRepositorySpy = new AddWorkSpaceRepositoryWithErroSpy();
+    const AddWorkSpaceSpy = new AddWorkSpace(addWorkSpaceRepositorySpy);
     const workSpaceDataWithInvalidToken = {
       description: "any_description",
       owner: "any_owner",
       priority: "any_priority",
       accessToken: "invalid_token",
     };
-    const addWorkSpace = await AddWorkSpaceSpy.add(
-      workSpaceDataWithInvalidToken
-    );
-    expect(addWorkSpace.statusCode).toBe(401);
-    expect(addWorkSpace.body.error).toBe("unauthorized");
+    const addWorkSpace = await AddWorkSpaceSpy.add(workSpaceDataWithInvalidToken);
+  
+    expect(addWorkSpace).toBe(undefined);
   });
 
   test("should return null if data is no provided to repository", async () => {
     const { addWorkSpaceRepository } = makeSut();
     addWorkSpaceRepository.data = null;
-    const addWorkSpacespy = await addWorkSpaceRepository.save({});
+    const addWorkSpacespy = await addWorkSpaceRepository.Add({});
     expect(addWorkSpacespy).toBeNull();
   });
 

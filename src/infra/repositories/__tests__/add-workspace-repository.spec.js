@@ -1,10 +1,7 @@
 import { WorkSpace } from "../../db/schemas/Workspace";
-import {
-  connect,
-  disconnect,
-} from "../../helper/mongo-in-memory-server";
+import { connect, disconnect } from "../../helper/mongo-in-memory-server";
 
-describe("", () => {
+describe("add-workspace-repository", () => {
   beforeAll(async () => {
     await connect();
   });
@@ -33,5 +30,23 @@ describe("", () => {
   test("should throw an error if required fields are missing", async () => {
     const workspace = new WorkSpace({});
     await expect(workspace.save()).rejects.toThrow();
+  });
+
+  test("should handle errors during workspace creation", async () => {
+    jest.spyOn(WorkSpace.prototype, "save").mockImplementationOnce(() => {
+      throw new Error("Database connection error");
+    });
+
+    const workspace = new WorkSpace({
+      description: "any",
+      priority: "any",
+      owner: "any",
+    });
+
+    try {
+      await workspace.save();
+    } catch (error) {
+      expect(error.message).toBe("Database connection error");
+    }
   });
 });

@@ -1,5 +1,6 @@
 import { WorkSpace } from "../../db/schemas/Workspace";
 import { connect, disconnect } from "../../helper/mongo-in-memory-server";
+import { AddWorkSpaceRepository } from "../add-workspace-repository";
 
 describe("add-workspace-repository", () => {
   beforeAll(async () => {
@@ -15,21 +16,22 @@ describe("add-workspace-repository", () => {
   });
 
   test("should create a workspace correctly", async () => {
-    const workspace = new WorkSpace({
+    const workspace = new AddWorkSpaceRepository()
+    const result = await workspace.Add({
       description: "any",
       priority: "any",
       owner: "any",
-    });
+    })
 
-    expect(workspace).toBeDefined();
-    expect(workspace.description).toBe("any");
-    expect(workspace.priority).toBe("any");
-    expect(workspace.owner).toBe("any");
+    expect(result).toBeDefined();
+    expect(result.description).toBe("any");
+    expect(result.priority).toBe("any");
+    expect(result.owner).toBe("any");
   });
 
   test("should throw an error if required fields are missing", async () => {
-    const workspace = new WorkSpace({});
-    await expect(workspace.save()).rejects.toThrow();
+    const workspace = new AddWorkSpaceRepository();
+    await expect(workspace.Add()).rejects.toThrow();
   });
 
   test("should handle errors during workspace creation", async () => {

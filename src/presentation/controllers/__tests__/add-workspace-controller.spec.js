@@ -66,4 +66,10 @@ describe("Workspace controller", () => {
     expect(httpRequest.statusCode).toBe(200)
     expect(httpRequest.body.workspace).toEqual(addRepository.WorkSpace)
   });
+  test("should throw InternaError if HttoRequest are no provided", async () => {
+    const { sut, addRepository } = makeSut();
+    const httpRequest = await sut.handle({});
+    expect(httpRequest.statusCode).toBe(500)
+    expect(httpRequest).toEqual(HttpResponse.InternalError())
+  });
 });

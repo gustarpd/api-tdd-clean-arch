@@ -1,6 +1,7 @@
 import { MissingParamError } from "../../../utils/errors/missing-params-error.js";
 import { AddWorkSpace } from "../add-workspace-usecase";
 import { AddWorkSpaceRepository } from '../../../infra/repositories/add-workspace-repository.js'
+import { HttpResponse } from "../../../presentation/helpers/httpReponse.js";
 
 const AddWorkSpaceRepositorySpy = () => {
   class AddWorkSpaceRepository {
@@ -71,7 +72,7 @@ describe("WorkSpace UseCase", () => {
     };
     const addWorkSpace = await AddWorkSpaceSpy.add(workSpaceDataWithInvalidToken);
   
-    expect(addWorkSpace).toBe(undefined);
+    expect(addWorkSpace).toEqual(HttpResponse.unauthorizeError());
   });
 
   test("should return null if data is no provided to repository", async () => {

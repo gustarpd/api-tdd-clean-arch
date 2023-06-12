@@ -4,7 +4,7 @@ export class AddWorkSpaceController {
   constructor(addWorkSpace) {
     this.addWorkSpace = addWorkSpace;
   }
-  async route(httpRequest) {
+  async handle(httpRequest) {
     try {
       if (!httpRequest || !httpRequest.body) {
         return HttpResponse.InternalError();

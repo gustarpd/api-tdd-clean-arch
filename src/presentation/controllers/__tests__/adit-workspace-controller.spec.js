@@ -35,7 +35,6 @@ export class EditWorkSpaceController {
         owner,
         priority,
       });
-      if (!workspace) return HttpResponse.unauthorizeError();
       return HttpResponse.ok(workspace);
     } catch (error) {
       console.log(error);
@@ -55,7 +54,7 @@ const makeSut = () => {
 };
 
 describe("", () => {
-  test("", async () => {
+  test("should handle a valid HTTP request and return a successful response with the edited workspace data", async () => {
     const { sut, editWorkSpaceRepository } = makeSut();
     const request = await sut.handle({
       body: {
@@ -68,5 +67,13 @@ describe("", () => {
 
     expect(request.statusCode).toBe(200);
     expect(request.body).toEqual(editWorkSpaceRepository.data);
+  });
+
+  test("should throw InternalError if HttpRequest Body are no provided", async () => {
+    const { sut } = makeSut();
+    const request = await sut.handle({});
+
+    expect(request.statusCode).toBe(500);
+    expect(request.body).toEqual(HttpResponse.InternalError().body)
   });
 });

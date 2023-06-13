@@ -3,5 +3,5 @@ import { ExpressRouterAdapter } from '../adapter/express-router-adapter.js';
 import { auth } from "../config/auth.js";
 
 export default (router) => {
-  router.post("/login", auth, ExpressRouterAdapter.adapt(LoginRouterCompose.compose()));
+  router.post("/login", ExpressRouterAdapter.adapt(LoginRouterCompose.compose()));
 };

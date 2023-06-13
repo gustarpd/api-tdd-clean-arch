@@ -8,7 +8,7 @@ export class LoginRouter {
     this.emailValidator = emailValidator
   }
 
-  async route(httpRequest) {
+  async handle(httpRequest) {
     try {
       if (
         !httpRequest ||

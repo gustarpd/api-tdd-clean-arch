@@ -76,4 +76,24 @@ describe("", () => {
     expect(request.statusCode).toBe(500);
     expect(request.body).toEqual(HttpResponse.InternalError().body)
   });
+
+  test("should throw UnauthorizedError if an error occurs", async () => {
+    const { sut } = makeSut();
+
+    jest.spyOn(sut, "handle").mockImplementationOnce(() => {
+      throw HttpResponse.unauthorizeError();
+    });
+    try {
+      await sut.handle({
+        body: {
+          description: "any",
+          owner: "any",
+          priority: "any",
+          accessToken: "any",
+        },
+      });
+    } catch (error) {
+      expect(error).toEqual(HttpResponse.unauthorizeError());
+    }
+  });
 });

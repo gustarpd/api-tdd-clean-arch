@@ -43,84 +43,84 @@ describe("", () => {
     expect(request.statusCode).toBe(200);
     expect(request.body).toEqual(editWorkSpaceRepository.data);
   });
-});
 
-test("should throw InternalError if HttpRequest Body are no provided", async () => {
-  const { sut } = makeSut();
-  const request = await sut.handle({});
+  test("should throw InternalError if HttpRequest Body are no provided", async () => {
+    const { sut } = makeSut();
+    const request = await sut.handle(null);
 
-  expect(request.statusCode).toBe(500);
-  expect(request.body).toEqual(HttpResponse.InternalError().body);
-});
-
-test("should throw MissingParam Error if taskId are no provided", async () => {
-  const { sut } = makeSut();
-  const request = await sut.handle({
-    body: {
-      description: "any_description",
-      owner: "any_owner",
-      priority: "any_priority",
-    },
+    expect(request.statusCode).toBe(500);
+    expect(request.body).toEqual(HttpResponse.InternalError().body);
   });
 
-  expect(request.statusCode).toBe(500);
-});
-
-test("should throw MissingParam Error if description are no provided", async () => {
-  const { sut } = makeSut();
-  const request = await sut.handle({
-    body: {
-      taskId: "any_id",
-      owner: "any_owner",
-      priority: "any_priority",
-    },
-  });
-
-  expect(request.statusCode).toBe(500);
-});
-
-test("should throw MissingParam Error if owner are no provided", async () => {
-  const { sut } = makeSut();
-  const request = await sut.handle({
-    body: {
-      taskId: "any_id",
-      description: "any_description",
-      priority: "any_priority",
-    },
-  });
-
-  expect(request.statusCode).toBe(500);
-});
-
-test("should throw MissingParam Error if priority are no provided", async () => {
-  const { sut } = makeSut();
-  const request = await sut.handle({
-    body: {
-      taskId: "any_id",
-      description: "any_description",
-      owner: "any_owner",
-    },
-  });
-
-  expect(request.statusCode).toBe(500);
-});
-
-test("should throw InternalError if an error occurs", async () => {
-  const { sut } = makeSut();
-
-  jest.spyOn(sut, "handle").mockImplementationOnce(() => {
-    throw HttpResponse.InternalError();
-  });
-  try {
-    await sut.handle({
+  test("should throw MissingParam Error if taskId are no provided", async () => {
+    const { sut } = makeSut();
+    const request = await sut.handle({
       body: {
-        description: "any",
-        owner: "any",
-        priority: "any",
-        accessToken: "any",
+        description: "any_description",
+        owner: "any_owner",
+        priority: "any_priority",
       },
     });
-  } catch (error) {
-    expect(error).toEqual(HttpResponse.InternalError());
-  }
+
+    expect(request.statusCode).toBe(500);
+  });
+
+  test("should throw MissingParam Error if description are no provided", async () => {
+    const { sut } = makeSut();
+    const request = await sut.handle({
+      body: {
+        taskId: "any_id",
+        owner: "any_owner",
+        priority: "any_priority",
+      },
+    });
+
+    expect(request.statusCode).toBe(500);
+  });
+
+  test("should throw MissingParam Error if owner are no provided", async () => {
+    const { sut } = makeSut();
+    const request = await sut.handle({
+      body: {
+        taskId: "any_id",
+        description: "any_description",
+        priority: "any_priority",
+      },
+    });
+
+    expect(request.statusCode).toBe(500);
+  });
+
+  test("should throw MissingParam Error if priority are no provided", async () => {
+    const { sut } = makeSut();
+    const request = await sut.handle({
+      body: {
+        taskId: "any_id",
+        description: "any_description",
+        owner: "any_owner",
+      },
+    });
+
+    expect(request.statusCode).toBe(500);
+  });
+
+  test("should throw InternalError if an error occurs", async () => {
+    const { sut } = makeSut();
+
+    jest.spyOn(sut, "handle").mockImplementationOnce(() => {
+      throw HttpResponse.InternalError();
+    });
+    try {
+      await sut.handle({
+        body: {
+          description: "any",
+          owner: "any",
+          priority: "any",
+          accessToken: "any",
+        },
+      });
+    } catch (error) {
+      expect(error).toEqual(HttpResponse.InternalError());
+    }
+  });
 });

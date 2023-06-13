@@ -1,4 +1,5 @@
 import { HttpResponse } from "../../helpers/httpReponse.js";
+import { EditWorkSpaceController } from "../edit-workspace-controller.js";
 
 const makeEditWorkSpaceRepository = () => {
   class EditWorkspaceRepository {
@@ -16,32 +17,6 @@ const makeEditWorkSpaceRepository = () => {
   };
   return editWorkSpace;
 };
-
-export class EditWorkSpaceController {
-  constructor(editWorkspace) {
-    this.editWorkspace = editWorkspace;
-  }
-
-  async handle(httpRequest) {
-    try {
-      if (!httpRequest || !httpRequest.body) {
-        return HttpResponse.InternalError();
-      }
-      const { taskId, description, owner, priority } = httpRequest.body;
-
-      const workspace = await this.editWorkspace.edit({
-        taskId,
-        description,
-        owner,
-        priority,
-      });
-      return HttpResponse.ok(workspace);
-    } catch (error) {
-      console.log(error);
-      return HttpResponse.InternalError();
-    }
-  }
-}
 
 const makeSut = () => {
   const editWorkSpaceRepository = makeEditWorkSpaceRepository();
@@ -76,6 +51,58 @@ test("should throw InternalError if HttpRequest Body are no provided", async () 
 
   expect(request.statusCode).toBe(500);
   expect(request.body).toEqual(HttpResponse.InternalError().body);
+});
+
+test("should throw MissingParam Error if taskId are no provided", async () => {
+  const { sut } = makeSut();
+  const request = await sut.handle({
+    body: {
+      description: "any_description",
+      owner: "any_owner",
+      priority: "any_priority",
+    },
+  });
+
+  expect(request.statusCode).toBe(500);
+});
+
+test("should throw MissingParam Error if description are no provided", async () => {
+  const { sut } = makeSut();
+  const request = await sut.handle({
+    body: {
+      taskId: "any_id",
+      owner: "any_owner",
+      priority: "any_priority",
+    },
+  });
+
+  expect(request.statusCode).toBe(500);
+});
+
+test("should throw MissingParam Error if owner are no provided", async () => {
+  const { sut } = makeSut();
+  const request = await sut.handle({
+    body: {
+      taskId: "any_id",
+      description: "any_description",
+      priority: "any_priority",
+    },
+  });
+
+  expect(request.statusCode).toBe(500);
+});
+
+test("should throw MissingParam Error if priority are no provided", async () => {
+  const { sut } = makeSut();
+  const request = await sut.handle({
+    body: {
+      taskId: "any_id",
+      description: "any_description",
+      owner: "any_owner",
+    },
+  });
+
+  expect(request.statusCode).toBe(500);
 });
 
 test("should throw InternalError if an error occurs", async () => {

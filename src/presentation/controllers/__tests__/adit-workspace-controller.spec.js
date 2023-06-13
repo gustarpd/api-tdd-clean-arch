@@ -68,32 +68,32 @@ describe("", () => {
     expect(request.statusCode).toBe(200);
     expect(request.body).toEqual(editWorkSpaceRepository.data);
   });
+});
 
-  test("should throw InternalError if HttpRequest Body are no provided", async () => {
-    const { sut } = makeSut();
-    const request = await sut.handle({});
+test("should throw InternalError if HttpRequest Body are no provided", async () => {
+  const { sut } = makeSut();
+  const request = await sut.handle({});
 
-    expect(request.statusCode).toBe(500);
-    expect(request.body).toEqual(HttpResponse.InternalError().body);
+  expect(request.statusCode).toBe(500);
+  expect(request.body).toEqual(HttpResponse.InternalError().body);
+});
+
+test("should throw InternalError if an error occurs", async () => {
+  const { sut } = makeSut();
+
+  jest.spyOn(sut, "handle").mockImplementationOnce(() => {
+    throw HttpResponse.InternalError();
   });
-
-  test("should throw InternalError if an error occurs", async () => {
-    const { sut } = makeSut();
-
-    jest.spyOn(sut, "handle").mockImplementationOnce(() => {
-      throw HttpResponse.InternalError();
+  try {
+    await sut.handle({
+      body: {
+        description: "any",
+        owner: "any",
+        priority: "any",
+        accessToken: "any",
+      },
     });
-    try {
-      await sut.handle({
-        body: {
-          description: "any",
-          owner: "any",
-          priority: "any",
-          accessToken: "any",
-        },
-      });
-    } catch (error) {
-      expect(error).toEqual(HttpResponse.InternalError());
-    }
-  });
+  } catch (error) {
+    expect(error).toEqual(HttpResponse.InternalError());
+  }
 });

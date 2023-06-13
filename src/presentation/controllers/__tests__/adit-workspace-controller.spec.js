@@ -74,14 +74,14 @@ describe("", () => {
     const request = await sut.handle({});
 
     expect(request.statusCode).toBe(500);
-    expect(request.body).toEqual(HttpResponse.InternalError().body)
+    expect(request.body).toEqual(HttpResponse.InternalError().body);
   });
 
-  test("should throw UnauthorizedError if an error occurs", async () => {
+  test("should throw InternalError if an error occurs", async () => {
     const { sut } = makeSut();
 
     jest.spyOn(sut, "handle").mockImplementationOnce(() => {
-      throw HttpResponse.unauthorizeError();
+      throw HttpResponse.InternalError();
     });
     try {
       await sut.handle({
@@ -93,7 +93,7 @@ describe("", () => {
         },
       });
     } catch (error) {
-      expect(error).toEqual(HttpResponse.unauthorizeError());
+      expect(error).toEqual(HttpResponse.InternalError());
     }
   });
 });

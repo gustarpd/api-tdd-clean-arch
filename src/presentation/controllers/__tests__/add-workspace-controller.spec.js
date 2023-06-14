@@ -1,5 +1,5 @@
 import { HttpResponse } from "../../helpers/httpReponse";
-import { AddWorkSpaceController } from '../add-workspace-controller'
+import { AddWorkSpaceController } from "../add-workspace-controller";
 
 const makeAddWorkSpace = () => {
   class AddWorkSpace {
@@ -34,12 +34,10 @@ describe("Workspace controller", () => {
   test("should return data correctly if HttpRequest body id provided", async () => {
     const { sut, addRepository } = makeSut();
     const httpRequest = await sut.handle({
-      body: {
-        description: "any",
-        owner: "any",
-        priority: "any",
-        accessToken: "any",
-      },
+      description: "any",
+      owner: "any",
+      priority: "any",
+      accessToken: "any",
     });
     expect(httpRequest.statusCode).toBe(200);
     expect(httpRequest.body.workspace).toEqual(addRepository.WorkSpace);
@@ -48,7 +46,7 @@ describe("Workspace controller", () => {
     const { sut } = makeSut();
     const httpRequest = await sut.handle();
     expect(httpRequest.statusCode).toBe(500);
-    console.log(httpRequest)
+    console.log(httpRequest);
     expect(httpRequest).toEqual(HttpResponse.InternalError());
   });
 

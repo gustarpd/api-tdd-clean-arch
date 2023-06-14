@@ -15,7 +15,7 @@ export class LoginRouter {
       ) {
         return HttpResponse.InternalError();
       }
-      const { email, password } = httpRequest.body;
+      const { email, password } = httpRequest;
       if (!email) {
         return HttpResponse.badRequest(new MissingParamError('email'));
       }

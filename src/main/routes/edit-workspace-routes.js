@@ -2,5 +2,5 @@ import { EditWorkSpacelewareRouterCompose } from "../composers/edit-workspace-co
 import { ExpressRouterAdapter } from '../adapter/express-router-adapter.js';
 
 export default (router) => {
-  router.post("/edit/:taskId", ExpressRouterAdapter.adapt(EditWorkSpacelewareRouterCompose.compose()));
+  router.put("/edit/:taskId", ExpressRouterAdapter.adapt(EditWorkSpacelewareRouterCompose.compose()));
 };

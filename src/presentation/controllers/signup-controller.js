@@ -11,12 +11,11 @@ export class SignUpController {
   async handle(httpRequest) {
     try {
       if (
-        !httpRequest ||
-        !httpRequest.body
+        !httpRequest
       ) {
         return HttpResponse.InternalError();
       }
-      const { name, email, password } = httpRequest.body;
+      const { name, email, password } = httpRequest
       if (!email) {
         return HttpResponse.badRequest(new MissingParamError('email'));
       }

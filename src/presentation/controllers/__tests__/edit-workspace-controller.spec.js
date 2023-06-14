@@ -32,12 +32,12 @@ describe("", () => {
   test("should handle a valid HTTP request and return a successful response with the edited workspace data", async () => {
     const { sut, editWorkSpaceRepository } = makeSut();
     const request = await sut.handle({
-      body: {
+
         taskId: "any_id",
         description: "any_description",
         owner: "any_owner",
         priority: "any_priority",
-      },
+      
     });
 
     expect(request.statusCode).toBe(200);

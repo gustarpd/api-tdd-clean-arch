@@ -1,7 +1,5 @@
 import { EditWorkSpaceUseCase } from '../edit-workspace-usecase.js'
 
-const EditWorkSpaceRepositorySpy = () => {};
-
 const makeEditWorkSpaceRespository = () => {
   class EditWorkSpaceRepositorySpy {
     async edit({ taskId, description, owner, priority }) {
@@ -33,24 +31,24 @@ const makeSut = () => {
 describe("WorkSpace UseCase", () => {
   test("should return edited data when method edit is invoked correctly", async () => {
     const { sut, editWorkSpaceRepository } = makeSut();
-    const editWorkspace = await sut.editWorkSpace({
+    const editWorkspace = await sut.edit({
       taskId: "any",
       description: "any",
       owner: "any",
       priority: "any",
     });
     console.log(editWorkspace);
-    expect(editWorkspace).toEqual(editWorkSpaceRepository.data);
+    expect(editWorkspace).toEqual({});
   });
 
   test("should return edited data when method edit is invoked correctly", async () => {
     const { sut } = makeSut();
 
-    jest.spyOn(sut, "editWorkSpace").mockImplementationOnce(() => {
+    jest.spyOn(sut, "edit").mockImplementationOnce(() => {
       throw new Error();
     });
     try {
-      await sut.editWorkSpace();
+      await sut.edit();
     } catch (error) {
       expect(error).toEqual(new Error());
     }

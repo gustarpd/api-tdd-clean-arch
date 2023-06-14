@@ -40,7 +40,7 @@ describe("Signup Router", () => {
   test("should return accessToken when calls add method", async () => {
     const { signUpController, emailValidator, addAccount } = makeSut();
     emailValidator.isEmailValid = true;
-    const result = await signUpController.handle({ body });
+    const result = await signUpController.handle(body);
     expect(result).toHaveProperty("body");
     expect(result.body).toHaveProperty("accessToken");
     expect(result.statusCode).toBe(200);
@@ -48,7 +48,7 @@ describe("Signup Router", () => {
 
   test("should throw InternalError if route method has no any httpBody", async () => {
     const { signUpController } = makeSut();
-    const result = await signUpController.handle({});
+    const result = await signUpController.handle();
     expect(result).toHaveProperty("body");
     expect(result.statusCode).toBe(500);
   });
@@ -71,13 +71,12 @@ describe("Signup Router", () => {
     const { signUpController, addAccount } = makeSut();
     addAccount.accessToken = "valid_token";
     const result = await signUpController.handle({
-      body: {
-        email: "mail@mail.com",
-        password: "any_password",
-      },
+      name: "any_name",
+      password: "any_password",
     });
+    console.log(result)
     expect(result.body).toHaveProperty("error");
-    expect(result.body.error).toBe("Missing param: name");
+    expect(result.body.error).toBe("Missing param: email");
     expect(result.statusCode).toBe(400);
   });
 
@@ -86,11 +85,10 @@ describe("Signup Router", () => {
     addAccount.accessToken = "valid_token";
     emailValidator.isEmailValid = true;
     const result = await signUpController.handle({
-      body: {
-        name: "any_mail",
-        email: "mail@mail.com",
-      },
+      name: "any_mail",
+      email: "mail@mail.com",
     });
+    console.log(result)
     expect(result.body).toHaveProperty("error");
     expect(result.body.error).toBe("Missing param: password");
     expect(result.statusCode).toBe(400);
@@ -100,16 +98,13 @@ describe("Signup Router", () => {
     const { signUpController, emailValidator } = makeSut();
     emailValidator.isEmailValid = false;
     const httpRequest = {
-      body: {
         name: "John Doe",
         email: "invalid_email.com",
         password: "valid_password",
-      },
     };
     const httpResponse = await signUpController.handle(httpRequest);
-    console.log(httpResponse);
     expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual({ error: 'Invalid param: email' });
+    expect(httpResponse.body).toEqual({ error: "Invalid param: email" });
   });
 
   test("Should return 401 if an error is thrown", async () => {
@@ -119,14 +114,11 @@ describe("Signup Router", () => {
       throw new Error();
     };
     const httpRequest = {
-      body: {
         name: "John Doe",
         email: "valid_email.com",
         password: "valid_password",
-      },
     };
     const httpResponse = await signUpController.handle(httpRequest);
-    console.log(httpResponse);
     expect(httpResponse.statusCode).toBe(401);
     expect(httpResponse).toEqual(HttpResponse.unauthorizeError());
   });

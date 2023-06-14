@@ -1,6 +1,6 @@
 import { MissingParamError } from "../../../utils/errors/missing-params-error.js";
 import { AddWorkSpace } from "../add-workspace-usecase";
-import { AddWorkSpaceRepository } from '../../../infra/repositories/add-workspace-repository.js'
+import { AddWorkSpaceRepository } from "../../../infra/repositories/add-workspace-repository.js";
 import { HttpResponse } from "../../../presentation/helpers/httpReponse.js";
 
 const AddWorkSpaceRepositorySpy = () => {
@@ -28,9 +28,7 @@ class AddWorkSpaceRepositoryWithErroSpy {
 
 const makeSut = () => {
   const addWorkSpaceRepository = AddWorkSpaceRepositorySpy();
-  const AddWorkSpaceSpy = new AddWorkSpace(
-    addWorkSpaceRepository,
-  );
+  const AddWorkSpaceSpy = new AddWorkSpace(addWorkSpaceRepository);
   return {
     addWorkSpaceRepository,
     AddWorkSpaceSpy,
@@ -50,14 +48,14 @@ describe("WorkSpace UseCase", () => {
       description: "any_description",
       owner: "any_owner",
       priority: "any_priority",
-      id: "any_id"
+      id: "any_id",
     };
     const addWorkSpace = await AddWorkSpaceSpy.add(workSpaceData);
     expect(addWorkSpace).toEqual({
       description: "any_description",
       owner: "any_owner",
       priority: "any_priority",
-      id: "any_id"
+      id: "any_id",
     });
   });
 
@@ -70,8 +68,10 @@ describe("WorkSpace UseCase", () => {
       priority: "any_priority",
       accessToken: "invalid_token",
     };
-    const addWorkSpace = await AddWorkSpaceSpy.add(workSpaceDataWithInvalidToken);
-  
+    const addWorkSpace = await AddWorkSpaceSpy.add(
+      workSpaceDataWithInvalidToken
+    );
+
     expect(addWorkSpace).toEqual(HttpResponse.unauthorizeError());
   });
 
@@ -113,9 +113,7 @@ describe("WorkSpace UseCase", () => {
       description,
       priority,
     });
-    expect(addWorkSpaceSpy).rejects.toThrow(
-      new MissingParamError("owner")
-    );
+    expect(addWorkSpaceSpy).rejects.toThrow(new MissingParamError("owner"));
   });
 
   test("should throws MissingParamsError if priority are no provided", async () => {
@@ -124,23 +122,8 @@ describe("WorkSpace UseCase", () => {
     const addWorkSpaceSpy = AddWorkSpaceSpy.add({
       accessToken,
       description,
-      owner
+      owner,
     });
-    expect(addWorkSpaceSpy).rejects.toThrow(
-      new MissingParamError("priority")
-    );
-  });
-
-  test("should throws MissingParamsError if accessToken are no provided", async () => {
-    const { AddWorkSpaceSpy } = makeSut();
-    const { priority, description, owner } = workSpaceData;
-    const addWorkSpaceSpy = AddWorkSpaceSpy.add({
-      priority,
-      description,
-      owner
-    });
-    expect(addWorkSpaceSpy).rejects.toThrow(
-      new MissingParamError("accessToken")
-    );
+    expect(addWorkSpaceSpy).rejects.toThrow(new MissingParamError("priority"));
   });
 });

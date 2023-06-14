@@ -8,7 +8,7 @@ export class AddAccount {
       (this.tokenGenerator = tokenGenerator);
   }
   async add(name, email, password) {
-    if (!name || !email || !password) {
+    if (!email || !password) {
       throw new MissingParamError("missing values");
     }
 

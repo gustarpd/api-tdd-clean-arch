@@ -1,4 +1,3 @@
-import { MissingParamError } from "../../../utils/errors/missing-params-error";
 import { WorkSpace } from "../../db/schemas/Workspace";
 import { connect, disconnect } from "../../helper/mongo-in-memory-server";
 import { EditWorkspaceRepository } from "../edit-workspace-repository";
@@ -38,6 +37,8 @@ describe("UpdateAccessToken Repository", () => {
       owner: "New owner",
       priority: "New priority",
     });
+    
     expect(result).toHaveProperty("modifiedCount");
+    expect(result.modifiedCount).toBe(1);
   });
 });

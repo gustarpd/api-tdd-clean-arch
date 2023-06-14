@@ -16,9 +16,6 @@ export class AddWorkSpace {
     if (!priority) {
       throw new MissingParamError("priority");
     }
-    if (!accessToken) {
-      throw new MissingParamError("accessToken");
-    }
 
     const workspace = new WorkSpace({ description, owner, priority });
     const workspaceRepository = await this.addWorkSpaceRepository.Add(workspace);

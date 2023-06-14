@@ -1,3 +1,5 @@
+import { EditWorkSpaceUseCase } from '../edit-workspace-usecase.js'
+
 const EditWorkSpaceRepositorySpy = () => {};
 
 const makeEditWorkSpaceRespository = () => {
@@ -18,30 +20,6 @@ const makeEditWorkSpaceRespository = () => {
   return editWorkSpaceRepository;
 };
 
-class EditWorkSpaceUseCase {
-  constructor(editWorkSpaceRepository) {
-    this.editWorkSpaceRepository = editWorkSpaceRepository;
-  }
-
-  async editWorkSpace({ taskId, description, owner, priority }) {
-    try {
-      const editWorkSpace = this.editWorkSpaceRepository.edit({
-        taskId,
-        description,
-        owner,
-        priority,
-      });
-      if (!editWorkSpace) {
-        return null;
-      }
-
-      return editWorkSpace
-    } catch (error) {
-      throw new Error(`Internal Error ${error}`);
-    }
-  }
-}
-
 const makeSut = () => {
   const editWorkSpaceRepository = makeEditWorkSpaceRespository();
   const sut = new EditWorkSpaceUseCase(editWorkSpaceRepository);
@@ -61,7 +39,7 @@ describe("WorkSpace UseCase", () => {
       owner: "any",
       priority: "any",
     });
-    console.log(editWorkspace)
+    console.log(editWorkspace);
     expect(editWorkspace).toEqual(editWorkSpaceRepository.data);
   });
 
@@ -69,12 +47,11 @@ describe("WorkSpace UseCase", () => {
     const { sut } = makeSut();
 
     jest.spyOn(sut, "editWorkSpace").mockImplementationOnce(() => {
-      throw new Error()
+      throw new Error();
     });
     try {
       await sut.editWorkSpace();
     } catch (error) {
-      console.log(error)
       expect(error).toEqual(new Error());
     }
   });

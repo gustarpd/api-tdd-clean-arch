@@ -11,10 +11,7 @@ export class LoginRouter {
   async handle(httpRequest) {
     try {
       if (
-        !httpRequest ||
-        !httpRequest.body ||
-        !this.authUseCase ||
-        !this.authUseCase.auth
+        !httpRequest
       ) {
         return HttpResponse.InternalError();
       }

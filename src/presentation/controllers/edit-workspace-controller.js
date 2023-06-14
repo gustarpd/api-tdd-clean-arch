@@ -11,7 +11,8 @@ export class EditWorkSpaceController {
       if (!httpRequest) {
         return HttpResponse.InternalError();
       }
-      const { taskId, description, owner, priority } = httpRequest.body;
+      const { taskId, description, owner, priority } = httpRequest
+      console.log(httpRequest)
       if (!taskId) {
         throw new MissingParamError("taskId");
       }

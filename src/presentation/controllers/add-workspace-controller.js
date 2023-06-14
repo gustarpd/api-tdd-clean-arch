@@ -6,10 +6,11 @@ export class AddWorkSpaceController {
   }
   async handle(httpRequest) {
     try {
-      if (!httpRequest || !httpRequest.body) {
+      if (!httpRequest) {
         return HttpResponse.InternalError();
       }
-      const { description, owner, priority, accessToken } = httpRequest.body;
+      const { description, owner, priority, accessToken } = httpRequest;
+      console.log(httpRequest)
       const workspace = await this.addWorkSpace.add({
         description,
         owner,
@@ -18,6 +19,7 @@ export class AddWorkSpaceController {
       });
       return HttpResponse.ok({ workspace });
     } catch (error) {
+      console.log(error)
       return HttpResponse.unauthorizeError();
     }
   }

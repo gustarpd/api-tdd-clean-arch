@@ -1,3 +1,5 @@
+import { DeleteWorkSpaceUseCase } from "../delete-workspace-usecase";
+
 const makeDeleteWorkSpaceRespositorySpy = () => {
   class DeleteWorkSpaceRespository {
     async deleteById(taskId) {
@@ -21,16 +23,6 @@ const makeDeleteWorkSpaceRespositoryWithErro = () => {
   const deleteWorkSpaceRespository = new DeleteWorkSpaceRespository();
   return deleteWorkSpaceRespository;
 };
-
-class DeleteWorkSpaceUseCase {
-  constructor(deleteWorkSpaceRespository) {
-    this.deleteWorkSpaceRespository = deleteWorkSpaceRespository;
-  }
-
-  async delete(taskId) {
-    return await this.deleteWorkSpaceRespository.deleteById(taskId);
-  }
-}
 
 const makeSut = () => {
   const deleteWorkSpaceRespository = makeDeleteWorkSpaceRespositorySpy();

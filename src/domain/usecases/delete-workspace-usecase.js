@@ -1,4 +1,4 @@
-class DeleteWorkSpaceUseCase {
+export class DeleteWorkSpaceUseCase {
   constructor(deleteWorkSpaceRespository) {
     this.deleteWorkSpaceRespository = deleteWorkSpaceRespository;
   }

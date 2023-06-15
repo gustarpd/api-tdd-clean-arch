@@ -5,19 +5,17 @@ export class DeleteWorkSpaceRespository {
     try {
       const result = await WorkSpace.findByIdAndDelete(id);
       if (!result) {
-        if (!result) {
-          return {
-            success: false,
-            message: "Nenhum documento encontrado com o ID fornecido.",
-          };
-        }
+        return {
+          success: false,
+          message: "Nenhum documento encontrado com o ID fornecido.",
+        };
       }
       return {
         success: true,
         message: "Documento excluído com sucesso.",
       };
     } catch (err) {
-      console.log(err);
+      throw err;
     }
   }
 }

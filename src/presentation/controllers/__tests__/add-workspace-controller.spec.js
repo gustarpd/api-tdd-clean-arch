@@ -39,7 +39,7 @@ describe("Workspace controller", () => {
       priority: "any",
       accessToken: "any",
     });
-    expect(httpRequest.statusCode).toBe(200);
+    expect(httpRequest.statusCode).toBe(201);
     expect(httpRequest.body.workspace).toEqual(addRepository.WorkSpace);
   });
   test("should throw InternaError if HttpRequest are no provided", async () => {

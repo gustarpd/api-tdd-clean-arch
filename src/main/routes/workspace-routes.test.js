@@ -13,13 +13,13 @@ describe("Login Routes", () => {
     await disconnect();
   });
 
-  test("should return 200 when valid credencials are provided", async () => {
+  test("should return 201 when valid credencials are provided", async () => {
     const response = await testRequest.post("/api/tasks").send({
       description: "any_description",
       owner: "any_owner",
       priority: "any_priority",
     });
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(201);
     expect(response.body).toHaveProperty("workspace");
   });
 

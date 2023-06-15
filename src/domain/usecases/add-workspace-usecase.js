@@ -6,7 +6,7 @@ export class AddWorkSpace {
   constructor(addWorkSpaceRepository) {
     this.addWorkSpaceRepository = addWorkSpaceRepository;
   }
-  async add({ description, owner, priority, accessToken }) {
+  async add({ description, owner, priority }) {
     if (!description) {
       throw new MissingParamError("description");
     }
@@ -18,6 +18,7 @@ export class AddWorkSpace {
     }
 
     const workspace = new WorkSpace({ description, owner, priority });
+    console.log(workspace.WorkSpaceId)
     const workspaceRepository = await this.addWorkSpaceRepository.Add(workspace);
     if(workspaceRepository) return workspaceRepository
     return HttpResponse.unauthorizeError();

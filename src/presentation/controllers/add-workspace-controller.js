@@ -29,7 +29,6 @@ export class AddWorkSpaceController {
       });
       return HttpResponse.created({ workspace });
     } catch (error) {
-      console.log(error)
       return HttpResponse.unauthorizeError();
     }
   }

@@ -14,8 +14,7 @@ export class EditWorkSpaceUseCase {
 
       return {}
     } catch (error) {
-      console.error(`Internal Error ${error}`);
-      return null;
+      return new Error(`${error}`)
     }
   }
 }

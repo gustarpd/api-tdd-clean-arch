@@ -32,13 +32,13 @@ describe("Delete workSpace controller", () => {
     const request = await sut.handle({ taskId: "any_id" })
     expect(request.body).toEqual(deleteByIdUseCase.data)
   })
-  test("should return a HttpRequest OK if taskId are provided from handle method", async() => {
+  test("should throw InternalError if HttpRequest are no provided from handle method", async() => {
     const { sut } = makeSut()
     const request = await sut.handle()
     expect(request.statusCode).toBe(500)
     expect(request).toEqual(HttpResponse.InternalError())
   })
-  test("should return a HttpRequest OK if taskId are provided from handle method", async() => {
+  test("should catch if Error ocurrs", async() => {
     const { sut } = makeSut()
     try {
       await sut.handle({ })

@@ -27,11 +27,11 @@ describe("Testes de exclusão de documento", () => {
 
   test("Should throw Errror", async () => {
     try {
-    const deleteByIdRepository = new DeleteWorkSpaceRespository();
-    await deleteByIdRepository.deleteById();
+      const deleteByIdRepository = new DeleteWorkSpaceRespository();
+      await deleteByIdRepository.deleteById();
     } catch (error) {
-      expect(error).toBeUndefined()
-      console.log(error)
+      expect(error).toBeUndefined();
+      console.log(error);
     }
   });
 });

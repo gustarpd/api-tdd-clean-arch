@@ -1,9 +1,21 @@
-import { WorkSpace } from "../db/schemas/Workspace";
+import { WorkSpace } from "../db/schemas/Workspace.js";
 
 export class DeleteWorkSpaceRespository {
   async deleteById(id) {
     try {
-      return await WorkSpace.findByIdAndDelete(id);
+      const result = await WorkSpace.findByIdAndDelete(id);
+      if (!result) {
+        if (!result) {
+          return {
+            success: false,
+            message: "Nenhum documento encontrado com o ID fornecido.",
+          };
+        }
+      }
+      return {
+        success: true,
+        message: "Documento excluído com sucesso.",
+      };
     } catch (err) {
       console.log(err);
     }

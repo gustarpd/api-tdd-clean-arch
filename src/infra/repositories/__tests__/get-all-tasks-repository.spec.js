@@ -6,7 +6,7 @@ describe("GetAllTasksRepository", () => {
     jest.restoreAllMocks();
   });
 
-  test("deve retornar uma lista vazia quando nenhum documento for encontrado", async () => {
+  test("should return an empty list when no documents are found", async () => {
 
     jest.spyOn(WorkSpace, "find").mockResolvedValue([]);
 
@@ -16,7 +16,7 @@ describe("GetAllTasksRepository", () => {
     expect(result).toEqual([]);
   });
 
-  test("deve retornar uma lista de documentos quando encontrados", async () => {
+  test("should return a list of documents when found", async () => {
     const documentsMock = [
       { id: 1, title: "Tarefa 1" },
       { id: 2, title: "Tarefa 2" },
@@ -28,7 +28,7 @@ describe("GetAllTasksRepository", () => {
     expect(result).toEqual(documentsMock);
   });
 
-  test("deve lançar um erro quando ocorrer um erro na consulta", async () => {
+  test("should throw an error when an error occurs in the query", async () => {
     const errorMock = new Error("Erro na consulta");
     jest.spyOn(WorkSpace, "find").mockRejectedValue(errorMock);
     const repository = new GetAllTasksRepository();

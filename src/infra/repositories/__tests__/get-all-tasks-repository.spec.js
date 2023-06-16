@@ -1,49 +1,37 @@
-import { connect, disconnect } from "../../helper/mongo-in-memory-server";
+import { GetAllTasksRepository } from "../get-all-tasks-repository";
 import { WorkSpace } from "../../db/schemas/Workspace";
 
-class GetAllTasksRepository {
-  async findAll() {
-    try {
-      const documents = await WorkSpace.find({});
-      return documents;
-    } catch (err) {
-      throw err;
-    }
-  }
-}
-
-const makeSut = () => {
-  const sut = new GetAllTasksRepository();
-  return {
-    sut,
-  };
-};
-
-describe("LoadUserByEmail Repository", () => {
-  beforeAll(async () => {
-    await connect();
+describe("GetAllTasksRepository", () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
-  afterAll(async () => {
-    await disconnect();
+  test("deve retornar uma lista vazia quando nenhum documento for encontrado", async () => {
+
+    jest.spyOn(WorkSpace, "find").mockResolvedValue([]);
+
+    const repository = new GetAllTasksRepository();
+    const result = await repository.findAll();
+
+    expect(result).toEqual([]);
   });
 
-  beforeEach(async () => {
-    await WorkSpace.deleteMany({});
+  test("deve retornar uma lista de documentos quando encontrados", async () => {
+    const documentsMock = [
+      { id: 1, title: "Tarefa 1" },
+      { id: 2, title: "Tarefa 2" },
+      { id: 3, title: "Tarefa 3" },
+    ];
+    jest.spyOn(WorkSpace, "find").mockResolvedValue(documentsMock);
+    const repository = new GetAllTasksRepository();
+    const result = await repository.findAll();
+    expect(result).toEqual(documentsMock);
   });
 
-  test("should return a defined result when documents are present", async () => {
-    const { sut } = makeSut();
-    await WorkSpace.create({
-      description: "any",
-      owner: "any",
-      priority: "any",
-    });
-    expect(await sut.findAll()).toBeDefined();
-  });
-  test("should throw an error when no document is found", async () => {
-    const { sut } = makeSut();
-    await WorkSpace.create();
-    expect(sut.findAll()).rejects.toThrow();
+  test("deve lançar um erro quando ocorrer um erro na consulta", async () => {
+    const errorMock = new Error("Erro na consulta");
+    jest.spyOn(WorkSpace, "find").mockRejectedValue(errorMock);
+    const repository = new GetAllTasksRepository();
+    await expect(repository.findAll()).rejects.toThrow(errorMock);
   });
 });

@@ -42,7 +42,10 @@ describe("DeleteWorkSpace UseCase", () => {
   test("should return a correct taskid when task is deleted", async () => {
     const { deleteWorkSpaceUseCase, deleteWorkSpaceRespository } = makeSut();
     const result = await deleteWorkSpaceUseCase.delete("any_id");
-    expect(result).toBe(deleteWorkSpaceRespository.taskId);
+    expect(result).toEqual({
+      message: "Documento excluído com sucesso.",
+      success: true
+    });
   });
 
   test("should throw an Error id any id are not provided", async () => {

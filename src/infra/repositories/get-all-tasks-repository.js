@@ -1,3 +1,5 @@
+import { WorkSpace } from "../db/schemas/Workspace.js";
+
 export class GetAllTasksRepository {
   async findAll() {
     try {

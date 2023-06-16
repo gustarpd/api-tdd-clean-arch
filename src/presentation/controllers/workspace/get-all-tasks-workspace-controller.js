@@ -1,4 +1,4 @@
-import { HttpResponse } from "../../helpers/httpReponse";
+import { HttpResponse } from "../../helpers/httpReponse.js";
 
 export class GetAllTasksController {
   constructor(getAllTasksUseCase) {
@@ -6,7 +6,8 @@ export class GetAllTasksController {
   }
   async handle(httpRequest = {}) {
     try {
-      const tasks = await this.getAllTaksUseCase.findAll();
+      const tasks = await this.getAllTaksUseCase.getTasks();
+      console.log(tasks)
       return HttpResponse.ok(tasks);
     } catch (error) {
       throw error;

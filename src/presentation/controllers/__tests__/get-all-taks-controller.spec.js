@@ -2,7 +2,7 @@ import { GetAllTasksController } from "../workspace/get-all-tasks-workspace-cont
 
 const makeGetAllTasksUseCase = () => {
   class GetAllTasksUseCase {
-    async findAll() {
+    async getTasks() {
       return this.data;
     }
   }
@@ -55,7 +55,7 @@ describe("Delete workSpace controller", () => {
     const request = await sut.handle();
     expect(await sut.handle()).toBeDefined();
     expect(request.statusCode).toBe(200);
-    expect(request.body).toEqual(getAllTaksUseCase.data.body);
+    expect(request.body).toEqual(getAllTaksUseCase.data);
   });
   test("should throws an Error", async () => {
     const repository = makeGetAllTasksUseCaseWithError()

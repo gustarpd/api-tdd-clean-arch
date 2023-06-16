@@ -5,7 +5,13 @@ export class GetTasksWorkSpaceUseCase {
 
   async getTasks() {
     try {
-      await this.getTasksWorkSpaceRepository.findAll();
+      const allTasksFromRepository = await this.getTasksWorkSpaceRepository.findAll();
+      if (allTasksFromRepository.length === 0) {
+        return {
+          message: "Nunhuma tarefa foi encontrada.",
+        };
+      }
+      return allTasksFromRepository
     } catch (error) {
       throw error;
     }

@@ -1,5 +1,5 @@
 import { HttpResponse } from "../../helpers/httpReponse.js";
-import { EditWorkSpaceController } from "../edit-workspace-controller.js";
+import { EditWorkSpaceController } from "../workspace/edit-workspace-controller.js";
 
 const makeEditWorkSpaceRepository = () => {
   class EditWorkspaceRepository {

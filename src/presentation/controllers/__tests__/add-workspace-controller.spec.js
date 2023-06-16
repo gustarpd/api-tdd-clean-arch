@@ -1,5 +1,5 @@
 import { HttpResponse } from "../../helpers/httpReponse";
-import { AddWorkSpaceController } from "../add-workspace-controller";
+import { AddWorkSpaceController } from "../workspace/add-workspace-controller.js";
 
 const makeAddWorkSpace = () => {
   class AddWorkSpace {

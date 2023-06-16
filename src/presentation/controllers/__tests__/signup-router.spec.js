@@ -1,4 +1,4 @@
-import { SignUpController } from "../signup-controller";
+import { SignUpController } from "../accounts/signup-controller.js";
 import { HttpResponse } from "../../helpers/httpReponse";
 import { InvalidParamError } from "../../../utils/errors/invalid-params-error";
 

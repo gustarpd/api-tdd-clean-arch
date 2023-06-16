@@ -1,4 +1,4 @@
-import { LoginRouter } from "../login-controller";
+import { LoginRouter } from "../accounts/login-controller.js";
 import { MissingParamError } from "../../../utils/errors/missing-params-error.js";
 import { UnauthorizeError } from "../../helpers/errors/unauthorize-error.js";
 import { ServerError } from "../../helpers/errors/server-erro.js";

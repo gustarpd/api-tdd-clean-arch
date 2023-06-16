@@ -1,3 +1,5 @@
+import { GetAllTasksController } from "../workspace/get-all-tasks-workspace-controller";
+
 const makeGetAllTasksUseCase = () => {
   class GetAllTasksUseCase {
     async findAll() {
@@ -36,19 +38,6 @@ const makeGetAllTasksUseCaseWithError = () => {
   const getAllTasksUseCase = new GetAllTasksUseCase();
   return getAllTasksUseCase;
 };
-
-class GetAllTasksController {
-  constructor(getAllTasksUseCase) {
-    this.getAllTaksUseCase = getAllTasksUseCase;
-  }
-  async handle(httpRequest = {}) {
-    try {
-      return await this.getAllTaksUseCase.findAll();
-    } catch (error) {
-      throw error
-    }
-  }
-}
 
 const makeSut = () => {
   const getAllTaksUseCase = makeGetAllTasksUseCase();

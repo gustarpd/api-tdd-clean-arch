@@ -11,7 +11,6 @@ export class DeleteWorkSpaceController {
         return HttpResponse.InternalError();
       }
       const { taskId } = httpRequest;
-
       const workspace = await this.deleteWorkSpaceUseCase.delete(taskId);
       return HttpResponse.ok(workspace);
     } catch (error) {

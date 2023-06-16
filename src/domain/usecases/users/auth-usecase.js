@@ -1,4 +1,4 @@
-import { MissingParamError } from "../../utils/errors/missing-params-error.js";
+import { MissingParamError } from "../../../utils/errors/missing-params-error.js";
 
 export class AuthUseCase {
   constructor(

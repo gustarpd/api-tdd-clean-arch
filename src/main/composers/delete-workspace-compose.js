@@ -1,5 +1,5 @@
 import { DeleteWorkSpaceRespository } from "../../infra/repositories/delete-workspace-repository.js";
-import { DeleteWorkSpaceUseCase } from "../../domain/usecases/delete-workspace-usecase.js";
+import { DeleteWorkSpaceUseCase } from "../../domain/usecases/workspace/delete-workspace-usecase.js";
 import { DeleteWorkSpaceController } from "../../presentation/controllers/delete-workspace-controller.js";
 
 export class DeleteWorkSpaceCompose {

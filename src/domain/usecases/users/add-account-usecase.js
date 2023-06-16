@@ -1,5 +1,5 @@
-import { MissingParamError } from "../../utils/errors/missing-params-error.js";
-import { HttpResponse } from "../../presentation/helpers/httpReponse.js";
+import { MissingParamError } from "../../../utils/errors/missing-params-error.js";
+import { HttpResponse } from "../../../presentation/helpers/httpReponse.js";
 
 export class AddAccount {
   constructor(AddAccountRepository, hasher, tokenGenerator) {

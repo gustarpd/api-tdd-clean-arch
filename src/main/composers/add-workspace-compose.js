@@ -1,4 +1,4 @@
-import { AddWorkSpace } from '../../domain/usecases/add-workspace-usecase.js'
+import { AddWorkSpace } from '../../domain/usecases/workspace/add-workspace-usecase.js'
 import { AddWorkSpaceController } from '../../presentation/controllers/add-workspace-controller.js'
 import { AddWorkSpaceRepository } from '../../infra/repositories/add-workspace-repository.js'
 

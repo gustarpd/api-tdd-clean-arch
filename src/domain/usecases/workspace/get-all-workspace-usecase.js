@@ -8,7 +8,7 @@ export class GetTasksWorkSpaceUseCase {
       const allTasksFromRepository = await this.getTasksWorkSpaceRepository.findAll();
       if (allTasksFromRepository.length === 0) {
         return {
-          message: "Nunhuma tarefa foi encontrada.",
+          message: "Nenhuma tarefa foi encontrada.",
         };
       }
       return allTasksFromRepository

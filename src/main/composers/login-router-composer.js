@@ -1,5 +1,5 @@
 import { LoginRouter } from "../../presentation/controllers/login-controller.js";
-import { AuthUseCase } from "../../domain/usecases/users/auth-usecase.js";
+import { AuthUseCase } from "../../domain/usecases/account/auth-usecase.js";
 import { EmailValidator } from "../../utils/email-validator.js";
 import { LoadUserByEmailRepository } from "../../infra/repositories/load-user-by-email-repository.js";
 import { UpdateAccessTokenRepository } from "../../infra/repositories/update-access-token-repository.js";

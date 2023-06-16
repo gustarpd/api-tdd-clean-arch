@@ -1,5 +1,5 @@
 import { MissingParamError } from "../../../utils/errors/missing-params-error";
-import { AuthUseCase } from "../auth-usecase";
+import { AuthUseCase } from "../account/auth-usecase.js";
 
 const makeEncrypter = () => {
   class EncypterSpy {

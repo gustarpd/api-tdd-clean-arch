@@ -1,4 +1,4 @@
-import { DeleteWorkSpaceUseCase } from "../delete-workspace-usecase";
+import { DeleteWorkSpaceUseCase } from "../workspace/delete-workspace-usecase.js";
 
 const makeDeleteWorkSpaceRespositorySpy = () => {
   class DeleteWorkSpaceRespository {

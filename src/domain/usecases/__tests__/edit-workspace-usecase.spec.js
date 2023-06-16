@@ -1,4 +1,4 @@
-import { EditWorkSpaceUseCase } from '../edit-workspace-usecase.js'
+import { EditWorkSpaceUseCase } from '../workspace/edit-workspace-usecase.js'
 
 const makeEditWorkSpaceRespository = () => {
   class EditWorkSpaceRepositorySpy {

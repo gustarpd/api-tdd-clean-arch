@@ -1,5 +1,5 @@
 import { MissingParamError } from "../../../utils/errors/missing-params-error.js";
-import { AddWorkSpace } from "../add-workspace-usecase";
+import { AddWorkSpace } from "../workspace/add-workspace-usecase.js";
 import { AddWorkSpaceRepository } from "../../../infra/repositories/add-workspace-repository.js";
 import { HttpResponse } from "../../../presentation/helpers/httpReponse.js";
 

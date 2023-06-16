@@ -1,4 +1,4 @@
-import { DbLoadAccountByToken } from "../../usecases/dbload-account-by-token";
+import { DbLoadAccountByToken } from "../account/dbload-account-by-token.js";
 
 const makeDbLoadAccountByTokenRepository = () => {
   class DbLoadAccountByTokenRepository {

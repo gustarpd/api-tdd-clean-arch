@@ -1,5 +1,5 @@
 import { MissingParamError } from "../../../utils/errors/missing-params-error";
-import { AddAccount } from "../add-account-usecase";
+import { AddAccount } from "../account/add-account-usecase.js";
 import { TokenGenerator } from "../../../utils/token-generator";
 import env from "../../../main/config/env";
 import { HttpResponse } from "../../../presentation/helpers/httpReponse";

@@ -1,4 +1,4 @@
-class GetTasksWorkSpaceUseCase {
+export class GetTasksWorkSpaceUseCase {
   constructor(getTasksWorkSpaceRepository) {
     this.getTasksWorkSpaceRepository = getTasksWorkSpaceRepository;
   }

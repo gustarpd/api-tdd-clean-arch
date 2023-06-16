@@ -1,49 +1,49 @@
-import { HttpResponse } from '../../helpers/httpReponse.js';
-import { DeleteWorkSpaceController } from '../delete-workspace-controller.js';
+import { HttpResponse } from "../../helpers/httpReponse.js";
+import { DeleteWorkSpaceController } from "../workspace/delete-workspace-controller.js";
 
 const deleteWorkSpaceUseCase = () => {
   class deleteWorkSpaceUseCase {
     async delete(id) {
-     return this.data
+      return this.data;
     }
   }
 
-  const deleteByIdUseCase = new deleteWorkSpaceUseCase()
+  const deleteByIdUseCase = new deleteWorkSpaceUseCase();
   deleteByIdUseCase.data = {
     success: true,
     message: "Documento excluído com sucesso.",
-  }
-  return deleteByIdUseCase
-}
+  };
+  return deleteByIdUseCase;
+};
 
 const makeSut = () => {
-  const deleteByIdUseCase = deleteWorkSpaceUseCase() 
-  const sut = new DeleteWorkSpaceController(deleteByIdUseCase)  
+  const deleteByIdUseCase = deleteWorkSpaceUseCase();
+  const sut = new DeleteWorkSpaceController(deleteByIdUseCase);
 
   return {
     sut,
-    deleteByIdUseCase
-  }
+    deleteByIdUseCase,
+  };
 };
 
 describe("Delete workSpace controller", () => {
-  test("should return a HttpRequest OK if taskId are provided from handle method", async() => {
-    const { sut, deleteByIdUseCase } = makeSut()
-    const request = await sut.handle({ taskId: "any_id" })
-    expect(request.body).toEqual(deleteByIdUseCase.data)
-  })
-  test("should throw InternalError if HttpRequest are no provided from handle method", async() => {
-    const { sut } = makeSut()
-    const request = await sut.handle()
-    expect(request.statusCode).toBe(500)
-    expect(request).toEqual(HttpResponse.InternalError())
-  })
-  test("should catch if Error ocurrs", async() => {
-    const { sut } = makeSut()
+  test("should return a HttpRequest OK if taskId are provided from handle method", async () => {
+    const { sut, deleteByIdUseCase } = makeSut();
+    const request = await sut.handle({ taskId: "any_id" });
+    expect(request.body).toEqual(deleteByIdUseCase.data);
+  });
+  test("should throw InternalError if HttpRequest are no provided from handle method", async () => {
+    const { sut } = makeSut();
+    const request = await sut.handle();
+    expect(request.statusCode).toBe(500);
+    expect(request).toEqual(HttpResponse.InternalError());
+  });
+  test("should catch if Error ocurrs", async () => {
+    const { sut } = makeSut();
     try {
-      await sut.handle({ })
+      await sut.handle({});
     } catch (error) {
-      expect(error).toBe(HttpResponse.unauthorizeError())
+      expect(error).toBe(HttpResponse.unauthorizeError());
     }
-  })
+  });
 });

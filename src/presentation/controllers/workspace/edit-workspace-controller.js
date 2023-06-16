@@ -1,5 +1,5 @@
-import { HttpResponse } from "../../presentation/helpers/httpReponse.js";
-import { MissingParamError } from "../../utils/errors/missing-params-error.js";
+import { HttpResponse } from "../../helpers/httpReponse.js";
+import { MissingParamError } from "../../../utils/errors/missing-params-error.js";
 
 export class EditWorkSpaceController {
   constructor(editWorkspace) {

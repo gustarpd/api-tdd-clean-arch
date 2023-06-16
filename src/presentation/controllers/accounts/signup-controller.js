@@ -1,6 +1,6 @@
-import { HttpResponse } from "../helpers/httpReponse.js";
-import { MissingParamError } from "../../utils/errors/missing-params-error.js";
-import { InvalidParamError } from '../../utils/errors/invalid-params-error.js'
+import { HttpResponse } from "../../helpers/httpReponse.js";
+import { MissingParamError } from "../../../utils/errors/missing-params-error.js";
+import { InvalidParamError } from '../../../utils/errors/invalid-params-error.js'
 
 export class SignUpController {
   constructor({ addAccount, emailValidator } = {}) {

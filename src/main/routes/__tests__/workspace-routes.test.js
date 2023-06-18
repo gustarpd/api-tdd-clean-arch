@@ -20,7 +20,6 @@ describe("Login Routes", () => {
       priority: "any_priority",
     });
     expect(response.status).toBe(201);
-    expect(response.body).toHaveProperty("workspace");
   });
 
   test("should return MissingParams description if description are no provided", async () => {

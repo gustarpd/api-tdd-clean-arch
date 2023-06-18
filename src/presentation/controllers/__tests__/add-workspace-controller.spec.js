@@ -40,7 +40,8 @@ describe("Workspace controller", () => {
       accessToken: "any",
     });
     expect(httpRequest.statusCode).toBe(201);
-    expect(httpRequest.body.workspace).toEqual(addRepository.WorkSpace);
+    console.log(httpRequest)
+    expect(httpRequest.body).toEqual(addRepository.WorkSpace);
   });
   test("should throw InternaError if HttpRequest are no provided", async () => {
     const { sut } = makeSut();

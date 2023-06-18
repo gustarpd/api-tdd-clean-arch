@@ -27,7 +27,7 @@ export class AddWorkSpaceController {
         owner,
         priority,
       });
-      return HttpResponse.created({ workspace });
+      return HttpResponse.created(workspace);
     } catch (error) {
       return HttpResponse.unauthorizeError();
     }

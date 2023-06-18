@@ -1,6 +1,6 @@
 import supertest from "supertest";
-import app from "../config/app";
-import { connect, disconnect } from "../../infra/helper/mongo-in-memory-server";
+import app from "../../config/app";
+import { connect, disconnect } from "../../../infra/helper/mongo-in-memory-server";
 
 describe("Login Routes", () => {
   const testRequest = supertest(app);
@@ -31,7 +31,6 @@ describe("Login Routes", () => {
         priority: "any_priority",
       })
       .expect(400);
-    console.log(response);
     expect(response.body).toHaveProperty("error");
     expect(response.body.error).toBe("Missing param: description");
   });
@@ -44,7 +43,6 @@ describe("Login Routes", () => {
         priority: "any_priority",
       })
       .expect(400);
-    console.log(response);
     expect(response.body).toHaveProperty("error");
     expect(response.body.error).toBe("Missing param: owner");
   });
@@ -57,7 +55,6 @@ describe("Login Routes", () => {
         owner: "any_owner",
       })
       .expect(400);
-    console.log(response);
     expect(response.body).toHaveProperty("error");
     expect(response.body.error).toBe("Missing param: priority");
   });

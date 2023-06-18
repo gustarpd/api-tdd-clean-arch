@@ -1,8 +1,8 @@
 import supertest from "supertest";
-import app from "../config/app";
+import app from "../../config/app";
 import bcrypt from "bcrypt";
-import { connect, disconnect } from "../../infra/helper/mongo-in-memory-server";
-import { User } from "../../infra/db/schemas/Users";
+import { connect, disconnect } from "../../../infra/helper/mongo-in-memory-server";
+import { User } from "../../../infra/db/schemas/Users";
 
 describe("Login Routes", () => {
   const testRequest = supertest(app);

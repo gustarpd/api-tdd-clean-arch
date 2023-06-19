@@ -14,8 +14,8 @@ const makeDeleteWorkSpaceRespositorySpy = () => {
 const makeDeleteWorkSpaceRespositoryWithErro = () => {
   class DeleteWorkSpaceRespository {
     async deleteById(taskId) {
-      if (taskId === 'invalid_id') {
-        throw new Error("Nenhum documento encontrado com o ID fornecido.")
+      if (taskId === "invalid_id") {
+        throw new Error("Nenhum documento encontrado com o ID fornecido.");
       }
     }
   }
@@ -26,7 +26,8 @@ const makeDeleteWorkSpaceRespositoryWithErro = () => {
 
 const makeSut = () => {
   const deleteWorkSpaceRespository = makeDeleteWorkSpaceRespositorySpy();
-  const deleteWorkSpaceRespositoryWithErro = makeDeleteWorkSpaceRespositoryWithErro()
+  const deleteWorkSpaceRespositoryWithErro =
+    makeDeleteWorkSpaceRespositoryWithErro();
   const deleteWorkSpaceUseCase = new DeleteWorkSpaceUseCase(
     deleteWorkSpaceRespository
   );
@@ -34,7 +35,7 @@ const makeSut = () => {
   return {
     deleteWorkSpaceRespository,
     deleteWorkSpaceUseCase,
-    deleteWorkSpaceRespositoryWithErro
+    deleteWorkSpaceRespositoryWithErro,
   };
 };
 
@@ -44,13 +45,15 @@ describe("DeleteWorkSpace UseCase", () => {
     const result = await deleteWorkSpaceUseCase.delete("any_id");
     expect(result).toEqual({
       message: "Documento excluído com sucesso.",
-      success: true
+      success: true,
     });
   });
 
   test("should throw an Error id any id are not provided", async () => {
-    const { deleteWorkSpaceRespositoryWithErro } = makeSut()
-    const usecase = new DeleteWorkSpaceUseCase(deleteWorkSpaceRespositoryWithErro)
+    const { deleteWorkSpaceRespositoryWithErro } = makeSut();
+    const usecase = new DeleteWorkSpaceUseCase(
+      deleteWorkSpaceRespositoryWithErro
+    );
     const result = usecase.delete("invalid_id");
     expect(result).rejects.toThrow();
   });

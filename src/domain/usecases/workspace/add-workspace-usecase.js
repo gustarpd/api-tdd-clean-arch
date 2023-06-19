@@ -6,7 +6,7 @@ export class AddWorkSpace {
   constructor(addWorkSpaceRepository) {
     this.addWorkSpaceRepository = addWorkSpaceRepository;
   }
-  async add({ description, owner, priority }) {
+  async add({ description, owner, priority } = {}) {
     if (!description) {
       throw new MissingParamError("description");
     }

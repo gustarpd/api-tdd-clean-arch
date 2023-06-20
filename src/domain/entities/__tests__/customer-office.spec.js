@@ -15,7 +15,9 @@ describe("Clients Office", () => {
     observations: "Lorem ipsum dolor sit amet",
   };
 
-  test("should create Customer Office data", () => {
-    expect(CustomerOffice.create(customerOffice)).toEqual(customerOffice);
+  test("should return Customer Office object", () => {
+    const data = CustomerOffice.create(customerOffice);
+    expect(data).toEqual(customerOffice);
+    expect(CustomerOffice.toData(data)).toEqual(customerOffice);
   });
 });

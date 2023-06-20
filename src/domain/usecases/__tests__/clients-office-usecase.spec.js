@@ -41,15 +41,19 @@ class CreateCustomerOffice {
   }
 
   async execute({ ...customerData }) {
-    const createNewCustomer = await this.customerOfficeRepository.create(
-      CustomerOffice.create(customerData)
-    );
+    try {
+      const createNewCustomer = await this.customerOfficeRepository.create(
+        CustomerOffice.create(customerData)
+      );
 
-    if (!createNewCustomer) {
-      throw new Error("some error at Db");
+      if (!createNewCustomer) {
+        throw new Error("Unable to create customer in the database.");
+      }
+
+      return CustomerOffice.toData(createNewCustomer);
+    } catch (error) {
+      throw new Error(`Error: ${error.message}`);
     }
-
-    return CustomerOffice.toData(createNewCustomer);
   }
 }
 
@@ -85,9 +89,15 @@ describe("Customer Office", () => {
   });
 
   test("should throw an error if an error occurs in the database while creating a new customer", async () => {
-    const repository = makeCustomerOfficeRepositoryWithError()
-    const sut = new CreateCustomerOffice(repository)
-    const run = sut.execute({});
-    expect(run).rejects.toThrow(new Error("some error at Db"));
+    const repository = makeCustomerOfficeRepositoryWithError();
+    const sut = new CreateCustomerOffice(repository);
+    const errorMessage = "Unable to create customer in the database.";
+    
+    try {
+      await sut.execute({});
+      fail("Expected an error to be thrown.");
+    } catch (error) {
+      expect(error.message).toBe(`Error: ${errorMessage}`);
+    }
   });
 });

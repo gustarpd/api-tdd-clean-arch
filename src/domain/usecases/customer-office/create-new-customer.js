@@ -1,4 +1,7 @@
-class CreateCustomerOffice {
+import { CustomerOffice } from "../../entities/clients-office.js";
+
+
+export class CreateCustomerOffice {
   constructor(customerOfficeRepository) {
     this.customerOfficeRepository = customerOfficeRepository;
   }

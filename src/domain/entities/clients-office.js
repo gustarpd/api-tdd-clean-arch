@@ -1,6 +1,5 @@
-export class ClientsOffice {
+export class CustomerOffice {
   constructor({
-    id,
     name,
     phone,
     email,
@@ -12,10 +11,7 @@ export class ClientsOffice {
     profession,
     nationality,
     observations,
-    createdAt,
-    updatedAt,
   }) {
-    this.id = id;
     this.name = name;
     this.phone = phone;
     this.email = email;
@@ -27,7 +23,13 @@ export class ClientsOffice {
     this.profession = profession;
     this.nationality = nationality;
     this.observations = observations;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
+  }
+
+  static create(data) {
+    return new CustomerOffice(data);
+  }
+
+  static toData(customer) {
+    return { ...customer };
   }
 }

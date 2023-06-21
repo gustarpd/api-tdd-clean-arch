@@ -14,15 +14,6 @@ export const schema = new mongoose.Schema(
     nationality: { type: String, required: true },
     observations: { type: String, required: true },
   },
-  {
-    toJSON: {
-      transform: (_, ret) => {
-        ret.id = ret._id;
-        delete ret._id;
-        delete ret.__v;
-      },
-    },
-  }
 );
 
 export const Customer = mongoose.model("Customer", schema);

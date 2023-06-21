@@ -44,13 +44,13 @@ class CreateCustomerController {
         "phone",
         "email",
         "address",
-        // "cpfCnpj",
-        // "dateOfBirth",
-        // "gender",
-        // "maritalStatus",
-        // "profession",
-        // "nationality",
-        // "observations",
+        "cpfCnpj",
+        "dateOfBirth",
+        "gender",
+        "maritalStatus",
+        "profession",
+        "nationality",
+        "observations",
       ];
 
       for (const param of requiredParams) {
@@ -84,9 +84,16 @@ describe("Workspace controller", () => {
     const { sut, createCustomerRepository } = makeSut();
     const request = await sut.handle({
       name: "John Doe",
-      phone: "123dad4567890",
+      phone: "1234567890",
       email: "john@example.com",
       address: "123 Main Street",
+      cpfCnpj: "123456789",
+      dateOfBirth: "1990-01-01",
+      gender: "Male",
+      maritalStatus: "Single",
+      profession: "Engineer",
+      nationality: "Brazilian",
+      observations: "Lorem ipsum dolor sit amet",
     });
     expect(request).toEqual(createCustomerRepository.data);
   });

@@ -1,7 +1,6 @@
 import { Customer } from "../../db/schemas/Customer.js";
 import { connect, disconnect } from "../../helper/mongo-in-memory-server.js";
-import { ValidationError } from "mongoose";
-import { CreateCustomerOffice } from "../create-new-customer-repository.js";
+import { CreateCustomerOfficeRepository } from "../create-new-customer-repository.js";
 
 describe("add-workspace-repository", () => {
   beforeAll(async () => {
@@ -30,7 +29,7 @@ describe("add-workspace-repository", () => {
       nationality: "Brazilian",
       observations: "Lorem ipsum dolor sit amet",
     };
-    const customer = new CreateCustomerOffice();
+    const customer = new CreateCustomerOfficeRepository();
     const result = await customer.create(expectedProperties);
 
     for (const prop in expectedProperties) {
@@ -39,7 +38,7 @@ describe("add-workspace-repository", () => {
   });
 
   test("should throw An Error if any data are provided", async () => {
-    const customer = new CreateCustomerOffice();
+    const customer = new CreateCustomerOfficeRepository();
     const result = customer.create({});
     expect(result).rejects.toThrow();
   });

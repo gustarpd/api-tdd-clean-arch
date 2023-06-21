@@ -30,6 +30,6 @@ export class CustomerOffice {
   }
 
   static toData(customer) {
-    return { ...customer };
+    return customer;
   }
 }

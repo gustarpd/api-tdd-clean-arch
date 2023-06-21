@@ -33,7 +33,7 @@ export class CreateCustomerController {
       const customer = await this.createCustomerUseCase.execute({
         ...httpRequest,
       });
-      return customer;
+      return HttpResponse.created(customer)
     } catch (error) {
       return HttpResponse.unauthorizeError();
     }

@@ -1,23 +1,11 @@
-import { Customer } from "../db/schemas/Customer";
+import { Customer } from "../db/schemas/Customer.js";
 
-export class CreateCustomerOffice {
+export class CreateCustomerOfficeRepository {
     async create(data) {
       try {
-        const customer = await Customer.create({
-          name: data.name,
-          address: data.name,
-          email: data.email,
-          cpfCnpj: data.cpfCnpj,
-          dateOfBirth: data.dateOfBirth,
-          gender: data.gender,
-          maritalStatus: data.maritalStatus,
-          nationality: data.nationality,
-          observations: data.observations,
-          phone: data.phone,
-          profession: data.profession,
-        });
-  
-        return customer;
+        const customer = new Customer(data);
+        await customer.save()
+        return customer
       } catch (error) {
         throw new Error("An unexpected error occurred");
       }

@@ -25,7 +25,7 @@ describe("UpdateCustomerRepository", () => {
   it("should update the Customer with the provided data", async () => {
     const { updateCustomerRepository } = makeSut();
 
-    const workspace = await Customer.create({
+    const customer = await Customer.create({
       name: "John Doe",
       phone: "1234567890",
       email: "john@example.com",
@@ -38,9 +38,9 @@ describe("UpdateCustomerRepository", () => {
       nationality: "Brazilian",
       observations: "Lorem ipsum dolor sit amet",
     });
-    
+
     const result = await updateCustomerRepository.edit({
-      customerId: workspace._id,
+      customerId: customer._id,
       name: "John Doe Edited",
       phone: "1234567890",
     });

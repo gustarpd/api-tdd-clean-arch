@@ -1,5 +1,5 @@
 import { HttpResponse } from "../../../presentation/helpers/httpReponse";
-import { CasesCustomerUseCase } from "../customer-office/edit-customer";
+import { UpdateCustomerUseCase } from "../customer-office/edit-customer-usecase.js";
 
 const makeCasesUseCaseRepositorySpy = () => {
   class CasesUseCase {
@@ -30,7 +30,7 @@ const makeCasesUseCaseRepositoryNullSpy = () => {
 
 const makeSut = () => {
   const caseUseCaseRepository = makeCasesUseCaseRepositorySpy();
-  const sut = new CasesCustomerUseCase(caseUseCaseRepository);
+  const sut = new UpdateCustomerUseCase(caseUseCaseRepository);
   return {
     sut,
     caseUseCaseRepository,
@@ -52,7 +52,7 @@ describe("Customer Office", () => {
 
   test("should catch an error in the catch block", async () => {
     const repository = makeCasesUseCaseRepositoryNullSpy();
-    const sut = new CasesCustomerUseCase(repository);
+    const sut = new UpdateCustomerUseCase(repository);
     const createdData = await sut.edit({});
     expect(createdData).toEqual(HttpResponse.InternalError());
   });

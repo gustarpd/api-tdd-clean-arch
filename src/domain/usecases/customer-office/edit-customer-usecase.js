@@ -1,6 +1,6 @@
 import { HttpResponse } from "../../../presentation/helpers/httpReponse";
 
-export class EditCustomer {
+export class UpdateCustomerUseCase {
   constructor(caseUseCaseRepository) {
     this.caseUseCaseRepository = caseUseCaseRepository;
   }
@@ -12,7 +12,10 @@ export class EditCustomer {
         return HttpResponse.InternalError();
       }
 
-      return editedUser;
+      return {
+        success: true,
+        message: "Cliente atualizado com sucesso."
+      }
     } catch (error) {
       console.error("Error occurred while editing:", error.message);
     }

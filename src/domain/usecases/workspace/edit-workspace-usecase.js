@@ -5,16 +5,22 @@ export class EditWorkSpaceUseCase {
 
   async edit({ taskId, description, owner, priority }) {
     try {
-      await this.editWorkSpaceRepository.edit({
+      const editedUser = await this.editWorkSpaceRepository.edit({
         taskId,
         description,
         owner,
         priority,
       });
+      if (editedUser) {
+        return {
+          sucess: true,
+          message: "Agenda atualizada com sucesso.",
+        };
+      }
 
-      return {}
+      return { success: false, message: "Erro ao atualizar o cliente" };
     } catch (error) {
-      return new Error(`${error}`)
+      return new Error(`${error}`);
     }
   }
 }

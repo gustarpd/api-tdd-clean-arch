@@ -28,8 +28,4 @@ export class Case {
       history,
     });
   }
-
-  static toData(customer) {
-    return customer;
-  }
 }

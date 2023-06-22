@@ -14,7 +14,7 @@ export class EditCustomer {
 
       return editedUser;
     } catch (error) {
-      throw error;
+      console.error("Error occurred while editing:", error.message);
     }
   }
 }

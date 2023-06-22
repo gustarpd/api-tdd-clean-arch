@@ -1,5 +1,5 @@
-import { HttpResponse } from "../../../presentation/helpers/httpReponse.js";
-import { CasesCustomerUseCase } from "../customer-office/edit-customer.js";
+import { HttpResponse } from "../../../presentation/helpers/httpReponse";
+import { CasesCustomerUseCase } from "../customer-office/edit-customer";
 
 const makeCasesUseCaseRepositorySpy = () => {
   class CasesUseCase {
@@ -38,7 +38,7 @@ const makeSut = () => {
 };
 
 describe("Customer Office", () => {
-  test("should execute usecase and return customer data if created correctly", async () => {
+  test("should execute use case and return customer data if created correctly", async () => {
     const { sut } = makeSut();
     const inputData = {
       name: "John Doe",
@@ -50,17 +50,18 @@ describe("Customer Office", () => {
     expect(createdData).toEqual(inputData);
   });
 
-  test("should catch an error in the catch blocks", async () => {
+  test("should catch an error in the catch block", async () => {
     const repository = makeCasesUseCaseRepositoryNullSpy();
     const sut = new CasesCustomerUseCase(repository);
     const createdData = await sut.edit({});
     expect(createdData).toEqual(HttpResponse.InternalError());
   });
+
   test("should catch Error", async () => {
-    const { sut } = makeSut()
+    const { sut } = makeSut();
     try {
       await sut.edit({});
-      fail("O teste deveria ter falhado aqui");
+      fail("The test should have failed here");
     } catch (error) {
       expect(error).toBeInstanceOf(Error);
     }

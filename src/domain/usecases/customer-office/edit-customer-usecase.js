@@ -8,14 +8,14 @@ export class UpdateCustomerUseCase {
   async update(data) {
     try {
       const editedUser = await this.caseUseCaseRepository.edit(data);
+      if(!data) {
+        return HttpResponse.InternalError()
+      }
       if (!editedUser) {
         return HttpResponse.InternalError();
       }
 
-      return {
-        success: true,
-        message: "Cliente atualizado com sucesso."
-      }
+      return editedUser
     } catch (error) {
       console.error("Error occurred while editing:", error.message);
     }

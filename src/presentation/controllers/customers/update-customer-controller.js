@@ -8,18 +8,18 @@ export class UpdateCustomerController {
   
     async handle(httpRequest) {
       try {
-        // if (!httpRequest) {
-        //   return HttpResponse.InternalError()
-        // }
+        if (!httpRequest) {
+          return HttpResponse.InternalError()
+        }
   
-        // if (!httpRequest.id) {
-        //   return HttpResponse.badRequest(new MissingParamError("id"));
-        // }
+        if (!httpRequest.id) {
+          return HttpResponse.badRequest(new MissingParamError("id"));
+        }
   
         const updatedUser = await this.updateCustomerUseCase.update(httpRequest);
-        // if (!updatedUser) {
-        //   return HttpResponse.InternalError();
-        // }
+        if (!updatedUser) {
+          return HttpResponse.InternalError();
+        }
         console.log(httpRequest)
         return HttpResponse.ok(updatedUser);
       } catch (error) {

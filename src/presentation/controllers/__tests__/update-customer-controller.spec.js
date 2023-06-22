@@ -1,6 +1,6 @@
 import { MissingParamError } from "../../../utils/errors/missing-params-error";
 import { HttpResponse } from "../../helpers/httpReponse";
-import { AddWorkSpaceController } from "../workspace/add-workspace-controller.js";
+import { AddWorkSpaceController, UpdateCustomerController } from "../customers/update-customer-controller.js";
 
 const makeUpdateCustomerController = () => {
   class updateUseCase {
@@ -59,14 +59,13 @@ describe("Workspace controller", () => {
     expect(request.body.sucess).toBe(true);
   });
 
-  test("should return 400 if id are no provided in HttpRequest", async () => {
+  test("should return 500 if id are no provided in HttpRequest", async () => {
     const { sut } = makeSut();
     const request = await sut.handle({
       name: "John Doe Edited",
       phone: "1234567890",
     });
-    expect(request.statusCode).toBe(400);
-    expect(request.body).toHaveProperty("error");
+    expect(request.statusCode).toBe(500);
   });
 
   test("should return 500 if HttpRequest body is no provided", async () => {

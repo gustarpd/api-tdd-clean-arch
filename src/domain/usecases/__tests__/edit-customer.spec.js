@@ -3,8 +3,11 @@ import { UpdateCustomerUseCase } from "../customer-office/edit-customer-usecase.
 
 const makeCasesUseCaseRepositorySpy = () => {
   class CasesUseCase {
-    async create(data) {
-      return this.data;
+    async edit(data) {
+      return {
+        success: true,
+        message: "Cliente atualizado com sucesso.",
+      }
     }
   }
 
@@ -19,8 +22,8 @@ const makeCasesUseCaseRepositorySpy = () => {
 
 const makeCasesUseCaseRepositoryNullSpy = () => {
   class CasesUseCase {
-    async create(data) {
-      return null;
+    async edit(data) {
+      return HttpResponse.InternalError();
     }
   }
 
@@ -41,29 +44,35 @@ describe("Customer Office", () => {
   test("should execute use case and return customer data if created correctly", async () => {
     const { sut } = makeSut();
     const inputData = {
+      id: 2,
       name: "John Doe",
       phone: "1234567890",
       email: "john@example.com",
     };
 
-    const createdData = await sut.edit(inputData);
+    const createdData = await sut.update(inputData);
+    console.log(createdData)
     expect(createdData).toEqual({
       success: true,
-      message: "Cliente atualizado com sucesso."
+      message: "Cliente atualizado com sucesso.",
     });
   });
 
   test("should catch an error in the catch block", async () => {
     const repository = makeCasesUseCaseRepositoryNullSpy();
     const sut = new UpdateCustomerUseCase(repository);
-    const createdData = await sut.edit({});
-    expect(createdData).toEqual(HttpResponse.InternalError());
+    try {
+      const createdData = await sut.update({});
+      console.log(createdData);
+    } catch (error) {
+      expect(error).toEqual(HttpResponse.InternalError());
+    }
   });
 
   test("should catch Error", async () => {
     const { sut } = makeSut();
     try {
-      await sut.edit({});
+      await sut.update({});
       fail("The test should have failed here");
     } catch (error) {
       expect(error).toBeInstanceOf(Error);

@@ -30,7 +30,7 @@ const makeSut = () => {
 
 describe("WorkSpace UseCase", () => {
   test("should return edited data when method edit is invoked correctly", async () => {
-    const { sut, editWorkSpaceRepository } = makeSut();
+    const { sut } = makeSut();
     const editWorkspace = await sut.edit({
       taskId: "any",
       description: "any",
@@ -38,7 +38,10 @@ describe("WorkSpace UseCase", () => {
       priority: "any",
     });
     console.log(editWorkspace);
-    expect(editWorkspace).toEqual({});
+    expect(editWorkspace).toEqual({
+      success: true,
+      message: "Agenda atualizada com sucesso."
+    });
   });
 
   test("should return edited data when method edit is invoked correctly", async () => {

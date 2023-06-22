@@ -13,7 +13,7 @@ export class EditWorkSpaceUseCase {
       });
       if (editedUser) {
         return {
-          sucess: true,
+          success: true,
           message: "Agenda atualizada com sucesso.",
         };
       }

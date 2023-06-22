@@ -1,13 +1,13 @@
-import { HttpResponse } from "../../../presentation/helpers/httpReponse";
+import { HttpResponse } from "../../../presentation/helpers/httpReponse.js";
 
 export class UpdateCustomerUseCase {
   constructor(caseUseCaseRepository) {
     this.caseUseCaseRepository = caseUseCaseRepository;
   }
 
-  async edit(data) {
+  async update(data) {
     try {
-      const editedUser = await this.caseUseCaseRepository.create(data);
+      const editedUser = await this.caseUseCaseRepository.edit(data);
       if (!editedUser) {
         return HttpResponse.InternalError();
       }

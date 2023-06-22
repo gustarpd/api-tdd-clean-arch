@@ -22,7 +22,7 @@ describe("UpdateAccessToken Repository", () => {
     WorkSpace.deleteMany({});
   });
 
-  it("should update the workspace with the provided data", async () => {
+  test("should update the workspace with the provided data", async () => {
     const { updateAccessTokenRepository } = makeSut();
 
     const workspace = await WorkSpace.create({

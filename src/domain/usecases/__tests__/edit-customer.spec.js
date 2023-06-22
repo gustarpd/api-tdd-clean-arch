@@ -47,7 +47,10 @@ describe("Customer Office", () => {
     };
 
     const createdData = await sut.edit(inputData);
-    expect(createdData).toEqual(inputData);
+    expect(createdData).toEqual({
+      success: true,
+      message: "Cliente atualizado com sucesso."
+    });
   });
 
   test("should catch an error in the catch block", async () => {

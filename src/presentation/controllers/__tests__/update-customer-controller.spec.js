@@ -38,31 +38,6 @@ const makeUpdateCustomerControllerWithErrorMessage = () => {
   return new updateUseCase();
 };
 
-class UpdateCustomerController {
-  constructor(updateCustomerUseCase) {
-    this.updateCustomerUseCase = updateCustomerUseCase;
-  }
-
-  async handle(httpRequest) {
-    try {
-      if (!httpRequest) {
-        return HttpResponse.InternalError();
-      }
-
-      if (!httpRequest.id) {
-        return HttpResponse.badRequest(new MissingParamError("id"));
-      }
-
-      const updatedUser = await this.updateCustomerUseCase.update(httpRequest);
-      if (!updatedUser) {
-        return HttpResponse.InternalError();
-      }
-      return HttpResponse.ok(updatedUser);
-    } catch (error) {
-      return HttpResponse.InternalError()
-    }
-  }
-}
 
 const makeSut = () => {
   const updateUseCase = makeUpdateCustomerController();

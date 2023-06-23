@@ -7,7 +7,6 @@ export class GetAllTasksController {
   async handle(httpRequest = {}) {
     try {
       const tasks = await this.getAllTaksUseCase.getTasks();
-      console.log(tasks)
       return HttpResponse.ok(tasks);
     } catch (error) {
       throw error;

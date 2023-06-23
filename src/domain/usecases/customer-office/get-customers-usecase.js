@@ -1,6 +1,6 @@
 import { CustomerOffice } from '../../entities/clients-office'
 
-class GetAllCustomer {
+export class GetAllCustomer {
   constructor(GetAllCustomerRepository) {
     this.GetAllCustomerRepository = GetAllCustomerRepository;
   }

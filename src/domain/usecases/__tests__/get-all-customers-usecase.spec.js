@@ -1,4 +1,5 @@
-import { CustomerOffice } from "../../entities/clients-office";
+import { CustomerOffice } from "../../entities/clients-office.js";
+import { GetAllCustomer } from '../customer-office/get-customers-usecase.js'
 
 const makeGetAllCustomersRepository = () => {
   class GetAllCustomer {
@@ -14,24 +15,6 @@ const makeGetAllCustomersRepository = () => {
   };
   return getCustomer;
 };
-
-class GetAllCustomer {
-  constructor(GetAllCustomerRepository) {
-    this.GetAllCustomerRepository = GetAllCustomerRepository;
-  }
-  async execute() {
-    try {
-      const update = await this.GetAllCustomerRepository.getManyById();
-      if (!update) {
-        return { message: "Nenhum cliente foi encontrado." };
-      }
-      return CustomerOffice.toData(update);
-    } catch (error) {
-      console.error(`Error: ${error}`);
-      throw new Error("Error: Failed to fetch customers.");
-    }
-  }
-}
 
 const makeSut = () => {
   const getCustomerRepository = makeGetAllCustomersRepository();

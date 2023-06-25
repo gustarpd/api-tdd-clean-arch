@@ -1,4 +1,5 @@
 import { CustomerOffice } from "../../entities/clients-office.js";
+import { InvalidCpfError } from "../../entities/errors/invalid-cpf-error.js";
 
 
 export class CreateCustomerOffice {
@@ -8,16 +9,21 @@ export class CreateCustomerOffice {
 
   async execute({ ...customerData }) {
     try {
+      if(!customerData) {
+        throw new Error('Unable to create customer in the database.')
+      }
+      const newCustomer = CustomerOffice.create(customerData);
+      if(newCustomer instanceof InvalidCpfError) {
+        return { error: newCustomer.message }
+      }
+
       const createNewCustomer = await this.customerOfficeRepository.create(
         CustomerOffice.create(customerData)
       );
 
-      if (!createNewCustomer) {
-        throw new Error("Unable to create customer in the database.");
-      }
-      
       return CustomerOffice.toData(createNewCustomer);
     } catch (error) {
+      console.error(error)
       throw new Error(`Error: ${error.message}`);
     }
   }

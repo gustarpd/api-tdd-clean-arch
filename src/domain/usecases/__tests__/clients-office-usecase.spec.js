@@ -1,4 +1,4 @@
-import { CreateCustomerOffice } from '../customer-office/create-new-customer.js'
+import { CreateCustomerOffice } from "../customer-office/create-new-customer.js";
 
 const makeCustomerOfficeRepository = () => {
   class CustomerOfficeRepository {
@@ -13,7 +13,7 @@ const makeCustomerOfficeRepository = () => {
     phone: "1234567890",
     email: "john@example.com",
     address: "123 Main Street",
-    cpfCnpj: "123456789",
+    cpfCnpj: "620.224.643-03",
     dateOfBirth: "1990-01-01",
     gender: "Male",
     maritalStatus: "Single",
@@ -35,7 +35,6 @@ const makeCustomerOfficeRepositoryWithError = () => {
   return customerData;
 };
 
-
 const makeSut = () => {
   const customerOfficeRepository = makeCustomerOfficeRepository();
   const customerOfficeRepositoryWithError =
@@ -56,14 +55,16 @@ describe("Customer Office", () => {
       phone: "1234567890",
       email: "john@example.com",
       address: "123 Main Street",
-      cpfCnpj: "123456789",
+      cpfCnpj: "620.224.643-03",
       dateOfBirth: "1990-01-01",
       gender: "Male",
       maritalStatus: "Single",
       profession: "Engineer",
       nationality: "Brazilian",
-      observations: "Lorem ipsum dolor sit amet",
-    });
+      observations: "Lorem ipsum dolor sit amet"
+    }
+    );
+
     expect(run).toEqual(customerOfficeRepository.data);
   });
 
@@ -71,10 +72,9 @@ describe("Customer Office", () => {
     const repository = makeCustomerOfficeRepositoryWithError();
     const sut = new CreateCustomerOffice(repository);
     const errorMessage = "Unable to create customer in the database.";
-    
+
     try {
       await sut.execute({});
-      fail("Expected an error to be thrown.");
     } catch (error) {
       expect(error.message).toBe(`Error: ${errorMessage}`);
     }

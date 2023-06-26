@@ -4,7 +4,7 @@ export class DeleteCustomerUseCase {
   }
 
   async execute(id) {
-    const customer = await this.deleteCustomerRepository.delete(id);
+    const customer = await this.deleteCustomerRepository.deleteById(id);
     if (!customer) {
       return { success: false, message: "Falha ao excluír o cliente." };
     }

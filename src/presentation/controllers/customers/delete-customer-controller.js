@@ -1,3 +1,5 @@
+import { HttpResponse } from "../../helpers/httpReponse.js";
+
 export class DeleteCustomerController {
     constructor(deleteCustomerUseCase) {
       this.deleteCustomerUseCase = deleteCustomerUseCase;

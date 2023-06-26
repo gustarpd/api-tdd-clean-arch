@@ -1,22 +1,6 @@
 import { Customer } from "../../db/schemas/Customer.js";
 import { connect, disconnect } from "../../helper/mongo-in-memory-server.js";
-// import { UpdateCustomerRepository } from "../db-delete-customer-repository.js";
-
-export class DeleteCustomerRepository {
-  async deleteById(id) {
-    if (id)
-      return {
-        deleteCount: 1,
-      };
-  }
-}
-
-const makeSut = () => {
-  const updateCustomerRepository = new UpdateCustomerRepository();
-  return {
-    updateCustomerRepository,
-  };
-};
+import { DeleteCustomerRepository } from "../delete-customer-repository.js";
 
 describe("UpdateCustomerRepository", () => {
   beforeAll(async () => {
@@ -49,7 +33,7 @@ describe("UpdateCustomerRepository", () => {
     });
 
     const result = await sut.deleteById(customer._id);
-    expect(result).toHaveProperty("deleteCount");
-    expect(result.deleteCount).toBe(1);
+    expect(result).toHaveProperty("deletedCount");
+    expect(result.deletedCount).toBe(1);
   });
 });

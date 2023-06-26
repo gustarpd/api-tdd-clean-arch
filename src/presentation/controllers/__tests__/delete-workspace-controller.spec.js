@@ -16,6 +16,12 @@ const deleteWorkSpaceUseCase = () => {
   return deleteByIdUseCase;
 };
 
+const deleteWorkSpaceUseCaseWithError = {
+  async delete(taskId) {
+    throw new Error();
+  },
+};
+
 const makeSut = () => {
   const deleteByIdUseCase = deleteWorkSpaceUseCase();
   const sut = new DeleteWorkSpaceController(deleteByIdUseCase);
@@ -38,12 +44,18 @@ describe("Delete workSpace controller", () => {
     expect(request.statusCode).toBe(500);
     expect(request).toEqual(HttpResponse.InternalError());
   });
-  test("should catch if Error ocurrs", async () => {
-    const { sut } = makeSut();
-    try {
-      await sut.handle({});
-    } catch (error) {
-      expect(error).toBe(HttpResponse.unauthorizeError());
-    }
+  test("should return 401 if an error occurs", async () => {
+    const sut = new DeleteWorkSpaceController(deleteWorkSpaceUseCaseWithError)
+
+
+    const httpRequest = {
+      taskId: "1",
+    };
+
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse.statusCode).toBe(401);
+    expect(httpResponse.body).toEqual({ error: "unauthorized" });
   });
 });
+

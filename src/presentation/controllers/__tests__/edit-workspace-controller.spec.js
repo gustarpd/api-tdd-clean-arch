@@ -18,8 +18,13 @@ const makeEditWorkSpaceRepository = () => {
   };
   return editWorkSpace;
 };
-
+class EditWorkspaceMock {
+  async edit(workspaceData) {
+    throw new Error();
+  }
+}
 const makeSut = () => {
+  const editWorkspaceMock = new EditWorkspaceMock();
   const editWorkSpaceRepository = makeEditWorkSpaceRepository();
   const sut = new EditWorkSpaceController(editWorkSpaceRepository);
 
@@ -124,5 +129,21 @@ describe("", () => {
     } catch (error) {
       expect(error).toEqual(HttpResponse.InternalError());
     }
+  });
+
+  it("should return 500 if an error occurs", async () => {
+    const mockUseCaseError = new EditWorkspaceMock()
+    const sut = new EditWorkSpaceController(mockUseCaseError)
+
+    const httpRequest = {
+      taskId: "1",
+      description: "Updated description",
+      owner: "John Doe",
+      priority: 1,
+    };
+
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(500);
+    expect(httpResponse).toEqual(HttpResponse.InternalError());
   });
 });

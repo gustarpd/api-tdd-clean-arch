@@ -49,7 +49,7 @@ const makeSut = () => {
   };
 };
 
-describe("Delete workSpace controller", () => {
+describe("FindAllWorkspace controller", () => {
   test("should return HttpRequest if request succeeds", async () => {
     const { sut, getAllTaksUseCase } = makeSut();
     const request = await sut.handle();

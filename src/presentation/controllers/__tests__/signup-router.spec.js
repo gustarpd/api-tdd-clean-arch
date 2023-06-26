@@ -57,13 +57,11 @@ describe("Signup Router", () => {
     const { signUpController, addAccount } = makeSut();
     addAccount.accessToken = "valid_token";
     const result = await signUpController.handle({
-      body: {
-        name: "any_mail",
-        password: "any_password",
-      },
+      email: "any_email",
+      password: "any_password",
     });
     expect(result.body).toHaveProperty("error");
-    expect(result.body.error).toBe("Missing param: email");
+    expect(result.body.error).toBe("Missing param: name");
     expect(result.statusCode).toBe(400);
   });
 
@@ -74,7 +72,7 @@ describe("Signup Router", () => {
       name: "any_name",
       password: "any_password",
     });
-    console.log(result)
+    console.log(result);
     expect(result.body).toHaveProperty("error");
     expect(result.body.error).toBe("Missing param: email");
     expect(result.statusCode).toBe(400);
@@ -88,7 +86,7 @@ describe("Signup Router", () => {
       name: "any_mail",
       email: "mail@mail.com",
     });
-    console.log(result)
+    console.log(result);
     expect(result.body).toHaveProperty("error");
     expect(result.body.error).toBe("Missing param: password");
     expect(result.statusCode).toBe(400);
@@ -98,9 +96,9 @@ describe("Signup Router", () => {
     const { signUpController, emailValidator } = makeSut();
     emailValidator.isEmailValid = false;
     const httpRequest = {
-        name: "John Doe",
-        email: "invalid_email.com",
-        password: "valid_password",
+      name: "John Doe",
+      email: "invalid_email.com",
+      password: "valid_password",
     };
     const httpResponse = await signUpController.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(400);
@@ -114,9 +112,9 @@ describe("Signup Router", () => {
       throw new Error();
     };
     const httpRequest = {
-        name: "John Doe",
-        email: "valid_email.com",
-        password: "valid_password",
+      name: "John Doe",
+      email: "valid_email.com",
+      password: "valid_password",
     };
     const httpResponse = await signUpController.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(401);

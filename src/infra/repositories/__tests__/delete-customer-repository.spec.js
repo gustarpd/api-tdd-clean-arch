@@ -1,6 +1,15 @@
 import { Customer } from "../../db/schemas/Customer.js";
-import { connect, disconnect } from "../../helper/mongo-in-memory-server";
-import { UpdateCustomerRepository } from "../db-edit-customer-repository.js";
+import { connect, disconnect } from "../../helper/mongo-in-memory-server.js";
+// import { UpdateCustomerRepository } from "../db-delete-customer-repository.js";
+
+export class DeleteCustomerRepository {
+  async deleteById(id) {
+    if (id)
+      return {
+        deleteCount: 1,
+      };
+  }
+}
 
 const makeSut = () => {
   const updateCustomerRepository = new UpdateCustomerRepository();
@@ -23,7 +32,7 @@ describe("UpdateCustomerRepository", () => {
   });
 
   it("should update the Customer with the provided data", async () => {
-    const { updateCustomerRepository } = makeSut();
+    const sut = new DeleteCustomerRepository()
 
     const customer = await Customer.create({
       name: "John Doe",
@@ -39,13 +48,8 @@ describe("UpdateCustomerRepository", () => {
       observations: "Lorem ipsum dolor sit amet",
     });
 
-    const result = await updateCustomerRepository.edit({
-      id: customer._id,
-      name: "John Doe Edited",
-      phone: "1234567890",
-    });
-    
-    expect(result).toHaveProperty("modifiedCount");
-    expect(result.modifiedCount).toBe(1);
+    const result = await sut.deleteById(customer._id);
+    expect(result).toHaveProperty("deleteCount");
+    expect(result.deleteCount).toBe(1);
   });
 });

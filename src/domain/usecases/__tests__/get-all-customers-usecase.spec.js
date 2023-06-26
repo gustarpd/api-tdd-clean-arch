@@ -1,19 +1,19 @@
 import { CustomerOffice } from "../../entities/clients-office.js";
-import { GetAllCustomer } from '../customer-office/get-customers-usecase.js'
+import { GetAllCustomer } from '../customer-office/get-customers-usecase.js';
 
 const makeGetAllCustomersRepository = () => {
-  class GetAllCustomer {
-    async getManyById() {
+  class GetAllCustomerRepository {
+    async findAllUsers() {
       return this.data;
     }
   }
 
-  const getCustomer = new GetAllCustomer();
-  getCustomer.data = {
+  const getCustomerRepository = new GetAllCustomerRepository();
+  getCustomerRepository.data = {
     id: "any_id",
     name: "any_name",
   };
-  return getCustomer;
+  return getCustomerRepository;
 };
 
 const makeSut = () => {
@@ -26,11 +26,12 @@ const makeSut = () => {
 };
 
 describe("Customer UseCase", () => {
-  test("should found an customer when method execute is invked", async () => {
+  test("should find a customer when the execute method is invoked", async () => {
     const { sut, getCustomerRepository } = makeSut();
     expect(await sut.execute()).toEqual(getCustomerRepository.data);
   });
-  test("should verify if customer name are equal", async () => {
+
+  test("should verify if the customer names are equal", async () => {
     const { sut, getCustomerRepository } = makeSut();
     getCustomerRepository.data = {
       id: "any_id",
@@ -40,7 +41,7 @@ describe("Customer UseCase", () => {
     expect(usecase.name).toBe(getCustomerRepository.data.name);
   });
 
-  test("should return an message customer not found when repository return null", async () => {
+  test("should return a message 'customer not found' when the repository returns null", async () => {
     const { sut, getCustomerRepository } = makeSut();
     getCustomerRepository.data = null;
     const usecase = await sut.execute();
@@ -48,9 +49,9 @@ describe("Customer UseCase", () => {
     expect(usecase.message).toBe("Nenhum cliente foi encontrado.");
   });
 
-  test("should throw error if Error ocurrs to fail fetch customer", async () => {
+  test("should throw an error if an error occurs while fetching the customer", async () => {
     const GetAllCustomerRepositoryStub = {
-      async getManyById() {
+      async findAllUsers() {
         throw new Error("Error: Failed to fetch customers.");
       },
     };

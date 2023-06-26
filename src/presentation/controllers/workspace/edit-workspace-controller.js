@@ -12,18 +12,18 @@ export class EditWorkSpaceController {
         return HttpResponse.InternalError();
       }
       const { taskId, description, owner, priority } = httpRequest
-      console.log(httpRequest)
+
       if (!taskId) {
-        throw new MissingParamError("taskId");
+        return HttpResponse.badRequest(new MissingParamError("taskId"))
       }
       if (!description) {
-        throw new MissingParamError("description");
+        return HttpResponse.badRequest(new MissingParamError("description"))
       }
       if (!owner) {
-        throw new MissingParamError("owner");
+        return HttpResponse.badRequest(new MissingParamError("owner"))
       }
       if (!priority) {
-        throw new MissingParamError("priority");
+        return HttpResponse.badRequest(new MissingParamError("priority"))
       }
       const workspace = await this.editWorkspace.edit({
         taskId,

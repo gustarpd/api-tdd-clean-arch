@@ -1,73 +1,118 @@
-import { HttpResponse } from "../../helpers/httpReponse";
+import { MissingParamError } from "../../../utils/errors/missing-params-error.js";
+import { HttpResponse } from "../../helpers/httpReponse.js";
 import { AddWorkSpaceController } from "../workspace/add-workspace-controller.js";
 
-const makeAddWorkSpace = () => {
-  class AddWorkSpace {
-    async add({ description, owner, priority, accessToken }) {
-      this.description = description;
-      this.owner = owner;
-      this.priority = priority;
-      this.accessToken = accessToken;
-      return this.WorkSpace;
-    }
-  }
-
-  const addWorkSpace = new AddWorkSpace();
-  addWorkSpace.WorkSpace = {
-    description: "any_description",
-    owner: "any_owner",
-    priority: "any_priority",
+describe("AddWorkSpaceController", () => {
+  const addWorkSpaceMock = {
+    async add(workspaceData) {
+      return { id: "1", ...workspaceData };
+    },
   };
-  return addWorkSpace;
-};
 
-const makeSut = () => {
-  const addRepository = makeAddWorkSpace();
-  const sut = new AddWorkSpaceController(addRepository);
-  return {
-    sut,
-    addRepository,
+  const makeSut = () => {
+    return new AddWorkSpaceController(addWorkSpaceMock);
   };
-};
 
-describe("Workspace controller", () => {
-  test("should return data correctly if HttpRequest body id provided", async () => {
-    const { sut, addRepository } = makeSut();
-    const httpRequest = await sut.handle({
-      description: "any",
-      owner: "any",
-      priority: "any",
-      accessToken: "any",
-    });
-    expect(httpRequest.statusCode).toBe(201);
-    console.log(httpRequest)
-    expect(httpRequest.body).toEqual(addRepository.WorkSpace);
-  });
-  test("should throw InternaError if HttpRequest are no provided", async () => {
-    const { sut } = makeSut();
-    const httpRequest = await sut.handle();
-    expect(httpRequest.statusCode).toBe(500);
-    console.log(httpRequest);
-    expect(httpRequest).toEqual(HttpResponse.InternalError());
+  it("should return 500 if no httpRequest is provided", async () => {
+    const sut = makeSut();
+
+    const httpResponse = await sut.handle();
+
+    expect(httpResponse.statusCode).toBe(500);
+    expect(httpResponse).toEqual(HttpResponse.InternalError());
   });
 
-  test("should throw UnauthorizedError if an error occurs", async () => {
-    const { sut } = makeSut();
+  it("should return 400 if description is not provided", async () => {
+    const sut = makeSut();
 
-    jest.spyOn(sut, "handle").mockImplementationOnce(() => {
-      throw HttpResponse.unauthorizeError();
+    const httpRequest = {
+      owner: "John Doe",
+      priority: 1,
+    };
+
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse.statusCode).toBe(400);
+    expect(httpResponse.body).toEqual({
+      error: "Missing param: description",
     });
-    try {
-      await sut.handle({
-        body: {
-          description: "any",
-          owner: "any",
-          priority: "any",
-          accessToken: "any",
-        },
-      });
-    } catch (error) {
-      expect(error).toEqual(HttpResponse.unauthorizeError());
-    }
+  });
+
+  it("should return 400 if owner is not provided", async () => {
+    const sut = makeSut();
+
+    const httpRequest = {
+      description: "Workspace description",
+      priority: 1,
+    };
+
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse.statusCode).toBe(400);
+    expect(httpResponse.body).toEqual({ error: "Missing param: owner" });
+  });
+
+  it("should return 400 if priority is not provided", async () => {
+    const sut = makeSut();
+
+    const httpRequest = {
+      description: "Workspace description",
+      owner: "John Doe",
+    };
+
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse.statusCode).toBe(400);
+    expect(httpResponse.body).toEqual({ error: "Missing param: priority" });
+  });
+
+  it("should call addWorkSpace.add with correct data", async () => {
+    const sut = makeSut();
+
+    const addSpy = jest.spyOn(addWorkSpaceMock, "add");
+
+    const httpRequest = {
+      description: "Workspace description",
+      owner: "John Doe",
+      priority: 1,
+    };
+
+    await sut.handle(httpRequest);
+
+    expect(addSpy).toHaveBeenCalledWith(httpRequest);
+  });
+
+  it("should return 201 with the created workspace", async () => {
+    const sut = makeSut();
+
+    const httpRequest = {
+      description: "Workspace description",
+      owner: "John Doe",
+      priority: 1,
+    };
+
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse.statusCode).toBe(201);
+    expect(httpResponse.body).toEqual({ id: "1", ...httpRequest });
+  });
+
+  it("should return 401 if an error occurs", async () => {
+    const sut = makeSut();
+
+    jest.spyOn(addWorkSpaceMock, "add").mockImplementationOnce(() => {
+      throw new Error();
+    });
+
+    const httpRequest = {
+      description: "Workspace description",
+      owner: "John Doe",
+      priority: 1,
+    };
+
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse.statusCode).toBe(401);
+    expect(httpResponse.body).toEqual({ error: "unauthorized" });
   });
 });

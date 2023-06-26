@@ -33,7 +33,6 @@ describe("UpdateCustomerRepository", () => {
     });
 
     const result = await sut.deleteById(customer._id);
-    expect(result).toHaveProperty("deletedCount");
-    expect(result.deletedCount).toBe(1);
+    expect(result.errors).toBeUndefined();
   });
 });

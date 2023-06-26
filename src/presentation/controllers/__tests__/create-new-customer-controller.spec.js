@@ -1,5 +1,6 @@
 import { MissingParamError } from "../../../utils/errors/missing-params-error";
 import { HttpResponse } from "../../helpers/httpReponse";
+import { CreateCustomerController } from "../customers/create-new-customer-controller";
 
 const makeCreateCustomerControllerRepositorySpy = () => {
   class CreateCustomerRepository {
@@ -26,43 +27,6 @@ class CreateCustomerUseCase {
       return await this.createCustomerRepository.create(data);
     }
     throw new Error("Internal Error");
-  }
-}
-
-class CreateCustomerController {
-  constructor(createCustomerUseCase) {
-    this.createCustomerUseCase = createCustomerUseCase;
-  }
-  async handle(httpRequest) {
-    try {
-      if (!httpRequest) {
-        return HttpResponse.InternalError();
-      }
-
-      const requiredParams = [
-        "name",
-        "phone",
-        "email",
-        "address",
-        "cpfCnpj",
-        "dateOfBirth",
-        "gender",
-        "maritalStatus",
-        "profession",
-        "nationality",
-        "observations",
-      ];
-
-      for (const param of requiredParams) {
-        if (!httpRequest[param]) {
-          return HttpResponse.badRequest(new MissingParamError(param));
-        }
-      }
-      const customer = await this.createCustomerUseCase.execute({
-        ...httpRequest,
-      });
-      return customer;
-    } catch (error) {}
   }
 }
 
@@ -95,7 +59,7 @@ describe("Workspace controller", () => {
       nationality: "Brazilian",
       observations: "Lorem ipsum dolor sit amet",
     });
-    expect(request).toEqual(createCustomerRepository.data);
+    expect(request.body).toEqual(createCustomerRepository.data);
   });
 
   test("should throw an 500 InternalError if HttpRequest are no provided", async () => {
@@ -140,5 +104,31 @@ describe("Workspace controller", () => {
       expect(response.statusCode).toEqual(400);
       expect(response.body.error).toBeDefined();
     }
+  });
+  test("should return an unauthorized error response when an error occurs", async () => {
+    const createCustomerUseCaseSpy = {
+      execute: jest.fn().mockImplementation(() => {
+        throw new Error("Some error occurred");
+      }),
+    };
+    const sut = new CreateCustomerController(createCustomerUseCaseSpy);
+
+    const httpRequest = {
+      name: "John Doe",
+      phone: "123456789",
+      email: "johndoe@example.com",
+      address: "123 Main St",
+      cpfCnpj: "123456789",
+      dateOfBirth: "1990-01-01",
+      gender: "Male",
+      maritalStatus: "Single",
+      profession: "Engineer",
+      nationality: "US",
+      observations: "Some observations",
+    };
+
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse).toEqual(HttpResponse.unauthorizeError());
   });
 });

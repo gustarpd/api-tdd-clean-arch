@@ -14,7 +14,7 @@ export class FindAllCustomerController {
 
       return HttpResponse.ok(customer)
     } catch (error) {
-      return HttpResponse.unauthorizeError();
+      return HttpResponse.InternalError();
     }
   }
 }

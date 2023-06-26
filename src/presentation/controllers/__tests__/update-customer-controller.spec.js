@@ -93,4 +93,21 @@ describe("Workspace controller", () => {
     expect(await sut.handle({ id: 1 })).toEqual(HttpResponse.InternalError());
   });
   
+  test("should return an internal server error response if no updated user is returned", async () => {
+    class updateCustomerUseCaseSpy {
+      async update() {
+        return null
+      }
+    };
+
+    const sut = new UpdateCustomerController(updateCustomerUseCaseSpy);
+
+    const httpRequest = {
+     id: "any_id"
+    };
+
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse).toEqual(HttpResponse.InternalError());
+  });
+
 });

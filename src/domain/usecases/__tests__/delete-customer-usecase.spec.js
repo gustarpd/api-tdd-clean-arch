@@ -2,7 +2,7 @@ import { DeleteCustomerUseCase } from '../customer-office/delete-customer-usecas
 
 const makeDeleteCustomerRepository = () => {
   class DeleteCustomerRepository {
-    async delete() {
+    async deleteById() {
       return {};
     }
   }
@@ -12,7 +12,7 @@ const makeDeleteCustomerRepository = () => {
 
 const makeDeleteCustomerRepositoryNull = () => {
   class DeleteCustomerRepository {
-    async delete() {
+    async deleteById() {
       return null;
     }
   }

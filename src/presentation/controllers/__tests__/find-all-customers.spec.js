@@ -87,4 +87,19 @@ describe("FindAllCustomer controller", () => {
     const response = await useCase.handle();
     expect(response.statusCode).toBe(500);
   });
+
+  test("should return an internal server error response if an error occurs", async () => {
+    const createCustomerUseCaseSpy = {
+      execute: jest.fn().mockRejectedValueOnce(HttpResponse.InternalError()),
+    };
+    const sut = new FindAllCustomerController(createCustomerUseCaseSpy);
+
+    const httpRequest = {
+      // httpRequest object
+    };
+
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse).toEqual(HttpResponse.InternalError());
+  });
 });

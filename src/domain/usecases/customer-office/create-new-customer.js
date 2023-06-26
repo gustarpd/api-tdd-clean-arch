@@ -1,5 +1,5 @@
 import { CustomerOffice } from "../../entities/clients-office.js";
-import { InvalidCpfError } from "../../entities/errors/invalid-cpf-error.js";
+import { InvalidParam } from "../../entities/errors/invalid-filed-error.js";
 
 
 export class CreateCustomerOffice {
@@ -13,7 +13,7 @@ export class CreateCustomerOffice {
         throw new Error('Unable to create customer in the database.')
       }
       const newCustomer = CustomerOffice.create(customerData);
-      if(newCustomer instanceof InvalidCpfError) {
+      if(newCustomer instanceof InvalidParam) {
         return { error: newCustomer.message }
       }
 

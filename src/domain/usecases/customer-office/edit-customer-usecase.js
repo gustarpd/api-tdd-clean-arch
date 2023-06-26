@@ -8,11 +8,8 @@ export class UpdateCustomerUseCase {
   async update(data) {
     try {
       const editedUser = await this.caseUseCaseRepository.edit(data);
-      if(!data) {
+      if(!data || !editedUser) {
         return HttpResponse.InternalError()
-      }
-      if (!editedUser) {
-        return HttpResponse.InternalError();
       }
 
       return {

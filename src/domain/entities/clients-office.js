@@ -1,4 +1,4 @@
-import { InvalidCpfError } from "./errors/invalid-cpf-error.js";
+import { InvalidParam } from "./errors/invalid-filed-error.js";
 
 export class CustomerOffice {
   constructor({
@@ -70,11 +70,11 @@ export class CustomerOffice {
 
   static create(data) {
     if (!this.isCpfValid(data.cpfCnpj)) {
-      return new InvalidCpfError("cpf");
+      return new InvalidParam("cpf");
     }
 
     if (!this.isValidValidEmail(data.email)) {
-      return new InvalidCpfError("email");
+      return new InvalidParam("email");
     }
     return new CustomerOffice(data);
   }

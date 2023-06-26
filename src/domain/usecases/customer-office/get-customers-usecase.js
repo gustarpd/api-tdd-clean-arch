@@ -1,4 +1,4 @@
-import { CustomerOffice } from '../../entities/clients-office'
+import { CustomerOffice } from '../../entities/clients-office.js'
 
 export class GetAllCustomer {
   constructor(GetAllCustomerRepository) {
@@ -6,7 +6,8 @@ export class GetAllCustomer {
   }
   async execute() {
     try {
-      const update = await this.GetAllCustomerRepository.getManyById();
+      console.log(this.GetAllCustomerRepository)
+      const update = await this.GetAllCustomerRepository.findAllUsers();
       if (!update) {
         return { message: "Nenhum cliente foi encontrado." };
       }

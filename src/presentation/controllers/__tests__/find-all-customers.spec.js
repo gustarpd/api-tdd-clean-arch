@@ -1,19 +1,17 @@
 import { HttpResponse } from "../../helpers/httpReponse";
+import { FindAllCustomerController } from "../customers/get-all-customers-controller";
 
 class FindAllCustomerUseCase {
   constructor(findCustomerRepository) {
     this.findCustomerRepository = findCustomerRepository;
   }
+  
   async execute() {
     try {
-      const customer = await this.findCustomerRepository.findAll();
-      return {
-        statusCode: 200,
-        body: customer,
-      };
+      const customer = await this.findCustomerRepository.findAll()
+      return customer
     } catch (error) {
-      console.error(error);
-      return HttpResponse.InternalError();
+      throw new Error('some error')
     }
   }
 }
@@ -56,39 +54,37 @@ const makeFindAllCustomerRepositoryWithAnyUser = () => {
 
 const makeSut = () => {
   const getAllCustomerRepository = makeFindAllCustomerRepository();
-  const sut = new FindAllCustomerUseCase(getAllCustomerRepository);
-
+  const findAllCustomerUseCase = new FindAllCustomerUseCase(getAllCustomerRepository);
+  const sut = new FindAllCustomerController(findAllCustomerUseCase)
+  
   return {
     sut,
     getAllCustomerRepository,
+    findAllCustomerUseCase
   };
 };
 
 describe("FindAllCustomer controller", () => {
   test("should return HttpRequest if request succeeds", async () => {
     const { sut, getAllCustomerRepository } = makeSut();
-    expect((await sut.execute()).statusCode).toBe(200);
-    expect((await sut.execute()).body).toEqual(
+    expect((await sut.handle({})).statusCode).toBe(200);
+    expect((await sut.handle({})).body).toEqual(
       getAllCustomerRepository.customer
     );
   });
 
   test("should return message if customer are not found", async () => {
     const repository = makeFindAllCustomerRepositoryWithAnyUser();
-    const sut = new FindAllCustomerUseCase(repository);
-    expect((await sut.execute()).body.message).toBe(
+    const usecase = new FindAllCustomerUseCase(repository);
+    const sut =  new FindAllCustomerController(usecase)
+    expect((await sut.handle({})).body.message).toBe(
       "Nenhum cliente foi encontrado."
     );
   });
 
   test("should return an internal error response when an error occurs'", async () => {
-       const findCustomerRepositoryStub = {
-        findAll: jest.fn().mockRejectedValue(new Error('Erro simulado')),
-      };
-  
-      const useCase = new FindAllCustomerUseCase(findCustomerRepositoryStub);
-      const response = await useCase.execute();
-
-      expect(response.statusCode).toBe(500);
+    const useCase = new FindAllCustomerController();
+    const response = await useCase.handle();
+    expect(response.statusCode).toBe(500);
   });
 });

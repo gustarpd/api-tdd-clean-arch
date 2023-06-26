@@ -3,10 +3,10 @@ import { CustomerOffice } from "../clients-office.js";
 describe("Clients Office", () => {
   const customerOffice = {
     name: "John Doe",
-    phone: "1234567890",
+    phone: "875.414.840-59",
     email: "john@example.com",
     address: "123 Main Street",
-    cpfCnpj: "123456789",
+    cpfCnpj: "875.414.840-59",
     dateOfBirth: "1990-01-01",
     gender: "Male",
     maritalStatus: "Single",

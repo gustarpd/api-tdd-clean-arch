@@ -1,4 +1,4 @@
-import { Customer } from "../db/schemas/Customer";
+import { Customer } from "../db/schemas/Customer.js";
 
 export class GetAllCustomerRepository {
   async findAllUsers() {

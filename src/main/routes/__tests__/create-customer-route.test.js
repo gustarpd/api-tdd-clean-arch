@@ -5,7 +5,7 @@ import {
   disconnect,
 } from "../../../infra/helper/mongo-in-memory-server";
 
-describe("GET Customer API", () => {
+describe("POST Customer API", () => {
   const testRequest = supertest(app);
 
   beforeAll(async () => {

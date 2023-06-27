@@ -1,6 +1,9 @@
 import { MissingParamError } from "../../../utils/errors/missing-params-error";
 import { HttpResponse } from "../../helpers/httpReponse";
-import { AddWorkSpaceController, UpdateCustomerController } from "../customers/update-customer-controller.js";
+import {
+  AddWorkSpaceController,
+  UpdateCustomerController,
+} from "../customers/update-customer-controller.js";
 
 const makeUpdateCustomerController = () => {
   class updateUseCase {
@@ -18,7 +21,7 @@ const makeUpdateCustomerController = () => {
 const makeUpdateCustomerControllerWithError = () => {
   class updateUseCase {
     async update() {
-      throw new Error("some error at usecase")
+      throw new Error("some error at usecase");
     }
   }
 
@@ -37,7 +40,6 @@ const makeUpdateCustomerControllerWithErrorMessage = () => {
 
   return new updateUseCase();
 };
-
 
 const makeSut = () => {
   const updateUseCase = makeUpdateCustomerController();
@@ -80,34 +82,33 @@ describe("Workspace controller", () => {
     const repository = makeUpdateCustomerControllerWithErrorMessage();
     const sut = new UpdateCustomerController(repository);
     const request = await sut.handle({
-        id: 1
+      id: 1,
     });
-    expect(request.body.sucess).toBe(false)
-    expect(request.body.message).toBe('Erro ao atualizar o cliente')
+    expect(request.body.sucess).toBe(false);
+    expect(request.body.message).toBe("Erro ao atualizar o cliente");
   });
 
   test("should throw an error if an error occurs in the use case", async () => {
     const repository = makeUpdateCustomerControllerWithError();
     const sut = new UpdateCustomerController(repository);
-  
+
     expect(await sut.handle({ id: 1 })).toEqual(HttpResponse.InternalError());
   });
-  
+
   test("should return an internal server error response if no updated user is returned", async () => {
     class updateCustomerUseCaseSpy {
       async update() {
-        return null
+        return null;
       }
-    };
+    }
 
     const sut = new UpdateCustomerController(updateCustomerUseCaseSpy);
 
     const httpRequest = {
-     id: "any_id"
+      id: "any_id",
     };
 
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse).toEqual(HttpResponse.InternalError());
   });
-
 });

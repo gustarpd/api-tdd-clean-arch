@@ -6,7 +6,7 @@ import {
 } from "../../../infra/helper/mongo-in-memory-server";
 import { Customer } from "../../../infra/db/schemas/Customer";
 
-describe("GET Customer API", () => {
+describe("DELETE Customer API", () => {
   const testRequest = supertest(app);
 
   beforeAll(async () => {

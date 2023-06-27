@@ -74,8 +74,15 @@ describe("Customer Office", () => {
     expect(sut.execute()).rejects.toThrow(`Error: ${errorMessage}`);
   });
 
-  test("should throw an error if an error occurs in the database while creating a new customer", async () => {
+  test("should return error message if an error occurs when cpf is invalid", async () => {
     const { sut } = makeSut();
     expect(await sut.execute({})).toEqual({error: "Invalid param: cpf"})
+  });
+
+  test("should return error message if an error occurs when email is invalid ", async () => {
+    const { sut } = makeSut();
+    expect(await sut.execute({
+      cpfCnpj: '620.224.643-03'
+    })).toEqual({ error: "Invalid param: email" })
   });
 });

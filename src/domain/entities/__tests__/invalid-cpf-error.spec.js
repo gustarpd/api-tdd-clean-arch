@@ -23,4 +23,8 @@ describe("CpfErrorVaidation", () => {
     const data = CustomerOffice.isCpfValid("11111111111");
     expect(data).toBe(false);
   });
+
+  test("should return false if cpf contains repeated digits.", () => {
+    expect(CustomerOffice.isCpfValid('123.456.789-01')).toBe(false);
+  });
 });

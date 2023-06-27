@@ -20,4 +20,14 @@ describe("Clients Office", () => {
     expect(data).toEqual(customerOffice);
     expect(CustomerOffice.toData(data)).toEqual(customerOffice);
   });
+
+  test("should return Customer Office object", () => {
+    const data = CustomerOffice.isCpfValid('875.414.80-59');
+    expect(data).toBe(false)
+  });
+
+  test("should return Customer Office object", () => {
+    const data = CustomerOffice.isCpfValid('8754148059');
+    expect(data).toBe(false)
+  });
 });

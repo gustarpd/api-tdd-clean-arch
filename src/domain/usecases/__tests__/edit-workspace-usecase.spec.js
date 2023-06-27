@@ -21,7 +21,7 @@ const makeEditWorkSpaceRepository = () => {
 const makeEditWorkSpaceRepositoryWithError = () => {
   class EditWorkSpaceRepository {
     async edit({ taskId, description, owner, priority }) {
-      throw new Error('some erro at db')
+      throw new Error("some erro at db");
     }
   }
 
@@ -74,8 +74,8 @@ describe("EditWorkSpaceUseCase", () => {
   });
 
   test("should throw an error when an exception occurs", async () => {
-    const repositoryWithError = makeEditWorkSpaceRepositoryWithError()
-    const sut = new EditWorkSpaceUseCase(repositoryWithError)
+    const repositoryWithError = makeEditWorkSpaceRepositoryWithError();
+    const sut = new EditWorkSpaceUseCase(repositoryWithError);
     sut.edit({
       taskId: "any",
       description: "any",

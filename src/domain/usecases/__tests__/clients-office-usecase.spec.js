@@ -61,9 +61,8 @@ describe("Customer Office", () => {
       maritalStatus: "Single",
       profession: "Engineer",
       nationality: "Brazilian",
-      observations: "Lorem ipsum dolor sit amet"
-    }
-    );
+      observations: "Lorem ipsum dolor sit amet",
+    });
 
     expect(run).toEqual(customerOfficeRepository.data);
   });
@@ -72,11 +71,11 @@ describe("Customer Office", () => {
     const repository = makeCustomerOfficeRepositoryWithError();
     const sut = new CreateCustomerOffice(repository);
     const errorMessage = "Unable to create customer in the database.";
+    expect(sut.execute()).rejects.toThrow(`Error: ${errorMessage}`);
+  });
 
-    try {
-      await sut.execute({});
-    } catch (error) {
-      expect(error.message).toBe(`Error: ${errorMessage}`);
-    }
+  test("should throw an error if an error occurs in the database while creating a new customer", async () => {
+    const { sut } = makeSut();
+    expect(await sut.execute({})).toEqual({error: "Invalid param: cpf"})
   });
 });

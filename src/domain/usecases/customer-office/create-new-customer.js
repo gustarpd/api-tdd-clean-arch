@@ -7,7 +7,7 @@ export class CreateCustomerOffice {
     this.customerOfficeRepository = customerOfficeRepository;
   }
 
-  async execute({ ...customerData }) {
+  async execute(customerData) {
     try {
       if(!customerData) {
         throw new Error('Unable to create customer in the database.')

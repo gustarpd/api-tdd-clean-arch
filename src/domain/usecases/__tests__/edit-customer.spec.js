@@ -61,12 +61,7 @@ describe("Customer Office", () => {
   test("should catch an error in the catch block", async () => {
     const repository = makeCasesUseCaseRepositoryNullSpy();
     const sut = new UpdateCustomerUseCase(repository);
-    try {
-      const createdData = await sut.update({});
-      console.log(createdData);
-    } catch (error) {
-      expect(error).toEqual(HttpResponse.InternalError());
-    }
+    expect(await sut.update()).toEqual(HttpResponse.InternalError());
   });
 
   test("should catch Error", async () => {

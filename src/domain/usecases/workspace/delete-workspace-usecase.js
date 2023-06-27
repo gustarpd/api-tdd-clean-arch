@@ -6,12 +6,7 @@ export class DeleteWorkSpaceUseCase {
     try {
       const getTasksByIdFromRepository =
         await this.deleteWorkSpaceRespository.deleteById(taskId);
-      if (!getTasksByIdFromRepository) {
-        return {
-          success: false,
-          message: "Nenhum documento encontrado com o ID fornecido.",
-        };
-      }
+
       return {
         success: true,
         message: "Documento excluído com sucesso.",

@@ -1,6 +1,6 @@
-import { EditWorkSpaceUseCase } from '../workspace/edit-workspace-usecase.js'
+import { EditWorkSpaceUseCase } from "../workspace/edit-workspace-usecase.js";
 
-const makeEditWorkSpaceRespository = () => {
+const makeEditWorkSpaceRepository = () => {
   class EditWorkSpaceRepositorySpy {
     async edit({ taskId, description, owner, priority }) {
       return this.data;
@@ -18,8 +18,18 @@ const makeEditWorkSpaceRespository = () => {
   return editWorkSpaceRepository;
 };
 
+const makeEditWorkSpaceRepositoryWithError = () => {
+  class EditWorkSpaceRepository {
+    async edit({ taskId, description, owner, priority }) {
+      throw new Error('some erro at db')
+    }
+  }
+
+  return new EditWorkSpaceRepository();
+};
+
 const makeSut = () => {
-  const editWorkSpaceRepository = makeEditWorkSpaceRespository();
+  const editWorkSpaceRepository = makeEditWorkSpaceRepository();
   const sut = new EditWorkSpaceUseCase(editWorkSpaceRepository);
 
   return {
@@ -28,32 +38,50 @@ const makeSut = () => {
   };
 };
 
-describe("WorkSpace UseCase", () => {
-  test("should return edited data when method edit is invoked correctly", async () => {
+describe("EditWorkSpaceUseCase", () => {
+  test("should return success message when edit is invoked correctly", async () => {
     const { sut } = makeSut();
+
     const editWorkspace = await sut.edit({
       taskId: "any",
       description: "any",
       owner: "any",
       priority: "any",
     });
-    console.log(editWorkspace);
+
     expect(editWorkspace).toEqual({
       success: true,
-      message: "Agenda atualizada com sucesso."
+      message: "Agenda atualizada com sucesso.",
     });
   });
 
-  test("should return edited data when method edit is invoked correctly", async () => {
-    const { sut } = makeSut();
+  test("should return error message when edit fails", async () => {
+    const { sut, editWorkSpaceRepository } = makeSut();
 
-    jest.spyOn(sut, "edit").mockImplementationOnce(() => {
-      throw new Error();
+    editWorkSpaceRepository.data = null; // Simulando falha na edição
+
+    const editWorkspace = await sut.edit({
+      taskId: "any",
+      description: "any",
+      owner: "any",
+      priority: "any",
     });
-    try {
-      await sut.edit();
-    } catch (error) {
-      expect(error).toEqual(new Error());
-    }
+
+    expect(editWorkspace).toEqual({
+      success: false,
+      message: "Erro ao atualizar o cliente",
+    });
+  });
+
+  test("should throw an error when an exception occurs", async () => {
+    const repositoryWithError = makeEditWorkSpaceRepositoryWithError()
+    const sut = new EditWorkSpaceUseCase(repositoryWithError)
+    sut.edit({
+      taskId: "any",
+      description: "any",
+      owner: "any",
+      priority: "any",
+    });
+    await expect(sut.edit()).rejects.toThrow(Error);
   });
 });

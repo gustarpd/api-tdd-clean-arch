@@ -26,12 +26,7 @@ describe("Testes de exclusão de documento", () => {
   });
 
   test("Should throw Errror", async () => {
-    try {
-      const deleteByIdRepository = new DeleteWorkSpaceRespository();
-      await deleteByIdRepository.deleteById();
-    } catch (error) {
-      expect(error).toBeUndefined();
-      console.log(error);
-    }
+    const deleteByIdRepository = new DeleteWorkSpaceRespository();
+    await expect(deleteByIdRepository.deleteById("nonexistent_id")).rejects.toThrow();
   });
 });

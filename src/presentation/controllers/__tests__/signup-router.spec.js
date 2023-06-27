@@ -72,7 +72,6 @@ describe("Signup Router", () => {
       name: "any_name",
       password: "any_password",
     });
-    console.log(result);
     expect(result.body).toHaveProperty("error");
     expect(result.body.error).toBe("Missing param: email");
     expect(result.statusCode).toBe(400);
@@ -121,3 +120,4 @@ describe("Signup Router", () => {
     expect(httpResponse).toEqual(HttpResponse.unauthorizeError());
   });
 });
+

@@ -4,10 +4,15 @@ import { MissingParamError } from "../errors/missing-params-error";
 
 jest.mock('jsonwebtoken', () => ({
   token: "any_token",
+  user: { id: "123" },
   sign(id, secret) {
     this.id = id,
     this.secret = secret
     return this.token;
+  },
+  verify(value) {
+    this.secret = value
+    return this.user;
   },
 }))
 
@@ -42,5 +47,12 @@ describe("Token Generator", () => {
     const sut = makeSut();
     const promise = sut.generate();
     expect(promise).rejects.toThrow(new MissingParamError('id'));
+  });
+
+  test("Should throw if no id is provided", async () => {
+    const tokenGenerator = new TokenGenerator("secret");
+    const value = "token";
+    const decryptedValue = await tokenGenerator.decrypt(value);
+    expect(decryptedValue).toEqual({ id: "123" });
   });
 });

@@ -15,7 +15,7 @@ describe("UpdateCustomerRepository", () => {
     Customer.deleteMany({});
   });
 
-  it("should update the Customer with the provided data", async () => {
+  test("should update the Customer with the provided data", async () => {
     const sut = new DeleteCustomerRepository()
 
     const customer = await Customer.create({
@@ -34,5 +34,10 @@ describe("UpdateCustomerRepository", () => {
 
     const result = await sut.deleteById(customer._id);
     expect(result.errors).toBeUndefined();
+  });
+
+  test("should throw error when invalid id are provided", async () => {
+    const sut = new DeleteCustomerRepository()
+    await expect(sut.deleteById("nonexistent_id")).rejects.toThrow();
   });
 });

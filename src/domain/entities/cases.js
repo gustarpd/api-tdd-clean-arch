@@ -9,7 +9,7 @@ export class Case {
     owner,
     protocol,
     casedata,
-    history,
+    event,
   }) {
     this.title = title;
     this.customer = customer;
@@ -17,7 +17,7 @@ export class Case {
     this.owner = owner;
     this.protocol = protocol;
     this.casesData = casedata;
-    this.history = history;
+    this.event = event;
     this.action_type = action_type;
     this.awarded_amount = awarded_amount;
     this.involved_parties = involved_parties;
@@ -33,7 +33,7 @@ export class Case {
     owner,
     protocol,
     casedata,
-    history,
+    event,
   }) {
     return new Case({
       title,
@@ -45,7 +45,7 @@ export class Case {
       owner,
       protocol,
       casedata,
-      history,
+      event,
     });
   }
 }

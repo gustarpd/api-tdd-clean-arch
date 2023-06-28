@@ -6,11 +6,13 @@ export class CreateNewCaseUseCase {
   async execute({
     title,
     customer,
+    involved_parties,
+    awarded_amount,
     status,
     owner,
     protocol,
     casedata,
-    history,
+    event,
   }) {
     if (
       !title ||
@@ -19,7 +21,7 @@ export class CreateNewCaseUseCase {
       !owner ||
       !protocol ||
       !casedata ||
-      !history
+      !event
     ) {
       throw new Error("Dados de entrada incompletos");
     }
@@ -28,11 +30,13 @@ export class CreateNewCaseUseCase {
       const newCase = await this.newCaseRepository.save({
         title,
         customer,
+        involved_parties,
+        awarded_amount,
         status,
         owner,
         protocol,
         casedata,
-        history,
+        event,
       });
 
       return newCase;

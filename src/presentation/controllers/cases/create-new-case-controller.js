@@ -1,5 +1,5 @@
-import { HttpResponse } from "../../helpers/httpReponse";
-import { MissingParamError } from "../../../utils/errors/missing-params-error";
+import { HttpResponse } from "../../helpers/httpReponse.js";
+import { MissingParamError } from "../../../utils/errors/missing-params-error.js";
 
 export class CreateNewCaseController {
   constructor(createNewCaseUseCase) {
@@ -22,7 +22,7 @@ export class CreateNewCaseController {
         "owner",
         "protocol",
         "casedata",
-        "history",
+        "event",
       ];
 
       for (const field of requiredFields) {
@@ -32,6 +32,7 @@ export class CreateNewCaseController {
       }
 
       const newCase = await this.createNewCaseUseCase.execute(httpRequest);
+      console.log(httpRequest);
       if (newCase) return HttpResponse.ok(newCase);
     } catch {
       return HttpResponse.InternalError();

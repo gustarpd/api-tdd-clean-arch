@@ -1,4 +1,4 @@
-class CreateNewCaseUseCase {
+export class CreateNewCaseUseCase {
   constructor(newCaseRepository) {
     this.newCaseRepository = newCaseRepository;
   }

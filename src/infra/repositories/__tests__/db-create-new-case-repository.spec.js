@@ -1,11 +1,6 @@
 import { Case } from "../../db/schemas/Case.js";
 import { connect, disconnect } from "../../helper/mongo-in-memory-server.js";
-
-class CreateNewCaseUseCaseRepository {
-  async save(properties) {
-    return Case.create(properties);
-  }
-}
+import { CreateNewCaseUseCaseRepository } from '../../repositories/create-new-case-repository.js'
 
 describe("add-workspace-repository", () => {
   beforeAll(async () => {

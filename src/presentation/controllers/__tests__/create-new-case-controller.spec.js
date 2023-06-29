@@ -29,12 +29,14 @@ describe("CreateNewCaseUseCaseController", () => {
       customer: "John Doe",
       action_type: "Civil",
       awarded_amount: 5000,
-      involved_parties: ["Party A", "Party B"],
+      involved_parties: [{
+        name: "John Doe",
+      }],
       status: "Pending",
       owner: "Jane Smith",
       protocol: "ABC123",
       casedata: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      history: [
+      event: [
         {
           titulo: "First Event",
           valor_causa: 1000,
@@ -107,7 +109,7 @@ describe("CreateNewCaseUseCaseController", () => {
       owner: "Jane Smith",
       protocol: "ABC123",
       casedata: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      history: [
+      event: [
         {
           titulo: "First Event",
           valor_causa: 1000,

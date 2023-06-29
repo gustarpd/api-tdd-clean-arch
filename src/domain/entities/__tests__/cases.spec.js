@@ -32,6 +32,6 @@ describe("Case", () => {
     expect(caseInstance.owner).toBe(caseData.owner);
     expect(caseInstance.protocol).toBe(caseData.protocol);
     expect(caseInstance.casesData).toEqual(caseData.casedata);
-    expect(caseInstance.history).toEqual(caseData.history);
+    expect(caseInstance.event).toEqual(caseData.event);
   });
 });

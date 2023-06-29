@@ -22,7 +22,9 @@ describe("add-workspace-repository", () => {
       customer: "John Doe",
       action_type: "Civil",
       awarded_amount: 5000,
-      involved_parties: ["Party A", "Party B"],
+      involved_parties: [{
+        name: "John Doe",
+      }],
       status: "Pending",
       owner: "Jane Smith",
       protocol: "ABC123",

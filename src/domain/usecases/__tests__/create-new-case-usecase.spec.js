@@ -59,14 +59,14 @@ describe("CaseUseCase", () => {
       title: "any_title",
       customer: "any_customer",
       status: "any_status",
+      awarded_amount: 5000,
       owner: "any_owner",
+      involved_parties: [{
+        name: "John mayer"
+      }],
       protocol: "any_protocol",
-      casedata: [
-        {
-          title: "any_case_title",
-        },
-      ],
-      history: "any_history",
+      casedata: "any_casedata",
+      event: []
     });
     expect(caseTest).toEqual(caseRepository.data);
   });

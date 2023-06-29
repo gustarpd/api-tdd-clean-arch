@@ -33,7 +33,7 @@ export class CreateNewCaseController {
 
       const newCase = await this.createNewCaseUseCase.execute(httpRequest);
       console.log(httpRequest);
-      if (newCase) return HttpResponse.ok(newCase);
+      if (newCase) return HttpResponse.created(newCase);
     } catch {
       return HttpResponse.InternalError();
     }

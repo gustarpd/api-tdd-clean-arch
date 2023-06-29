@@ -1,47 +1,15 @@
 export class EditCaseUseCase {
-    constructor(editCaseRepository) {
-      this.editCaseRepository = editCaseRepository;
-    }
-  
-    async edit({
-      id,
-      title,
-      customer,
-      involved_parties,
-      awarded_amount,
-      status,
-      owner,
-      protocol,
-      casedata,
-      event,
-    }) {
-      if (
-        !title ||
-        !customer ||
-        !awarded_amount ||
-        !involved_parties ||
-        !status ||
-        !owner ||
-        !protocol ||
-        !casedata ||
-        !event
-      ) {
-        throw new Error("Dados de entrada incompletos");
-      }
-      const edited = await this.editCaseRepository.editById({
-        id,
-        title,
-        customer,
-        involved_parties,
-        event,
-        protocol,
-        casedata,
-        awarded_amount,
-        status,
-        owner,
-      });
-  
+  constructor(editCaseRepository) {
+    this.editCaseRepository = editCaseRepository;
+  }
+
+  async update(data) {
+    try {
+      const edited = await this.editCaseRepository.editById(data);
       return edited;
+    } catch (error) {
+      console.error(error);
+      throw error;
     }
   }
-  
+}

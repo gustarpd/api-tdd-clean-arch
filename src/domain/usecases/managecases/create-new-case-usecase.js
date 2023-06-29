@@ -17,6 +17,8 @@ export class CreateNewCaseUseCase {
     if (
       !title ||
       !customer ||
+      !awarded_amount ||
+      !involved_parties ||
       !status ||
       !owner ||
       !protocol ||
@@ -41,7 +43,6 @@ export class CreateNewCaseUseCase {
 
       return newCase;
     } catch (error) {
-      console.error("Erro ao criar novo caso:", error);
       throw new Error("Erro ao criar novo caso");
     }
   }

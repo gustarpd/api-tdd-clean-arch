@@ -1,4 +1,4 @@
-import { Case } from "../db/schemas/Cases";
+import { Case } from "../db/schemas/Cases.js";
 
 export class FindAllCasesRepository {
   async findAll() {

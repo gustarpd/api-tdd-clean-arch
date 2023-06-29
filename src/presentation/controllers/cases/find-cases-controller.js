@@ -1,6 +1,6 @@
-import { HttpResponse } from "../../helpers/httpReponse";
+import { HttpResponse } from "../../helpers/httpReponse.js";
 
-class FindAllCasesController {
+export class FindAllCasesController {
   constructor(findAllUseCase) {
     this.findAllUseCase = findAllUseCase;
   }
@@ -10,7 +10,7 @@ class FindAllCasesController {
         return HttpResponse.InternalError();
       }
       const cases = await this.findAllUseCase.find();
-      return cases;
+      return HttpResponse.ok(cases);
     } catch (error) {
       console.error(error);
       return HttpResponse.InternalError();

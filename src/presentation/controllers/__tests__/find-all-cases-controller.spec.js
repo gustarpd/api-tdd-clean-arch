@@ -46,24 +46,6 @@ const makeFindAllCaseUseCase = () => {
   return findAllCaseUseCase;
 };
 
-class FindAllCasesController {
-  constructor(findAllUseCase) {
-    this.findAllUseCase = findAllUseCase;
-  }
-  async handle(httpRequest) {
-    try {
-      if (!httpRequest) {
-        return HttpResponse.InternalError();
-      }
-      const cases = await this.findAllUseCase.find();
-      return cases;
-    } catch (error) {
-      console.error(error);
-      return HttpResponse.InternalError();
-    }
-  }
-}
-
 const makeSut = () => {
   const findAllUseCase = makeFindAllCaseUseCase();
   const sut = new FindAllCasesController(findAllUseCase);

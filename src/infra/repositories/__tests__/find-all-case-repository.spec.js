@@ -1,17 +1,7 @@
 import { Case } from "../../db/schemas/Cases.js";
 import { connect, disconnect } from "../../helper/mongo-in-memory-server";
 import { UpdateCaseRepository } from "../update-case-repository.js";
-
-export class FindAllCasesRepository {
-  async findAll() {
-    try {
-      const cases = await Case.find({});
-      return cases;
-    } catch (error) {
-      throw Error("Failed to find cases: " + error);
-    }
-  }
-}
+import { FindAllCasesRepository } from "../find-all-cases-repository.js";
 
 const makeSut = () => {
   const findAllCasesRepository = new FindAllCasesRepository();
@@ -66,9 +56,8 @@ describe("UpdateCustomerRepository", () => {
         },
       ],
     });
-    const getAllCases = await findAllCasesRepository.findAll()
+    const getAllCases = await findAllCasesRepository.findAll();
     expect(getAllCases).toBeDefined();
-
   });
 
   test("should throw an error if an error occurs", async () => {

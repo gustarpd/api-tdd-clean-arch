@@ -1,6 +1,6 @@
 import { HttpResponse } from "../../helpers/httpReponse.js";
 
-export class UpdateCasController {
+export class UpdateCaseController {
   constructor(updateCaseUseCase) {
     this.updateCaseUseCase = updateCaseUseCase;
   }

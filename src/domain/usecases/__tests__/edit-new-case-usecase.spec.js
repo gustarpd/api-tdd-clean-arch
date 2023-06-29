@@ -133,4 +133,11 @@ describe("EditCase UseCase", () => {
     });
     expect(editedCase).toEqual(editCaseRepository.data);
   });
+
+  test("should throw an Error if data are no provided to edit method", async () => {
+    const { sut } = makeSut();
+    await expect(sut.edit({})).rejects.toThrowError(
+        "Dados de entrada incompletos"
+      );
+  });
 });

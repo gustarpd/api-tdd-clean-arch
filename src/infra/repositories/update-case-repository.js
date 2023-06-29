@@ -12,7 +12,6 @@ export class UpdateCaseRepository {
       );
       return updatedCase;
     } catch (error) {
-      console.error(error);
       throw new Error(error);
     }
   }

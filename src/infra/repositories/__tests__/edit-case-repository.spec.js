@@ -66,4 +66,18 @@ describe("UpdateCustomerRepository", () => {
     }
     expect(await updateCaseRepository.editById(updatedData)).toBeDefined();
   });
+
+  test('should throw an error if an error occurs', async () => {
+    const findOneAndUpdateMock = jest.fn().mockRejectedValue(new Error('Database Error'));
+    const caseModelMock = {
+      findOneAndUpdate: findOneAndUpdateMock,
+    };
+    const updateCaseRepository = new UpdateCaseRepository(caseModelMock);
+
+    const data = {
+      _id: 'any_id',
+    };
+
+    await expect(updateCaseRepository.editById(data)).rejects.toThrow();
+  });
 });

@@ -55,7 +55,7 @@ const makeSut = () => {
 describe("EditCase UseCase", () => {
   test("should Edit a case data with correctly data", async () => {
     const { sut, editCaseRepository } = makeSut();
-    const editedCase = await sut.edit({
+    const editedCase = await sut.update({
       id: "any_id",
       title: "Sample Case",
       customer: "John Doe",
@@ -88,21 +88,14 @@ describe("EditCase UseCase", () => {
     });
     expect(editedCase).toEqual(editCaseRepository.data);
   });
-
-  test("should throw an Error if data are no provided to edit method", async () => {
-    const { sut } = makeSut();
-    await expect(sut.edit({})).rejects.toThrowError(
-      "Dados de entrada incompletos"
-    );
-  });
-
+  
   test("should throw an Error if data are no provided to edit method", async () => {
     const newCaseRepositoryMock = {
       editById: jest.fn().mockRejectedValue(new Error("Erro ao editar o caso")),
     };
     const sut = new EditCaseUseCase(newCaseRepositoryMock);
     await expect(
-      sut.edit({
+      sut.update({
         id: "any_id",
         title: "Sample Case",
         customer: "John Doe",

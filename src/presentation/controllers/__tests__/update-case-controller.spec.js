@@ -1,5 +1,6 @@
 import { JsonWebTokenError } from "jsonwebtoken";
 import { HttpResponse } from "../../helpers/httpReponse";
+import { UpdateCaseController } from '../cases/update-new-case-controller.js'
 
 const makeUpdateCase = () => {
   class UpdateCaseUseCase {
@@ -21,27 +22,9 @@ const makeUpdateCase = () => {
   return updateCaseUseCase;
 };
 
-class UpdateCasController {
-  constructor(updateCaseUseCase) {
-    this.updateCaseUseCase = updateCaseUseCase;
-  }
-
-  async handle(httpRequest) {
-    try {
-      if (!httpRequest) {
-        return HttpResponse.InternalError();
-      }
-      const updateCase = await this.updateCaseUseCase.update(httpRequest);
-      return HttpResponse.ok(updateCase);
-    } catch (error) {
-      return HttpResponse.InternalError();
-    }
-  }
-}
-
 const makeSut = () => {
   const updateCaseUseCase = makeUpdateCase();
-  const sut = new UpdateCasController(updateCaseUseCase);
+  const sut = new UpdateCaseController(updateCaseUseCase);
 
   return {
     sut,
@@ -74,7 +57,7 @@ describe("FindAllWorkspace controller", () => {
     const updateCaseUseCaseMock = {
       update: jest.fn().mockRejectedValue(new Error("Update Case Error")),
     };
-    const sut = new UpdateCasController(updateCaseUseCaseMock);
+    const sut = new UpdateCaseController(updateCaseUseCaseMock);
 
     const httpRequestMock = {
       id: "id",

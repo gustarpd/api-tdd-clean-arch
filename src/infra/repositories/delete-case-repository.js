@@ -1,3 +1,5 @@
+import { Case } from "../db/schemas/Cases";
+
 export class DeleteCaseRepository {
   async deleteById(caseId) {
     try {

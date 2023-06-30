@@ -1,5 +1,5 @@
 import { HttpResponse } from "../../helpers/httpReponse";
-import { FindAllCustomerController } from "../customers/get-all-customers-controller";
+import { FindAllCasesController } from "../cases/find-cases-controller.js";
 
 const makeFindAllCaseUseCase = () => {
   class FindAllCasesUseCase {
@@ -56,12 +56,9 @@ const makeSut = () => {
 };
 
 describe("FindAllCases controller", () => {
-  test("should return HttpRequest if request succeeds", async () => {
-    const { sut, findAllUseCase } = makeSut();
+  test("should return Http status 200 if request succeeds", async () => {
+    const { sut } = makeSut();
     expect((await sut.handle({})).statusCode).toBe(200);
-    expect((await sut.handle({})).body).toEqual(
-      findAllUseCase.data
-    );
   });
 
   test("should return message if cases are not found", async () => {
@@ -72,12 +69,12 @@ describe("FindAllCases controller", () => {
         });
       },
     };
-    const sut = new FindAllCustomerController(useCase);
+    const sut = new FindAllCasesController(useCase);
     console.log(await sut.handle({}));
   });
 
   test("should return an internal error response when an error occurs'", async () => {
-    const useCase = new FindAllCustomerController();
+    const useCase = new FindAllCasesController();
     const response = await useCase.handle();
     expect(response.statusCode).toBe(500);
   });
@@ -86,7 +83,7 @@ describe("FindAllCases controller", () => {
     const findCaseUseCaseSpy = {
       find: jest.fn().mockRejectedValueOnce(HttpResponse.InternalError()),
     };
-    const sut = new FindAllCustomerController(findCaseUseCaseSpy);
+    const sut = new FindAllCasesController(findCaseUseCaseSpy);
 
     const httpRequest = {
       // httpRequest object

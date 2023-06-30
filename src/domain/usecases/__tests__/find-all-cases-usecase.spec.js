@@ -1,4 +1,4 @@
-import { FindAllCasesUseCase } from "../managecases/find-all-case-usecase";
+import { FindAllCasesUseCase } from "../managecases/find-all-case-usecase.js";
 
 const makeFindAllCaseRepository = () => {
   class FindAllCasesUseCaseRepository {

@@ -1,15 +1,6 @@
 import { Case } from "../../db/schemas/Cases.js";
 import { connect, disconnect } from "../../helper/mongo-in-memory-server.js";
-
-class DeleteCaseRepository {
-  async deleteById(caseId) {
-    try {
-      return await Case.deleteOne({ _id: caseId });
-    } catch (error) {
-      throw new Error(error);
-    }
-  }
-}
+import { DeleteCaseRepository } from "../delete-case-repository.js";
 
 describe("UpdateCustomerRepository", () => {
   beforeAll(async () => {

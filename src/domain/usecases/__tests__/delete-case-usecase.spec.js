@@ -1,4 +1,4 @@
-import { DeleteCaseUseCase } from "../managecases/delte-case-usecase";
+import { DeleteCaseUseCase } from "../managecases/delete-case-usecase";
 
 const makeDeleteCaseRepository = () => {
   class DeleteCaseRepository {

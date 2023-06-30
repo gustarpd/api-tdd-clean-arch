@@ -1,4 +1,5 @@
 import { HttpResponse } from "../../helpers/httpReponse.js";
+import { DeleteCaseController } from "../cases/delete-case-controller.js";
 
 class DeleteCustomerUseCaseMock {
   async execute(id) {
@@ -10,25 +11,6 @@ class DeleteCustomerUseCaseMock {
     }
 
     throw new Error("Invalid ID");
-  }
-}
-
-class DeleteCaseController {
-  constructor(deleteCaseUseCase) {
-    this.deleteCaseUseCase = deleteCaseUseCase;
-  }
-  async handle(httpRequest) {
-    try {
-      if (!httpRequest.id || httpRequest.id === "") {
-        return HttpResponse.InternalError();
-      }
-
-      const deleteCase = await this.deleteCaseUseCase.execute(httpRequest.id);
-      return deleteCase;
-    } catch (error) {
-      console.log(error);
-      return HttpResponse.InternalError();
-    }
   }
 }
 

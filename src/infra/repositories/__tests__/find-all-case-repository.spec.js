@@ -61,18 +61,9 @@ describe("UpdateCustomerRepository", () => {
   });
 
   test("should throw an error if an error occurs", async () => {
-    const findAllMock = jest
-      .fn()
-      .mockRejectedValue(new Error("Database Error"));
-    const caseModelMock = {
-      findAll: findAllMock,
-    };
-    const updateCaseRepository = new UpdateCaseRepository(caseModelMock);
-
-    const data = {
-      _id: "any_id",
-    };
-
-    await expect(updateCaseRepository.editById(data)).rejects.toThrow();
+    const expectedError = new Error('Failed to find cases');
+    jest.spyOn(Case, 'find').mockRejectedValue(expectedError);
+    const repository = new FindAllCasesRepository();
+    await expect(repository.findAll()).rejects.toThrow(expectedError);
   });
 });

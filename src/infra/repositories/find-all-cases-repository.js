@@ -6,7 +6,7 @@ export class FindAllCasesRepository {
       const cases = await Case.find({});
       return cases;
     } catch (error) {
-      throw Error("Failed to find cases: " + error);
+      throw Error("Failed to find cases");
     }
   }
 }

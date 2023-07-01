@@ -1,5 +1,4 @@
-import { trusted } from "mongoose";
-import { DeleteCustomerUseCase } from "../customer-office/delete-customer-usecase.js";
+import { DeleteDocumentUseCase } from "../documents/delete-document-usecase";
 
 const makeDeleteDocumentRepository = () => {
   class DeleteDocumentRepository {
@@ -12,26 +11,6 @@ const makeDeleteDocumentRepository = () => {
   deletedDocument.deletedDocument = { deletedCount: 1 };
   return deletedDocument;
 };
-
-class DeleteDocumentUseCase {
-  constructor(deleteDocumentRepository) {
-    this.deleteDocumentRepository = deleteDocumentRepository;
-  }
-
-  async execute(id) {
-    try {
-      const deleteDocumentById = await this.deleteDocumentRepository.deleteById(
-        id
-      );
-      if (deleteDocumentById.deletedCount === 1) {
-        return { success: true, message: "Documento excluído com sucesso." };
-      }
-      return { success: false, message: "falha ao excluír o documento." };
-    } catch (error) {
-      throw new Error(error);
-    }
-  }
-}
 
 const makeSut = () => {
   const deleteDocumentRepository = makeDeleteDocumentRepository();

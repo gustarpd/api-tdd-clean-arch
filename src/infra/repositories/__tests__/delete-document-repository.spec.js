@@ -1,17 +1,8 @@
 import { Document } from "../../db/schemas/Document.js";
 import { connect, disconnect } from "../../helper/mongo-in-memory-server.js";
+import { DeleteDocumentRepository } from "../delete-document-repository.js";
 
-class DeleteDocumentRepository {
-  async deleteById(id) {
-    try {
-      return await Document.deleteOne({ _id: id });
-    } catch (error) {
-      throw new Error(error.message);
-    }
-  }
-}
-
-describe("UpdateCustomerRepository", () => {
+describe("Delete Document Repository", () => {
   beforeAll(async () => {
     await connect();
   });

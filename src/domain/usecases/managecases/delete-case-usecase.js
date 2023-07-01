@@ -5,7 +5,7 @@ export class DeleteCaseUseCase {
   async execute(id) {
     try {
       const deleteCase = await this.deleteCaseRepository.deleteById(id);
-      if (deleteCase.deleteCount === 1) {
+      if (deleteCase.deletedCount === 1) {
         return { success: true, message: "Processo deletado com sucesso" };
       }
       return { success: false, message: "Processo não encontrado" };

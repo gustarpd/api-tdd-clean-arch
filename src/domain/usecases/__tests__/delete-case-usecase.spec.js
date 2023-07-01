@@ -7,7 +7,7 @@ const makeDeleteCaseRepository = () => {
     }
   }
   const deleteCaseRepository = new DeleteCaseRepository();
-  deleteCaseRepository.deleteReponse = { deleteCount: 1 };
+  deleteCaseRepository.deleteReponse = { deletedCount: 1 };
   return deleteCaseRepository;
 };
 

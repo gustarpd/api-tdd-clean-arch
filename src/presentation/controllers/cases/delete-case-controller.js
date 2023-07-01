@@ -1,4 +1,4 @@
-import { HttpResponse } from "../../helpers/httpReponse";
+import { HttpResponse } from "../../helpers/httpReponse.js";
 
 export class DeleteCaseController {
   constructor(deleteCaseUseCase) {
@@ -11,7 +11,7 @@ export class DeleteCaseController {
       }
 
       const deleteCase = await this.deleteCaseUseCase.execute(httpRequest.id);
-      return deleteCase;
+      return HttpResponse.ok(deleteCase);
     } catch (error) {
       return HttpResponse.InternalError();
     }

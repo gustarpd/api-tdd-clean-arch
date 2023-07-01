@@ -23,10 +23,11 @@ const makeSut = () => {
 describe("DeleteCaseController", () => {
   test("should return a message success true if handle calls usecase correcly", async () => {
     const { deleteCaseController } = makeSut();
+    const httpRequest =  await deleteCaseController.handle({
+      id: "any_id",
+    })
     expect(
-      await deleteCaseController.handle({
-        id: "any_id",
-      })
+    httpRequest.body
     ).toEqual({ success: true, message: "Caso excluído com sucesso." });
   });
 

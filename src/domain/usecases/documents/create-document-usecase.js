@@ -1,4 +1,4 @@
-import { Document } from "../../entities/document";
+import { Document } from "../../entities/document.js";
 
 export class AddDocumentUseCase {
   constructor(addDocumentRepository) {

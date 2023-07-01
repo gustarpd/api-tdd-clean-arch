@@ -1,6 +1,5 @@
-import { JsonWebTokenError } from "jsonwebtoken";
-import { MissingParamError } from "../../../utils/errors/missing-params-error.js";
 import { HttpResponse } from "../../helpers/httpReponse.js";
+import { AddDocumentController } from "../documents/add-document-controller.js";
 
 const makeAddDocumentUseCase = () => {
   class AddDocumentUseCase {
@@ -19,30 +18,6 @@ const makeAddDocumentUseCase = () => {
   };
   return addDocument;
 };
-
-class AddDocumentController {
-  constructor(addDocumentUseCase) {
-    this.addDocumentUseCase = addDocumentUseCase;
-  }
-  async handle(httpRequest) {
-    try {
-      if (!httpRequest) {
-        return HttpResponse.InternalError();
-      }
-      const requiredParams = ["description", "owner", "url", "title"];
-
-      for (const param of requiredParams) {
-        if (!httpRequest[param]) {
-          return HttpResponse.badRequest(new MissingParamError(param));
-        }
-      }
-      const document = await this.addDocumentUseCase.execute(httpRequest);
-      return HttpResponse.created(document);
-    } catch (error) {
-      return HttpResponse.InternalError();
-    }
-  }
-}
 
 const makeSut = () => {
   const addDocumentUseCase = makeAddDocumentUseCase();
@@ -82,7 +57,7 @@ describe("Add Document Controller", () => {
       title: "Fake Document",
     };
 
-    const request = await sut.handle({});
+    const request = await sut.handle(httpParams);
     expect(request.statusCode).toEqual(400);
     expect(request.body.error).toBe("Missing param: description");
   });
@@ -125,6 +100,7 @@ describe("Add Document Controller", () => {
     };
 
     const request = await sut.handle(httpParams);
+    console.log(request)
     expect(request.statusCode).toEqual(400);
     expect(request.body.error).toBe("Missing param: title");
   });
@@ -136,7 +112,6 @@ describe("Add Document Controller", () => {
     const sut = new AddDocumentController(usecase)
     const request = await sut.handle(httpRequest);
     expect(request.statusCode).toEqual(500);
-    console.log(request.body)
     expect(request).toEqual(HttpResponse.InternalError());
   });
   

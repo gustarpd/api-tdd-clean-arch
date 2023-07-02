@@ -1,5 +1,5 @@
-import { MissingParamError } from "../../../utils/errors/missing-params-error.js";
 import { HttpResponse } from "../../helpers/httpReponse.js";
+import { DeleteDocumentController } from '../documents/delete-documente-controller.js'
 
 const makeDeleteDocumentUseCase = () => {
   class DeleteDocumentUseCase {
@@ -16,32 +16,6 @@ const makeDeleteDocumentUseCase = () => {
   return deleteDocument;
 };
 
-class DeleteDocumentController {
-  constructor(deleteDocumentById) {
-    this.deleteDocumentById = deleteDocumentById;
-  }
-
-  async handle(httpRequest) {
-    try {
-      if (!httpRequest.id) {
-        return HttpResponse.badRequest(new MissingParamError("id"));
-      }
-      if (!httpRequest) {
-        return HttpResponse.InternalError();
-      }
-      const deleteDocument = await this.deleteDocumentById.execute(
-        httpRequest.id
-      );
-      if (deleteDocument.success === false) {
-        console.log(HttpResponse.badRequest(deleteDocument));
-        // return HttpResponse.badRequest(deleteDocument);
-      }
-      return deleteDocument;
-    } catch (error) {
-      return HttpResponse.InternalError();
-    }
-  }
-}
 
 const makeSut = () => {
   const deleteDocumentById = makeDeleteDocumentUseCase();

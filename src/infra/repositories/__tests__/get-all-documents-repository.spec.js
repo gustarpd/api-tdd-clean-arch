@@ -1,17 +1,6 @@
 import { Document } from "../../db/schemas/Document.js";
 import { connect, disconnect } from "../../helper/mongo-in-memory-server.js";
-import { CreateCustomerOfficeRepository } from "../create-new-customer-repository.js";
-
-class GetAllDocumentsRepository {
-  async getAll() {
-    try {
-      const documents = await Document.find({});
-      return documents;
-    } catch (error) {
-      throw new Error(error.message);
-    }
-  }
-}
+import { GetAllDocumentsRepository } from "../get-all-document-repository.js";
 
 describe("add-workspace-repository", () => {
   beforeAll(async () => {

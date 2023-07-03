@@ -23,6 +23,7 @@ export const schema = new mongoose.Schema({
       createdAt: Date,
     },
   ],
+  documents: [{ type: mongoose.Types.ObjectId, ref: 'Document' }],
 });
 
 export const Case = mongoose.model("Case", schema);

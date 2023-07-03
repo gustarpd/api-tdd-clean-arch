@@ -1,18 +1,30 @@
-import { Document } from "../db/schemas/Document.js";
+import {Customer} from "../db/schemas/Customer.js";
+import {Document} from "../db/schemas/Document.js";
 
 export class AddDocumentRepository {
-  async add({ description, owner, url, title }) {
+  async add({ description, owner, url, title, customerId }) {
     try {
-      const document = await Document.create({
+      const customer = await Customer.findOne({ _id: customerId });
+
+      if (!customer) {
+        throw new Error("Customer not found");
+      }
+      console.log(customerId)
+      const document = new Document({
         description,
         owner,
         url,
         title,
+        customer: customer._id
       });
-      document.save();
+
+      customer.documents.push(document);
+      await customer.save();
+
       return document;
     } catch (error) {
-      throw error; 
+      console.log(error);
+      throw error;
     }
   }
 }

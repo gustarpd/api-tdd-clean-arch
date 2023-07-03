@@ -17,6 +17,7 @@ export class AddDocumentController {
           return HttpResponse.badRequest(new MissingParamError(param));
         }
       }
+      console.log(httpRequest);
       const document = await this.addDocumentUseCase.execute(httpRequest);
       return HttpResponse.created(document);
     } catch (error) {

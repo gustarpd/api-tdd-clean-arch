@@ -1,5 +1,5 @@
 import { HttpResponse } from "../../helpers/httpReponse.js";
-import { DeleteDocumentController } from '../documents/delete-documente-controller.js'
+import { DeleteDocumentController } from '../documents/delete-document-controller.js'
 
 const makeDeleteDocumentUseCase = () => {
   class DeleteDocumentUseCase {
@@ -36,7 +36,7 @@ describe("Delete Document controller", () => {
 
   test("should return a HttpRequest 400 badRequest if id are no provided from handle method", async () => {
     const { sut } = makeSut();
-    const request = await sut.handle({});
+    const request = await sut.handle({ });
     expect(request.statusCode).toBe(400);
     expect(request.body).toEqual({ error: "Missing param: id" });
   });
@@ -69,6 +69,6 @@ describe("Delete Document controller", () => {
       message: "Não foi possivel excluír o documento com o ID fornecido.",
     });
     const request = await sut.handle({ id: "Invalid_id" });
-    expect(request).toEqual(error);
+    expect(request).toEqual(HttpResponse.badRequest(error));
   });
 });

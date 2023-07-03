@@ -1,5 +1,5 @@
 import { CustomerOffice } from "../../entities/clients-office.js";
-import { GetAllCustomer } from '../customer-office/get-customers-usecase.js';
+import { GetAllCustomer } from "../customer-office/get-customers-usecase.js";
 
 const makeGetAllCustomersRepository = () => {
   class GetAllCustomerRepository {

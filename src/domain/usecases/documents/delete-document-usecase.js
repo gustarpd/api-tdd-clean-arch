@@ -11,7 +11,10 @@ export class DeleteDocumentUseCase {
       if (deleteDocumentById.deletedCount === 1) {
         return { success: true, message: "Documento excluído com sucesso." };
       }
-      return { success: false, message: "falha ao excluír o documento." };
+      return {
+        success: false,
+        message: "Não foi possivel excluír o documento com o ID fornecido.",
+      };
     } catch (error) {
       throw new Error(error);
     }

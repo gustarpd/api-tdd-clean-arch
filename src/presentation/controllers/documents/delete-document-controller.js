@@ -1,4 +1,5 @@
-import { HttpResponse } from "../../helpers/httpReponse";
+import { MissingParamError } from "../../../utils/errors/missing-params-error.js";
+import { HttpResponse } from "../../helpers/httpReponse.js";
 
 export class DeleteDocumentController {
   constructor(deleteDocumentById) {
@@ -19,8 +20,10 @@ export class DeleteDocumentController {
       if (deleteDocument.success === false) {
         return HttpResponse.badRequest(deleteDocument);
       }
-      return deleteDocument;
+      console.log(HttpResponse.ok(deleteDocument))
+      return HttpResponse.ok(deleteDocument);
     } catch (error) {
+      console.log(error);
       return HttpResponse.InternalError();
     }
   }

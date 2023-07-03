@@ -1,3 +1,5 @@
+import { GetDocumentsUseCase } from "../documents/get-all-documents-usecase";
+
 const makeGetDocumentsRepositorySpy = () => {
   class GetDocumentsRepository {
     async find() {
@@ -8,20 +10,6 @@ const makeGetDocumentsRepositorySpy = () => {
   const getDocuments = new GetDocumentsRepository();
   return getDocuments;
 };
-
-class GetDocumentsUseCase {
-  constructor(getDocumentsRepository) {
-    this.getDocumentsRepository = getDocumentsRepository;
-  }
-
-  async execute() {
-    const documents = await this.getDocumentsRepository.find();
-    if (documents.length === 0) {
-      return { message: "Nenhum documento encontrado." };
-    }
-    return documents;
-  }
-}
 
 const makeSut = () => {
   const getDocumentsRepository = makeGetDocumentsRepositorySpy();
@@ -64,8 +52,9 @@ describe("GetDocumentsUseCase", () => {
       find: jest.fn().mockRejectedValue(new Error("failed to fetch documents")),
     };
     const sut = new GetDocumentsUseCase(repository);
-  
-    await expect(sut.execute()).rejects.toThrow(new Error("failed to fetch documents"));
+
+    await expect(sut.execute()).rejects.toThrow(
+      new Error("failed to fetch documents")
+    );
   });
-  
 });

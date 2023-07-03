@@ -31,7 +31,7 @@ describe("Delete Document controller", () => {
   test("should return a HttpRequest OK if id are provided from handle method", async () => {
     const { sut, deleteDocumentById } = makeSut();
     const request = await sut.handle({ id: "any_id" });
-    expect(request).toEqual(deleteDocumentById.data);
+    expect(request).toEqual(HttpResponse.ok(deleteDocumentById.data));
   });
 
   test("should return a HttpRequest 400 badRequest if id are no provided from handle method", async () => {

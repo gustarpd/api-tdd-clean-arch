@@ -35,7 +35,7 @@ describe("Delete Documente UseCase", () => {
     deleteDocumentRepository.deletedDocument = { deletedCount: 0 };
     expect(await sut.execute("any_id")).toEqual({
       success: false,
-      message: "falha ao excluír o documento.",
+      message: "Não foi possivel excluír o documento com o ID fornecido.",
     });
   });
 

@@ -2,7 +2,7 @@ import { GetDocumentsUseCase } from "../documents/get-all-documents-usecase";
 
 const makeGetDocumentsRepositorySpy = () => {
   class GetDocumentsRepository {
-    async find() {
+    async getAll() {
       return this.data;
     }
   }
@@ -49,7 +49,7 @@ describe("GetDocumentsUseCase", () => {
   });
   test("should throw error if an error occurs in the repository", async () => {
     const repository = {
-      find: jest.fn().mockRejectedValue(new Error("failed to fetch documents")),
+      getAll: jest.fn().mockRejectedValue(new Error("failed to fetch documents")),
     };
     const sut = new GetDocumentsUseCase(repository);
 

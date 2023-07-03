@@ -1,3 +1,4 @@
+import { HttpResponse } from "../../helpers/httpReponse";
 import { GetAllDocumentsController } from "../documents/get-all-documents-controller";
 
 const makeGetAllDocumentRepository = () => {
@@ -79,5 +80,10 @@ describe("GetAllDocuments controller", () => {
     };
     const sut = new GetAllDocumentsController(repository);
     expect(sut.handle({})).rejects.toThrow(new Error("some error in database"));
+  });
+
+  test("should return 400 if no documents are not found", async () => {
+    const { sut } = makeSut()
+    expect(await sut.handle()).toEqual(HttpResponse.InternalError());
   });
 });

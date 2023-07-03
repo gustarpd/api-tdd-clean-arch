@@ -1,4 +1,4 @@
-import { HttpResponse } from "../../helpers/httpReponse";
+import { HttpResponse } from "../../helpers/httpReponse.js";
 
 export class GetAllDocumentsController {
     constructor(getAllDocumentsUseCase) {

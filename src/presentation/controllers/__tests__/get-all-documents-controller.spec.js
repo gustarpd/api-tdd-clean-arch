@@ -1,4 +1,3 @@
-import { HttpResponse } from "../../helpers/httpReponse";
 import { GetAllDocumentsController } from "../documents/get-all-documents-controller";
 
 const makeGetAllDocumentRepository = () => {

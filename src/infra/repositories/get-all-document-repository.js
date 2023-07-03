@@ -1,4 +1,4 @@
-import { Document } from "../db/schemas/Document";
+import { Document } from "../db/schemas/Document.js";
 export class GetAllDocumentsRepository {
   async getAll() {
     try {

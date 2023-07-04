@@ -1,5 +1,5 @@
-import {Customer} from "../db/schemas/Customer.js";
-import {Document} from "../db/schemas/Document.js";
+import { Customer } from "../db/schemas/Customer.js";
+import { Document } from "../db/schemas/Document.js";
 
 export class AddDocumentRepository {
   async add({ description, owner, url, title, customerId }) {
@@ -9,7 +9,7 @@ export class AddDocumentRepository {
       if (!customer) {
         throw new Error("Customer not found");
       }
-      console.log(customerId)
+      
       const document = new Document({
         description,
         owner,
@@ -19,7 +19,7 @@ export class AddDocumentRepository {
       });
 
       customer.documents.push(document);
-      await customer.save();
+      await document.save();
 
       return document;
     } catch (error) {

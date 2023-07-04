@@ -1,8 +1,16 @@
 import mongoose from "mongoose";
 
+const documentSchema = new mongoose.Schema({
+  description: { type: String },
+  owner: { type: String },
+  url: { type: String },
+  title: { type: String  }
+});
+
 export const schema = new mongoose.Schema({
   title: { type: String, required: true },
   customer: String,
+  customerId: String,
   action_type: String,
   awarded_amount: Number,
   involved_parties: [
@@ -23,7 +31,7 @@ export const schema = new mongoose.Schema({
       createdAt: Date,
     },
   ],
-  documents: [{ type: mongoose.Types.ObjectId, ref: 'Document' }],
+  documents: [documentSchema],
 });
 
 export const Case = mongoose.model("Case", schema);

@@ -6,6 +6,7 @@ export class CreateNewCaseUseCase {
   async execute({
     title,
     customer,
+    customerId,
     involved_parties,
     awarded_amount,
     status,
@@ -17,6 +18,7 @@ export class CreateNewCaseUseCase {
     if (
       !title ||
       !customer ||
+      !customerId ||
       !awarded_amount ||
       !involved_parties ||
       !status ||
@@ -32,6 +34,7 @@ export class CreateNewCaseUseCase {
       const newCase = await this.newCaseRepository.save({
         title,
         customer,
+        customerId,
         involved_parties,
         awarded_amount,
         status,

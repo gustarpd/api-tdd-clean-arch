@@ -7,7 +7,7 @@ const documentSchema = new mongoose.Schema({
   title: { type: String  }
 });
 
-const customerSchema = new mongoose.Schema({
+export const customerSchema = new mongoose.Schema({
   name: { type: String, required: true },
   phone: { type: String, required: true },
   email: { type: String, required: true },

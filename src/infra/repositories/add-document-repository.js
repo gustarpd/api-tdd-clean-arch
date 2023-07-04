@@ -5,7 +5,7 @@ export class AddDocumentRepository {
   async add({ description, owner, url, title, customerId }) {
     try {
       const customer = await Customer.findOne({ _id: customerId });
-
+      console.log(customerId)
       if (!customer) {
         throw new Error("Customer not found");
       }
@@ -15,7 +15,7 @@ export class AddDocumentRepository {
         owner,
         url,
         title,
-        customer: customer._id
+        customerId: customer._id
       });
 
       customer.documents.push(document);

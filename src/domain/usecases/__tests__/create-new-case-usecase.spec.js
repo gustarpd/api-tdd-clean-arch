@@ -50,6 +50,7 @@ describe("CaseUseCase", () => {
     const caseTest = await sut.execute({
       title: "any_title",
       customer: "any_customer",
+      customerId: "any_custom",
       status: "any_status",
       awarded_amount: 5000,
       owner: "any_owner",
@@ -71,6 +72,7 @@ describe("CaseUseCase", () => {
       sut.execute({
         title: "Sample Case",
         customer: "John Doe",
+        customerId: "any_custom",
         action_type: "Legal Action",
         awarded_amount: 5000,
         involved_parties: [

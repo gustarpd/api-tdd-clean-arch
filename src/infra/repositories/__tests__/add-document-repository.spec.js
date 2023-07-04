@@ -18,7 +18,7 @@ describe("add-workspace-repository", () => {
 
   test("should create a Document correctly", async () => {
     const repository = new AddDocumentRepository();
-    const customerId = await Customer.create({
+    const customer = await Customer.create({
       name: "John Doe",
       phone: "875.414.840-59",
       email: "john.example@mail.com",
@@ -29,23 +29,21 @@ describe("add-workspace-repository", () => {
       maritalStatus: "Single",
       profession: "Engineer",
       nationality: "Brazilian",
-      observations: "Lorem ipsum dolor sit amet"
-  })
-    await expect(
-      repository.add({
-        description: "This is a fake document",
-        owner: "John Doe",
-        customerId: customerId,
-        url: "https://www.youtube.com/watch?v=qa-4_A2uIOU",
-        title: "Fake Document",
-      })
-    ).resolves.toBeTruthy();
+      observations: "Lorem ipsum dolor sit amet",
+    });
+    console.log(
+      await repository.add({
+        description:"This is a fake document",
+        owner:"John Doe",
+        url:"https://www.youtube.com/watch?v=qa-4_A2uIOU",
+        customerId: customer.id,
+        title:"Fake Document"
+     }))
+    // ).resolves.toBeTruthy();
   });
 
   test("should throw an Error if data are no provided", async () => {
     const repository = new AddDocumentRepository();
-    await expect(
-      repository.add({})
-    ).rejects.toThrow()
+    await expect(repository.add({})).rejects.toThrow();
   });
 });

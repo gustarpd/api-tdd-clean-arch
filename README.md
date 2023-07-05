@@ -1,4 +1,4 @@
-# Clean Architecture NodejS API
+# Clean Architecture Nodejs API
 
 Esta API em Node.js foi desenvolvida para um sistema de escritório de advocacia, proporcionando recursos essenciais para a gestão eficiente de advogados, clientes, processos/casos e documentos. Além disso, oferece uma área de agenda que permite a organização de tarefas diárias.
 
@@ -13,7 +13,9 @@ Recursos disponíveis na API:
 Esta API foi construída utilizando Node.js e possui uma arquitetura sólida e de fácil manutenção. É uma solução flexível e escalável, capaz de se adaptar às necessidades específicas de cada escritório de advocacia.
 Configuração e Uso
 
-- Certifique-se de ter o Node.js e o docker/docker-compse instalado.
+## Como executar
+
+- Certifique-se de ter o Node.js e o docker/docker-compose instalado.
 - Clone este repositório em sua máquina local.
 - No diretório raiz do projeto, execute o comando npm install para instalar as dependências necessárias.
 - Execute o comando ```docker compose up ``` para inicar o banco de dados.
@@ -21,7 +23,8 @@ Configuração e Uso
 - Execute o comando npm start para iniciar a API.
 - Acesse a API através da URL http://localhost:5858 ou da porta configurada.
 
-Ferramentas usadas para desenvolver esse projeto:
+## Ferramentas usadas para desenvolver esse projeto
+
 - NodeJs
 - MongoDb
 - Jest

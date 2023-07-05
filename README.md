@@ -21,3 +21,9 @@ Configuração e Uso
 - Execute o comando npm start para iniciar a API.
 - Acesse a API através da URL http://localhost:5858 ou da porta configurada.
 
+Ferramentas usadas para desenvolver esse projeto:
+- NodeJs
+- MongoDb
+- Jest
+- Husky
+- lint-staged
